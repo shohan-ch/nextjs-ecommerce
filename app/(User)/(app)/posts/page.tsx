@@ -1,9 +1,14 @@
 import React from "react";
+import Post from "./components/Post";
 
 type Props = {};
 
 const page = (props: Props) => {
-  return <div>User Navbar</div>;
+  return (
+    <>
+      <Post />
+    </>
+  );
 };
 
 export default page;
