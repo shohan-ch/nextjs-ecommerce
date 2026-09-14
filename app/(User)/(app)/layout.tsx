@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./navbar";
 import Footer from "./footer";
+import { MuiUserThemeProvider } from "@/providers/UserThemeProvider";
 
 type Props = {
   children: React.ReactNode;
@@ -13,11 +14,11 @@ export default function UserLayout(props: Props) {
 
   return (
     <>
-      {/* {navbar} */}
-      <Navbar />
-      <section>{children}</section>
-      <Footer />
-      {/* {footer} */}
+      <MuiUserThemeProvider>
+        <Navbar />
+        <section className="wrapper">{children}</section>
+        <Footer />
+      </MuiUserThemeProvider>
     </>
   );
 }

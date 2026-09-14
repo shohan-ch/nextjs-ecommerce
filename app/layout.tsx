@@ -1,10 +1,7 @@
 import StoreProvider from "@/store/StoreProvider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 import "./globals.css";
-import Navbar from "./(User)/(app)/navbar";
-import Footer from "./(User)/(app)/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
