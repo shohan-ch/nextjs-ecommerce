@@ -1,7 +1,7 @@
-import React from "react";
-import Navbar from "./navbar";
-import Footer from "./footer";
 import { MuiUserThemeProvider } from "@/providers/UserThemeProvider";
+import React from "react";
+import Footer from "./footer";
+import Navbar from "./navbar";
 
 type Props = {
   children: React.ReactNode;

@@ -1,3 +1,5 @@
+@use '../../styles/mixin';
+
 
 .drawerInner{
     display: flex;
@@ -22,11 +24,11 @@
 
 
 .flexWrapper{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include mixin.flex-between;
     width: 100%;
 }
+
+
 
 
 

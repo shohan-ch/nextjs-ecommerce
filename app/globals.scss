@@ -1,14 +1,9 @@
-
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+@use './styles/variable';
+@use './styles/mixin';
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: variable.$background-color;
+  color: variable.$foreground-color;
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
@@ -16,10 +11,55 @@ body {
 
 .wrapper{
   padding: 20px;
-  
+}
+
+.flex-centerDiv{
+  @include mixin.flex-center;
 }
 
 
 
 
+
+
+
+$spacing-unit: 4px;
+
+@for $i from 1 through 12 {
+
+  .p-#{$i} {
+    padding: $i * $spacing-unit;
+  }
+  .pt-#{$i} {
+    padding-top: $i * $spacing-unit;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i * $spacing-unit;
+  }
+  .pl-#{$i} {
+    padding-left: $i * $spacing-unit;
+  }
+  .pr-#{$i} {
+    padding-right: $i * $spacing-unit;
+  }
+
+  .m-#{$i} {
+    margin: $i * $spacing-unit;
+  }
+  .mt-#{$i} {
+    margin-top: $i * $spacing-unit;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i * $spacing-unit;
+  }
+  .ml-#{$i} {
+    margin-left: $i * $spacing-unit;
+  }
+  .mr-#{$i} {
+    margin-right: $i * $spacing-unit;
+  }
+  .gap-#{$i}{
+    gap: $i * $spacing-unit;
+  }
+}
 
