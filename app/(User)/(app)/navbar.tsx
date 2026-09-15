@@ -20,7 +20,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import "./navbar.css";
+import "./navbar.scss";
 type Props = {};
 
 const navItems = [

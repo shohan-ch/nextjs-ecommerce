@@ -1,7 +1,7 @@
 import StoreProvider from "@/store/StoreProvider";
 import type { Metadata } from "next";
 import React from "react";
-import "./globals.css";
+import "./globals.scss";
 
 export const metadata: Metadata = {
   title: "Create Next App",

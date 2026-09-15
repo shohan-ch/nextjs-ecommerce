@@ -1,5 +1,5 @@
 "use client";
-import { userTheme } from "@/app/muiStyles/userTheme";
+import { userTheme } from "@/app/styles/theme/userTheme";
 import { ThemeProvider } from "@mui/material";
 import React from "react";
 
