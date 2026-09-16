@@ -13,22 +13,40 @@ body {
   padding: 20px;
 }
 
-.flex-center{
+
+
+
+.arrowLinkBtn{
+  text-decoration: none;
+  color: variable.$primary-color;
+}
+
+
+
+
+// Common for all project
+.display-block{
+  display: block
+}
+.display-none{
+  display: none
+}
+.flex-center {
   @include mixin.flex-center;
 }
-.flex-between{
+
+.flex-between {
   @include mixin.flex-between;
 }
 
-
-
-
-
-
+.mx-auto{
+  margin-left:auto ;
+  margin-right: auto;
+}
 
 $spacing-unit: 4px;
 
-@for $i from 1 through 20 {
+@for $i from 1 through 50 {
 
   .p-#{$i} {
     padding: $i * $spacing-unit;
@@ -73,6 +91,12 @@ $spacing-unit: 4px;
 
   .sm\:px-#{$i} {
     @media (min-width:600px) {
+      padding-left: $i * $spacing-unit;
+      padding-right: $i * $spacing-unit;
+    }
+  }
+  .md\:px-#{$i} {
+    @media (min-width:900px) {
       padding-left: $i * $spacing-unit;
       padding-right: $i * $spacing-unit;
     }

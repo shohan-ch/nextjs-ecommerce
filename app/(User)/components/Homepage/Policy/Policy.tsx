@@ -4,7 +4,7 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import SecurityIcon from "@mui/icons-material/Security";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import SinglePolicy from "./SinglePolicy";
 
 const policyList = [
@@ -41,7 +41,7 @@ const Policy = (props: Props) => {
           xs: 1,
           sm: 2,
         }}
-        className="pt-3 "
+        className="pt-4"
       >
         {policyList.map((l: any, index) => (
           <Grid

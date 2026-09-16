@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import Carousel from "../components/carousel/Carousel";
-import { Box } from "@mui/material";
+import Carousel from "../components/Carousel/Carousel";
+import { Box, Container } from "@mui/material";
 import SinglePolicy from "../components/Homepage/Policy/SinglePolicy";
 import Policy from "../components/Homepage/Policy/Policy";
+import FeatureProduct from "../components/Homepage/FeatureProduct/FeatureProduct";
 
 export default function Page() {
   return (
@@ -29,7 +30,10 @@ export default function Page() {
           ]}
         />
       </Box>
-      <Policy />
+      <Container maxWidth="xl">
+        <Policy />
+        <FeatureProduct />
+      </Container>
       <br />
       <Link href={"/counts"}>Count</Link> |<Link href={"/login"}>Login</Link>
     </>
