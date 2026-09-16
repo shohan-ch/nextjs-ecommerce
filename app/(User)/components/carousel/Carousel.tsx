@@ -1,128 +1,3 @@
-// "use client";
-
-// import React, { useEffect } from "react";
-
-// type Image = {
-//   path: string;
-//   title: string;
-// };
-
-// type Props = {
-//   images: Image[];
-// };
-
-// const Carousel = (props: Props) => {
-//   const { images } = props;
-//   const [previewImage, setPreviewImage] = React.useState({
-//     image: images[0],
-//     index: 0,
-//   });
-
-//   const [disableBtn, setDisableBtn] = React.useState({
-//     next: false,
-//     prev: false,
-//   });
-
-//   const handleNext = () => {
-//     const lastImageIndex = images.length - 1;
-
-//     if (lastImageIndex != previewImage.index) {
-//       let currentIndex = previewImage.index;
-//       setPreviewImage((prev) => {
-//         return {
-//           image: images[currentIndex + 1],
-//           index: currentIndex + 1,
-//         };
-//       });
-//     }
-
-//     if (lastImageIndex == previewImage.index)
-//       setPreviewImage({
-//         image: images[0],
-//         index: 0,
-//       });
-//   };
-
-//   const handlePrevious = () => {
-//     if (previewImage.index != 0) {
-//       let currentIndex = previewImage.index;
-//       setPreviewImage({
-//         image: images[currentIndex - 1],
-//         index: currentIndex - 1,
-//       });
-//     }
-//   };
-
-//   useEffect(() => {
-//     const id = setTimeout(() => {
-//       handleNext();
-//     }, 5000);
-//     return () => clearTimeout(id);
-//   }, [previewImage]);
-
-//   useEffect(() => {
-//     const lastImageIndex = images.length - 1;
-//     if (lastImageIndex === previewImage.index)
-//       setDisableBtn((prev) => ({ prev: false, next: true }));
-
-//     if (previewImage.index == 0)
-//       setDisableBtn((prev) => ({ next: false, prev: true }));
-//   }, [previewImage]);
-
-//   return (
-//     <>
-//       <div style={styles.imageWrapper}>
-//         <img
-//           src={previewImage.image.path}
-//           alt={previewImage.image.title}
-//           width={"100%"}
-//           height={500}
-//         />
-
-//         <button
-//           disabled={disableBtn.prev}
-//           style={styles.btnPrev}
-//           onClick={handlePrevious}
-//         >
-//           Prev
-//         </button>
-
-//         <button
-//           disabled={disableBtn.next}
-//           style={styles.btnNext}
-//           onClick={handleNext}
-//         >
-//           Next {disableBtn.next}
-//         </button>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Carousel;
-
-// type styleProps = {
-//   imageWrapper: React.CSSProperties;
-//   btnNext: React.CSSProperties;
-//   btnPrev: React.CSSProperties;
-
-// };
-// const styles: styleProps = {
-//   imageWrapper: {
-//     position: "relative",
-//   },
-//   btnNext: {
-//     position: "absolute",
-//     top: "50%",
-//     right: 10,
-//   },
-//   btnPrev: {
-//     position: "absolute",
-//     top: "50%",
-//     left: 10,
-//   },
-// };
-
 "use client";
 
 import "./carousel.scss";
@@ -204,13 +79,13 @@ const Carousel = (props: Props) => {
   // AUTO SLIDE
   // ============================
 
-  //   useEffect(() => {
-  //     const id = setTimeout(() => {
-  //       handleNext();
-  //     }, 8000);
+  // useEffect(() => {
+  //   const id = setTimeout(() => {
+  //     handleNext();
+  //   }, 8000);
 
-  //     return () => clearTimeout(id);
-  //   }, [previewImage]);
+  //   return () => clearTimeout(id);
+  // }, [previewImage]);
 
   // ============================
   // BUTTON DISABLE STATE

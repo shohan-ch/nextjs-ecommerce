@@ -13,8 +13,11 @@ body {
   padding: 20px;
 }
 
-.flex-centerDiv{
+.flex-center{
   @include mixin.flex-center;
+}
+.flex-between{
+  @include mixin.flex-between;
 }
 
 
@@ -25,7 +28,7 @@ body {
 
 $spacing-unit: 4px;
 
-@for $i from 1 through 12 {
+@for $i from 1 through 20 {
 
   .p-#{$i} {
     padding: $i * $spacing-unit;
@@ -41,6 +44,10 @@ $spacing-unit: 4px;
   }
   .pr-#{$i} {
     padding-right: $i * $spacing-unit;
+  }
+  .px-#{$i} {
+      padding-left:   $i * $spacing-unit;
+      padding-right:   $i * $spacing-unit;
   }
 
   .m-#{$i} {
@@ -60,6 +67,15 @@ $spacing-unit: 4px;
   }
   .gap-#{$i}{
     gap: $i * $spacing-unit;
+  }
+
+  // Breakpoint spacing
+
+  .sm\:px-#{$i} {
+    @media (min-width:600px) {
+      padding-left: $i * $spacing-unit;
+      padding-right: $i * $spacing-unit;
+    }
   }
 }
 

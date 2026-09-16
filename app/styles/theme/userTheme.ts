@@ -9,5 +9,9 @@ export const userTheme = createTheme({
     primary: {
       main: "#000000",
     },
+    secondary: {
+      light: "#f9fafd",
+      main: "#f6f6f7",
+    },
   },
 });
