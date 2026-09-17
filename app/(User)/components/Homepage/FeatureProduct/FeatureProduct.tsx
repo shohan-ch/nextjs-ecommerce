@@ -62,8 +62,9 @@ const products = [
 const FeatureProduct = (props: Props) => {
   return (
     <>
-      <Box className="pt-4">
+      <Box className="pt-8">
         <Stack
+          className="pb-3"
           direction={"row"}
           sx={{ justifyContent: "space-between", alignItems: "center" }}
         >

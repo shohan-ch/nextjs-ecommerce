@@ -41,7 +41,7 @@ const Policy = (props: Props) => {
           xs: 1,
           sm: 2,
         }}
-        className="pt-4"
+        className="pt-6"
       >
         {policyList.map((l: any, index) => (
           <Grid
