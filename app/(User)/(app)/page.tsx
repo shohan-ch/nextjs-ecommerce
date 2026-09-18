@@ -6,6 +6,7 @@ import SinglePolicy from "../components/Homepage/Policy/SinglePolicy";
 import Policy from "../components/Homepage/Policy/Policy";
 import FeatureProduct from "../components/Homepage/FeatureProduct/FeatureProduct";
 import Banner from "../components/Homepage/Banner/Banner";
+import HomeCategory from "../components/Homepage/HomeCategory/HomeCategory";
 
 const carouselImages = [
   {
@@ -37,8 +38,8 @@ export default function Page() {
       <Container maxWidth="xl">
         <Policy />
         <FeatureProduct />
-
         <Banner image={bannerImage} />
+        <HomeCategory />
       </Container>
       <br />
       <Link href={"/counts"}>Count</Link> |<Link href={"/login"}>Login</Link>

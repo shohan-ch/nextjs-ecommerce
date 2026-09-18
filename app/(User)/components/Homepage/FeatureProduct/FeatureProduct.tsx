@@ -68,16 +68,7 @@ const FeatureProduct = (props: Props) => {
           direction={"row"}
           sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              fontSize: {
-                sm: 18,
-                xs: 14,
-              },
-              fontWeight: 600,
-            }}
-          >
+          <Typography variant="h6" className="heading">
             Feature Products
           </Typography>
 
@@ -85,8 +76,6 @@ const FeatureProduct = (props: Props) => {
             <Typography variant="body2">View all</Typography>
             <ArrowRightAltIcon />
           </Link>
-          {/* <IconButton color="primary">
-          </IconButton> */}
         </Stack>
         <Grid
           container
