@@ -121,7 +121,15 @@ const colors = ["#f3eee7", "#eee4d6", "#f6ecec", "#80808014"];
 
 const HomeCategory = (props: Props) => {
   return (
-    <Box className="pt-7">
+    <Box
+      className="pt-7"
+      sx={{
+        marginRight: {
+          xs: "-35px",
+          sm: "0",
+        },
+      }}
+    >
       {/* Header */}
       <Stack
         direction="row"
