@@ -87,7 +87,7 @@ export default function VideoList() {
         },
       }}
     >
-      <Typography className="heading pb-3" variant="h3">
+      <Typography className="heading pb-6" variant="h3">
         Trending At ShoeStore
       </Typography>
       <Box

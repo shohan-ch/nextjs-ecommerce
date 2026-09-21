@@ -8,6 +8,7 @@ import FeatureProduct from "../components/Homepage/FeatureProduct/FeatureProduct
 import Banner from "../components/Homepage/Banner/Banner";
 import HomeCategory from "../components/Homepage/HomeCategory/HomeCategory";
 import VideoList from "../components/Homepage/VideoList/VideoList";
+import Footer from "./footer";
 
 const carouselImages = [
   {
@@ -43,8 +44,6 @@ export default function Page() {
         <HomeCategory />
         <VideoList />
       </Container>
-      <br />
-      <Link href={"/counts"}>Count</Link> |<Link href={"/login"}>Login</Link>
     </>
   );
 }
