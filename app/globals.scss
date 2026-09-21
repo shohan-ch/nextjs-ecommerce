@@ -48,6 +48,10 @@ body {
   @include mixin.flex-center;
 }
 
+.align-center{
+@include mixin.align-center;
+}
+
 .flex-between {
   @include mixin.flex-between;
 }

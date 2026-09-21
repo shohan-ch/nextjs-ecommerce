@@ -1,0 +1,62 @@
+.gridWrapper {
+    border-top: 1px solid #e5e5e5;
+
+    >* {
+        :global(.MuiBox-root) {
+            border-color: #e5e5e5;
+            /* padding-left: 2px; */
+            padding: 25px 0 25px 0;
+        }
+    }
+
+    > :nth-child(1) {
+        border-left: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+    }
+
+    > :nth-child(2) {
+     border-right: 1px solid #e5e5e5;
+    }
+
+    > :nth-child(3) {
+        border-left: 1px solid #e5e5e5;
+        border-top: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+    }
+
+    > :nth-child(4) {
+        border-top: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+    }
+
+    @media (min-width: 600px) {
+
+> :global(.MuiGrid-root) {
+        padding: 55px 20px;
+
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+    
+       
+    
+        border-top: 0;
+
+        > :nth-child(1) {
+            border-left: 0;
+           
+        }
+
+        > :nth-child(3) {
+            border-left: 0;
+            border-top: 0;
+        }
+
+        > :nth-child(4) {
+            border-top: 0;
+            border-right: 0;
+        }
+    }
+}
+

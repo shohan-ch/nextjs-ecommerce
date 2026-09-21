@@ -9,6 +9,7 @@ import Banner from "../components/Homepage/Banner/Banner";
 import HomeCategory from "../components/Homepage/HomeCategory/HomeCategory";
 import VideoList from "../components/Homepage/VideoList/VideoList";
 import Footer from "./footer";
+import DeliveryTerms from "../components/Homepage/DeliveryTerms/DeliveryTerms";
 
 const carouselImages = [
   {
@@ -44,6 +45,7 @@ export default function Page() {
         <HomeCategory />
         <VideoList />
       </Container>
+      <DeliveryTerms />
     </>
   );
 }

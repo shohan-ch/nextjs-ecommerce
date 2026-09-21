@@ -12,6 +12,7 @@ export const userTheme = createTheme({
     secondary: {
       light: "#f9fafd",
       main: "#f6f6f7",
+      dark: "#000000A6",
     },
     text: {
       secondary: "#9b9b9b",

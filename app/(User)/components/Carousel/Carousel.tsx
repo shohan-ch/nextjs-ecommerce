@@ -131,10 +131,6 @@ const Carousel = (props: Props) => {
 
   return (
     <div className="carousel-wrapper">
-      {/* ========================
-          IMAGE
-      ======================== */}
-
       <img
         key={previewImage.index}
         src={previewImage.image.path}
@@ -148,15 +144,7 @@ const Carousel = (props: Props) => {
         }}
       />
 
-      {/* ========================
-          LIGHT GRADIENT
-      ======================== */}
-
       <div className="carousel-gradient" />
-
-      {/* ========================
-          CONTENT
-      ======================== */}
 
       <div className="carousel-content">
         <h2 className="carousel-title">{previewImage.image.title}</h2>
@@ -172,10 +160,6 @@ const Carousel = (props: Props) => {
           <span className="carousel-shop-arrow">→</span>
         </button>
       </div>
-
-      {/* ========================
-           BUTTONS
-      ======================== */}
 
       {images.length > 1 && (
         <>
@@ -232,10 +216,6 @@ const Carousel = (props: Props) => {
           </button>
         </>
       )}
-
-      {/* ========================
-          SLIDE DOTS
-      ======================== */}
 
       {images.length > 1 && (
         <div className="carousel-dots">

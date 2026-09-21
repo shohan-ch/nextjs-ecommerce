@@ -17,7 +17,6 @@ const Footer = (props: Props) => {
   const currentYear = new Date().getFullYear();
   return (
     <Box
-      className="mt-8"
       sx={{
         bgcolor: "primary.main",
         color: "white",
@@ -32,6 +31,7 @@ const Footer = (props: Props) => {
           color: "text.secondary",
           width: "fit-content",
         },
+        // px: "5px",
       }}
     >
       <Container maxWidth="xl" className="pt-17 pb-10">
@@ -106,7 +106,7 @@ const Footer = (props: Props) => {
                   sm: "center",
                 },
               }}
-              className="flex-center gap-1"
+              className="gap-1 align-center"
             >
               <CopyrightIcon /> ShoeStore {currentYear.toString()}. All Rights
               Reserved
