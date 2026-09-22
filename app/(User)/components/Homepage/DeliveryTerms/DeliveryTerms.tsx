@@ -2,8 +2,8 @@
 
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
-import styles from "./DeliveryTerms.module.css";
-import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import styles from "./DeliveryTerms.module.scss";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import UndoIcon from "@mui/icons-material/Undo";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
@@ -13,58 +13,22 @@ const items = [
   {
     title: "Fast Delivery",
     subTitle: "Dhaka 1–2 days · Outside Dhaka around 3 days",
-    icon: (
-      <DeliveryDiningIcon
-        sx={{
-          fontSize: {
-            xs: 24,
-            sm: 32,
-          },
-        }}
-      />
-    ),
+    icon: <LocalShippingOutlinedIcon />,
   },
   {
     title: "3-Day Exchange",
     subTitle: "Easy exchange support after delivery",
-    icon: (
-      <UndoIcon
-        sx={{
-          fontSize: {
-            xs: 24,
-            sm: 32,
-          },
-        }}
-      />
-    ),
+    icon: <UndoIcon />,
   },
   {
     title: "Product Care Support",
     subTitle: "Support for pasting, sewing, sole and padding issues",
-    icon: (
-      <VerifiedUserOutlinedIcon
-        sx={{
-          fontSize: {
-            xs: 24,
-            sm: 32,
-          },
-        }}
-      />
-    ),
+    icon: <VerifiedUserOutlinedIcon />,
   },
   {
     title: "Cash on Delivery",
     subTitle: "Available across Bangladesh",
-    icon: (
-      <StorefrontOutlinedIcon
-        sx={{
-          fontSize: {
-            xs: 24,
-            sm: 32,
-          },
-        }}
-      />
-    ),
+    icon: <StorefrontOutlinedIcon />,
   },
 ];
 
@@ -76,7 +40,11 @@ const DeliveryTerms = (props: Props) => {
         mt: 5,
         borderTop: {
           xs: "none",
-          sm: "1px solid #E5E5E5",
+          md: "1px solid #E5E5E5",
+        },
+        mx: {
+          md: "-20px",
+          xs: 0,
         },
       }}
     >
@@ -84,16 +52,16 @@ const DeliveryTerms = (props: Props) => {
         <Grid container className={styles.gridWrapper}>
           {items.map((i) => (
             <>
-              <Grid key={i.title} size={{ xs: 6, sm: 3 }}>
+              <Grid key={i.title} size={{ xs: 6, md: 3 }}>
                 <Stack direction="row" spacing={1}>
-                  <Box>{i.icon}</Box>
+                  <Box className={styles.icon}>{i.icon}</Box>
                   <Box>
                     <Typography
                       variant="h5"
                       className="pb-4"
                       sx={{
                         fontSize: {
-                          xs: "16px",
+                          xs: "14px",
                           sm: "19px",
                         },
                       }}
