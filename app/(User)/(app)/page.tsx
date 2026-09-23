@@ -45,7 +45,7 @@ export default function Page() {
         <HomeCategory />
         <VideoList />
       </Container>
-      <DeliveryTerms />
+      {/* <DeliveryTerms /> */}
     </>
   );
 }

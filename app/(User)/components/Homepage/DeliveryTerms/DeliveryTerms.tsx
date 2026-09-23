@@ -36,14 +36,14 @@ const DeliveryTerms = (props: Props) => {
   return (
     <Box
       sx={{
-        mb: "-20px",
+        // mb: "-20px",
         mt: 5,
         borderTop: {
           xs: "none",
           md: "1px solid #E5E5E5",
         },
         mx: {
-          md: "-20px",
+          // md: "-20px",
           xs: 0,
         },
       }}

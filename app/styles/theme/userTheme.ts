@@ -1,6 +1,12 @@
 import { createTheme } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  interface PaletteOptions {
+    blue?: PaletteOptions["primary"];
+  }
+}
+
 export const userTheme = createTheme({
   typography: {
     fontSize: 14,
@@ -16,6 +22,10 @@ export const userTheme = createTheme({
     },
     text: {
       secondary: "#9b9b9b",
+    },
+
+    blue: {
+      main: "#1976d2",
     },
   },
 });
