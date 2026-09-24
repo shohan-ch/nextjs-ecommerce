@@ -5,14 +5,10 @@ import React from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 type Props = {
-  images: string[];
-  videos: string[];
+  media: string[];
 };
 
-const ImageContainer = ({ images, videos }: Props) => {
-  const media = React.useMemo(() => {
-    return [...images, ...videos];
-  }, [images, videos]);
+const ImageContainer = ({ media }: Props) => {
   const [previewImage, setPreviewImage] = React.useState(media[0]);
 
   const changeImage = (image: string) => {

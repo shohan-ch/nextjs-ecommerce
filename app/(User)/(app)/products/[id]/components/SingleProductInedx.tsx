@@ -1,29 +1,58 @@
+"use client";
+
 import { Container, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ImageContainer from "./ImageContainer";
 import ProductDetails from "./ProductDetails";
 
 const product = {
-  title: "Product 01",
+  id: 1,
+  title: "Zuqo Men's Half Shoe - Black Canvas",
   price: 1500,
-  sizes: {
-    39: 1,
-    40: 1,
-    41: 1,
-    42: 1,
-    43: 1,
-    44: 1,
-    45: 3,
-  },
-  images: [
-    "https://zuqo.shop/cdn/shop/files/Untitled_design_5892ef80-c5ac-4cf0-9408-29777e079781.png?v=1772969048&width=324",
-    "https://zuqo.shop/cdn/shop/files/Untitled_design_9_c586fe91-b8a7-40e3-83a9-5a39b8d30472.png?v=1786300710&width=1946",
-    "https://zuqo.shop/cdn/shop/files/Untitled_design_8_56e88b71-b230-4d97-b236-205534d6d77c.png?v=1786300711&width=324",
+  varients: [
+    {
+      sku: "000001",
+      images: [
+        "https://zuqo.shop/cdn/shop/files/Untitled_design_5892ef80-c5ac-4cf0-9408-29777e079781.png?v=1772969048&width=324",
+        "https://zuqo.shop/cdn/shop/files/Untitled_design_9_c586fe91-b8a7-40e3-83a9-5a39b8d30472.png?v=1786300710&width=1946",
+        "https://zuqo.shop/cdn/shop/files/Untitled_design_8_56e88b71-b230-4d97-b236-205534d6d77c.png?v=1786300711&width=324",
+      ],
+      videos: [
+        "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/fb9588c5-0699-4117-9f35-a8bd67a29185/default.jobtemplate.mp4.480.mp4",
+      ],
+      color: "Black",
+      sizes: {
+        39: 1,
+        40: 1,
+        41: 1,
+        42: 1,
+        43: 1,
+        44: 1,
+        45: 3,
+      },
+    },
+    {
+      sku: "000002",
+      images: [
+        "https://m.media-amazon.com/images/I/81TnPk42c5L._AC_SY550_.jpg",
+        "https://m.media-amazon.com/images/I/71C1TUBF+WL._AC_SY550_.jpg",
+        "https://m.media-amazon.com/images/I/71cx9VYbYAL._AC_SY550_.jpg",
+      ],
+      videos: [
+        "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/fb9588c5-0699-4117-9f35-a8bd67a29185/default.jobtemplate.mp4.480.mp4",
+      ],
+      color: "White",
+      sizes: {
+        39: 0,
+        40: 0,
+        41: 0,
+        42: 0,
+        43: 2,
+        44: 3,
+        45: 5,
+      },
+    },
   ],
-  videos: [
-    "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/fb9588c5-0699-4117-9f35-a8bd67a29185/default.jobtemplate.mp4.480.mp4",
-  ],
-
   description: `  
 Zuqo Half Shoe – Black Canvas
 গরমের দিনে sneaker-এর smart বিকল্প — Zuqo Half Shoe তৈরি canvas fabric upper দিয়ে, যা breathable ও lightweight। EVA sole দেয় soft, cushioned step, যা সারাদিনের হাঁটাচলায় আরামদায়ক রাখে পা।
@@ -45,15 +74,21 @@ Available Sizes: 39–44`,
 };
 
 const SingleProductInedx = () => {
+  const [media, setMedia] = React.useState<string[]>([
+    ...product.varients[1].images,
+    ...product.varients[1].videos,
+  ]);
+  const { varients, ...rest } = product;
+
   return (
     <>
       <Container maxWidth="xl">
         <Grid container spacing={7}>
           <Grid size={{ xs: 12, md: 6, lg: 5 }}>
-            <ImageContainer images={product.images} videos={product.videos} />
+            <ImageContainer media={media} />
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 7 }}>
-            <ProductDetails />
+            {/* <ProductDetails details={rest} /> */}
           </Grid>
         </Grid>
       </Container>
