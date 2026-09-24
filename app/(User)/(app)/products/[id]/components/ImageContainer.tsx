@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Grid, Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 type Props = {
@@ -19,6 +19,10 @@ const ImageContainer = ({ media }: Props) => {
     return path.toLowerCase().includes(".mp4");
   };
 
+  useEffect(() => {
+    setPreviewImage(media[0]);
+  }, [media]);
+
   if (!media.length) return null;
   return (
     <>
@@ -34,63 +38,62 @@ const ImageContainer = ({ media }: Props) => {
             sx={styles.thumbnailWrapper}
           >
             {media.length > 0 &&
-              media.map((i) => (
-                <>
-                  <Box
-                    sx={{
-                      width: 43,
-                      height: 50,
-                      cursor: "pointer",
-                      padding: 0.3,
-                      border: "1px solid",
-                      borderColor: previewImage == i ? "blue.main" : "#e5e5e5",
-                      borderRadius: 3,
-                      flexShrink: 0,
-                      position: "relative",
-                    }}
-                    onMouseMove={() => changeImage(i)}
-                  >
-                    {isVideo(i) ? (
-                      <>
-                        <video
-                          style={{
-                            borderRadius: 10,
-                            objectFit: "cover",
-                          }}
-                          src={`${i}#t=0.5`}
-                          width="100%"
-                          height="100%"
-                          muted
-                          playsInline
-                          preload="metadata"
-                        />
-                        <PlayArrowIcon
-                          sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            color: "#fff",
-                            filter: "drop-shadow(0 0 2px rgba(0,0,0,0.7))",
-                            fontSize: 20,
-                            pointerEvents: "none",
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <img
+              media.map((i, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: 43,
+                    height: 50,
+                    cursor: "pointer",
+                    padding: 0.3,
+                    border: "1px solid",
+                    borderColor: previewImage == i ? "blue.main" : "#e5e5e5",
+                    borderRadius: 3,
+                    flexShrink: 0,
+                    position: "relative",
+                  }}
+                  onMouseMove={() => changeImage(i)}
+                >
+                  {isVideo(i) ? (
+                    <>
+                      <video
                         style={{
-                          borderRadius: 7,
+                          borderRadius: 10,
                           objectFit: "cover",
                         }}
-                        width={"100%"}
+                        src={`${i}#t=0.5`}
+                        width="100%"
                         height="100%"
-                        src={i}
-                        alt={"imag"}
+                        muted
+                        playsInline
+                        preload="metadata"
                       />
-                    )}
-                  </Box>
-                </>
+                      <PlayArrowIcon
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          color: "#fff",
+                          filter: "drop-shadow(0 0 2px rgba(0,0,0,0.7))",
+                          fontSize: 20,
+                          pointerEvents: "none",
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <img
+                      style={{
+                        borderRadius: 7,
+                        objectFit: "cover",
+                      }}
+                      width={"100%"}
+                      height="100%"
+                      src={i}
+                      alt={"imag"}
+                    />
+                  )}
+                </Box>
               ))}
           </Stack>
         </Grid>

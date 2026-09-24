@@ -47,6 +47,15 @@ body {
 .flex-center {
   @include mixin.flex-center;
 }
+.flex-start{
+  display: flex;
+  justify-content: start
+}
+
+.flex-end{
+  display: flex;
+  justify-content: end
+}
 
 .align-center{
 @include mixin.align-center;

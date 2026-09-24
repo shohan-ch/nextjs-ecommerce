@@ -12,6 +12,7 @@ const product = {
   varients: [
     {
       sku: "000001",
+      color: "Black",
       images: [
         "https://zuqo.shop/cdn/shop/files/Untitled_design_5892ef80-c5ac-4cf0-9408-29777e079781.png?v=1772969048&width=324",
         "https://zuqo.shop/cdn/shop/files/Untitled_design_9_c586fe91-b8a7-40e3-83a9-5a39b8d30472.png?v=1786300710&width=1946",
@@ -20,7 +21,6 @@ const product = {
       videos: [
         "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/fb9588c5-0699-4117-9f35-a8bd67a29185/default.jobtemplate.mp4.480.mp4",
       ],
-      color: "Black",
       sizes: {
         39: 1,
         40: 1,
@@ -33,6 +33,7 @@ const product = {
     },
     {
       sku: "000002",
+      color: "White",
       images: [
         "https://m.media-amazon.com/images/I/81TnPk42c5L._AC_SY550_.jpg",
         "https://m.media-amazon.com/images/I/71C1TUBF+WL._AC_SY550_.jpg",
@@ -41,7 +42,6 @@ const product = {
       videos: [
         "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/fb9588c5-0699-4117-9f35-a8bd67a29185/default.jobtemplate.mp4.480.mp4",
       ],
-      color: "White",
       sizes: {
         39: 0,
         40: 0,
@@ -54,7 +54,8 @@ const product = {
     },
   ],
   description: `  
-Zuqo Half Shoe – Black Canvas
+<b> Zuqo Half Shoe – Black Canvas </b>
+<p> 
 গরমের দিনে sneaker-এর smart বিকল্প — Zuqo Half Shoe তৈরি canvas fabric upper দিয়ে, যা breathable ও lightweight। EVA sole দেয় soft, cushioned step, যা সারাদিনের হাঁটাচলায় আরামদায়ক রাখে পা।
 Quick slip-on style, কোনো lace ঝামেলা নেই — বাসা থেকে বাইরের কাজ, সবখানেই easy, everyday comfort।
 Key Features:
@@ -70,15 +71,50 @@ Package Contents: 1x Half Shoe Pair (Box সহ)
 Gender: Men's
 Warranty: Sole – 6 মাস | Stitching & Materials – 1 মাস
 Return/Exchange Policy: ডেলিভারি নেওয়ার সময় ডেলিভারিম্যানের সামনে প্রোডাক্ট চেক করে নিন। পছন্দ না হলে তখনই ফেরত দেওয়া যাবে (ডেলিভারি চার্জ প্রযোজ্য)। ডেলিভারির পর কোনো সমস্যা পেলে ৩ দিনের মধ্যে আমাদের জানাতে হবে — এর পরে exchange বা return applicable হবে না।
-Available Sizes: 39–44`,
+Available Sizes: 39–44
+</p>
+
+`,
+};
+
+type Details = {
+  title: string;
+  price: number;
+  description: string;
+  colors: string[];
+  sizes: any;
+};
+
+type Varients = {
+  sku: string;
+  color: string;
+  images: string[];
+  videos: string[];
+  sizes: any;
 };
 
 const SingleProductInedx = () => {
   const [media, setMedia] = React.useState<string[]>([
-    ...product.varients[1].images,
-    ...product.varients[1].videos,
+    ...product.varients[0].images,
+    ...product.varients[0].videos,
   ]);
-  const { varients, ...rest } = product;
+
+  let colors = product.varients.flatMap((v) => v.color);
+  const [details, setDetails] = React.useState<Details>({
+    title: product.title,
+    price: product.price,
+    description: product.description,
+    colors: colors,
+    sizes: product.varients[0].sizes,
+  });
+
+  const changeProductByColor = (color: string) => {
+    const selectVarient: Varients = product.varients.find(
+      (f) => f.color.toLowerCase() === color.toLowerCase(),
+    )!;
+    setMedia([...selectVarient.images, ...selectVarient.videos]);
+    setDetails({ ...details, sizes: selectVarient.sizes });
+  };
 
   return (
     <>
@@ -88,7 +124,10 @@ const SingleProductInedx = () => {
             <ImageContainer media={media} />
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 7 }}>
-            {/* <ProductDetails details={rest} /> */}
+            <ProductDetails
+              changedBycolor={changeProductByColor}
+              details={details}
+            />
           </Grid>
         </Grid>
       </Container>
