@@ -1,0 +1,132 @@
+.title {
+    font-weight: 700;
+}
+
+.priceRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.price {
+    font-weight: 700;
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: var(--mui-palette-text-disabled, rgba(0, 0, 0, 0.38));
+}
+
+// Colors
+.colorLabel {
+    &.colorLabel {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+}
+
+.colorSwatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    outline: none;
+    outline-offset: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    &--selected {
+        border: 2px solid #1976d2;
+        outline: 2px solid #1976d2;
+    }
+}
+
+.checkIcon {
+    font-size: 16px;
+}
+
+// Sizes
+.sizeHeaderRow {
+    margin-bottom: 8px;
+}
+
+.sizeGuide {
+    color: var(--mui-palette-primary-main, #1976d2);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.sizeList {
+    flex-wrap: wrap;
+}
+
+.sizeButton {
+    min-width: 44px;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    color: var(--mui-palette-text-primary, rgba(0, 0, 0, 0.87));
+    font-weight: 600;
+    cursor: pointer;
+
+    &--selected {
+        border: 2px solid #1976d2;
+        background-color: #e3f2fd;
+        color: var(--mui-palette-primary-main, #1976d2);
+    }
+
+    &--outOfStock {
+        background-color: var(--mui-palette-secondary-light, #f5f5f5);
+        color: var(--mui-palette-text-secondary, rgba(0, 0, 0, 0.6));
+    }
+}
+
+// Quantity
+.quantityLabel {
+
+    &.quantityLabel{
+    font-weight: 600;
+    font-size: 15px;
+    @media (min-width: 600px) {
+        font-size: 18px;
+    }
+
+    }
+   
+}
+
+.quantityBox {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+// Actions
+.actionButton {
+    border-radius: 8px;
+    padding-top: 10.4px;
+    padding-bottom: 10.4px;
+    text-transform: none;
+    font-weight: 600;
+    width: 50%;
+}
+
+.cartButton {
+    border-color: #e0e0e0 !important;
+    color: var(--mui-palette-text-primary, rgba(0, 0, 0, 0.87)) !important;
+
+    &:hover {
+        border-color: #bdbdbd !important;
+        background-color: #fafafa !important;
+    }
+}
+
+.buyButton {
+    background-color: #111 !important;
+
+    &:hover {
+        background-color: #000 !important;
+    }
+}

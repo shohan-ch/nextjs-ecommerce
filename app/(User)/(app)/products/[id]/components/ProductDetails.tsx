@@ -1,84 +1,17 @@
-// import { Box, Stack, Typography } from "@mui/material";
-// import React from "react";
-
-// type Props = {
-//   details: {
-//     title: string;
-//     price: number;
-//     sizes: any;
-//     description: string;
-//     colors: string[];
-//   };
-//   changedBycolor: (color: string) => void;
-// };
-
-// const colorList: Record<string, string> = {
-//   Black: "#000000",
-//   White: "#FFFFFF",
-//   Brown: "#573a30",
-// };
-
-// const ProductDetails = ({ details, changedBycolor }: Props) => {
-//   console.log(details, "dt");
-
-//   const getSize = (e: React.MouseEvent<HTMLButtonElement>) => {
-//     console.log(e.currentTarget.value);
-//   };
-
-//   return (
-//     <Box>
-//       <Stack direction={"column"} spacing={2}>
-//         <Typography variant="h5">{details.title}</Typography>
-//         <Typography variant="body1">Tk {details.price}</Typography>
-
-//         {/* Colors */}
-
-//         <Box className="flex-start gap-2">
-//           {details.colors.length &&
-//             details.colors.map((c) => (
-//               <Box>
-//                 <button
-//                   className="display-block"
-//                   value={c}
-//                   onClick={() => changedBycolor(c)}
-//                 >
-//                   {" "}
-//                   {c}
-//                 </button>
-//               </Box>
-//             ))}
-//         </Box>
-
-//         {/* Sizes */}
-//         <Box className="flex-start gap-2">
-//           {Object.keys(details.sizes).map((s) => (
-//             <Box>
-//               <button className="display-block" value={s} onClick={getSize}>
-//                 {s}
-//               </button>
-//             </Box>
-//           ))}
-//         </Box>
-
-//         <Typography variant="body2">{details.description}</Typography>
-//       </Stack>
-//     </Box>
-//   );
-// };
-
-// export default ProductDetails;
-
-import { Box, Stack, Typography, Chip, Button, Rating } from "@mui/material";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
-import React from "react";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import styles from "./ProductDetails.module.scss";
 
 type Props = {
   details: {
     title: string;
     price: number;
-    sizes: any;
+    sizes: Record<number, string>;
     description: string;
     colors: string[];
     rating?: number;
@@ -100,40 +33,51 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
     details.colors?.[0] ?? "",
   );
   const [selectedSize, setSelectedSize] = React.useState<string>("");
+  const [quantity, setQuantity] = React.useState<number>(1);
 
   const handleColorClick = (color: string) => {
     setSelectedColor(color);
     changedBycolor(color);
+    setSelectedSize("");
   };
 
   const getSize = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value;
-    console.log(value);
+    console.log(value, "val");
     setSelectedSize(value);
   };
+
+  const addQuantity = () => {
+    if (!selectedSize) {
+      alert("select size first");
+      return;
+    }
+
+    setQuantity(quantity + 1);
+  };
+  const decreaseQuantity = () => {
+    setQuantity(quantity - 1);
+  };
+  // useEffect(() => {
+  //   const selectSize = JSON.parse(selectedSize);
+  //   console.log(selectSize, "sz");
+  // }, [quantity]);
 
   return (
     <Box>
       <Stack direction="column" spacing={2.5}>
         {/* Title */}
-        <Typography variant="h5" sx={{ fontWeight: 700 }}>
+        <Typography variant="h5" className={styles.title}>
           {details.title}
         </Typography>
 
         {/* Price */}
-        <Stack direction="row" spacing={1.5}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+        <Stack direction="row" spacing={1.5} className={styles.priceRow}>
+          <Typography variant="h5" className={styles.price}>
             ${details.price}
           </Typography>
-
           {details.originalPrice && (
-            <Typography
-              variant="body1"
-              sx={{
-                textDecoration: "line-through",
-                color: "text.disabled",
-              }}
-            >
+            <Typography variant="body1" className={styles.originalPrice}>
               ${details.originalPrice}
             </Typography>
           )}
@@ -153,7 +97,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
 
         {/* Colors */}
         <Box>
-          <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
+          <Typography variant="body2" className={styles.colorLabel}>
             Color:{" "}
             <Typography component="span" variant="body2" color="text.secondary">
               {selectedColor}
@@ -169,27 +113,15 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
                     key={c}
                     component="button"
                     onClick={() => handleColorClick(c)}
-                    sx={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: "50%",
-                      bgcolor: swatch,
-                      border: isSelected
-                        ? "2px solid #1976d2"
-                        : "1px solid #e0e0e0",
-                      outline: isSelected ? "2px solid #1976d2" : "none",
-                      outlineOffset: 2,
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      p: 0,
-                    }}
+                    className={`${styles.colorSwatch} ${
+                      isSelected ? styles["colorSwatch--selected"] : ""
+                    }`}
+                    style={{ backgroundColor: swatch }}
                   >
                     {isSelected && (
                       <CheckIcon
-                        sx={{
-                          fontSize: 16,
+                        className={styles.checkIcon}
+                        style={{
                           color: swatch === "#FFFFFF" ? "#000" : "#fff",
                         }}
                       />
@@ -202,87 +134,82 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
 
         {/* Sizes */}
         <Box>
-          <Stack direction="row" sx={{ mb: 1 }}>
+          <Stack direction="row" className={`mb-1 ${styles.sizeHeaderRow}`}>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
               Size:
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                color: "primary.main",
-                cursor: "pointer",
-                textDecoration: "underline",
-              }}
-            >
+            <Typography variant="body2" className={styles.sizeGuide}>
               Size Guide
             </Typography>
           </Stack>
-          <Stack direction="row" spacing={1.5}>
-            {Object.keys(details.sizes).map((s) => {
-              const isSelected = selectedSize === s;
+          <Stack
+            direction="row"
+            spacing={1.5}
+            className={styles.sizeList}
+            useFlexGap
+          >
+            {Object.entries(details.sizes).map(([key, value]) => {
+              const isSelected = selectedSize === key;
+              const isStockOut = !value;
+
               return (
                 <Box
-                  key={s}
+                  key={key}
                   component="button"
-                  value={s}
+                  value={key}
                   onClick={getSize}
-                  sx={{
-                    minWidth: 44,
-                    height: 40,
-                    borderRadius: 1.5,
-                    border: isSelected
-                      ? "2px solid #1976d2"
-                      : "1px solid #e0e0e0",
-                    bgcolor: isSelected ? "#e3f2fd" : "#fff",
-                    color: isSelected ? "primary.main" : "text.primary",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
+                  className={`${styles.sizeButton} ${
+                    isSelected ? styles["sizeButton--selected"] : ""
+                  } ${isStockOut ? styles["sizeButton--outOfStock"] : ""}`}
+                  disabled={isStockOut}
                 >
-                  {s}
+                  {key}
                 </Box>
               );
             })}
           </Stack>
         </Box>
 
+        {/* Quantity */}
+        <Stack direction="row" spacing={2} className="align-center">
+          <Typography variant="h6" className={styles.quantityLabel}>
+            Quantity:
+          </Typography>
+          <Box className={`align-center gap-3 ${styles.quantityBox}`}>
+            <IconButton onClick={decreaseQuantity}>
+              <RemoveIcon />
+            </IconButton>
+            {quantity}
+            <IconButton onClick={addQuantity}>
+              <AddIcon />
+            </IconButton>
+          </Box>
+        </Stack>
+
         {/* Actions */}
-        <Stack spacing={1.5}>
+        <Stack spacing={1.5} direction="row">
           <Button
-            variant="contained"
+            variant="outlined"
             startIcon={<ShoppingCartOutlinedIcon />}
-            sx={{
-              bgcolor: "#111",
-              "&:hover": { bgcolor: "#000" },
-              borderRadius: 2,
-              py: 1.3,
-              textTransform: "none",
-              fontWeight: 600,
-            }}
+            className={`${styles.actionButton} ${styles.cartButton}`}
           >
             Add to Cart
           </Button>
           <Button
-            variant="outlined"
-            startIcon={<FavoriteBorderIcon />}
-            sx={{
-              borderColor: "#e0e0e0",
-              color: "text.primary",
-              borderRadius: 2,
-              py: 1.3,
-              textTransform: "none",
-              fontWeight: 600,
-              "&:hover": { borderColor: "#bdbdbd", bgcolor: "#fafafa" },
-            }}
+            variant="contained"
+            startIcon={<ShoppingBagOutlinedIcon />}
+            className={`${styles.actionButton} ${styles.buyButton}`}
           >
-            Add to Wishlist
+            Buy Now
           </Button>
         </Stack>
 
-        {/* Description (kept from original, not in screenshot crop) */}
-        <Typography variant="body2" color="text.secondary">
-          {details.description}
-        </Typography>
+        <Box
+          className="description"
+          dangerouslySetInnerHTML={{
+            __html: details.description,
+          }}
+        />
       </Stack>
     </Box>
   );

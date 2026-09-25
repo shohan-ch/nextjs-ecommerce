@@ -49,7 +49,7 @@ const product = {
         42: 0,
         43: 2,
         44: 3,
-        45: 5,
+        45: 0,
       },
     },
   ],
@@ -67,13 +67,15 @@ Best For: Daily wear, home, outdoor errands
 Water Resistant: হালকা পানির সংস্পর্শে সমস্যা নেই, তবে ভারী বৃষ্টিতে এড়িয়ে চলা ভালো (canvas fabric)
 অনুগ্রহ করে লক্ষ্য করুন: প্রোডাকশন, ম্যাটেরিয়াল, বা লাইটিং-এর কারণে actual product-এর কালার, সোল টেক্সচার বা ফিনিশিং-এ ছবির তুলনায় সামান্য পার্থক্য হতে পারে। তবে প্রোডাক্টের কোয়ালিটি, কমফোর্ট ও স্থায়িত্ব একই থাকবে। কাস্টমার সন্তুষ্ট না হলে exchange, return বা refund নেওয়ার সুযোগ সবসময় থাকবে।
 Country of Origin: Made in Bangladesh
-Package Contents: 1x Half Shoe Pair (Box সহ)
+Package Contents: 1x Half Shoe Pair (Box সহ).
+<b>
 Gender: Men's
+</b>
+<br>
 Warranty: Sole – 6 মাস | Stitching & Materials – 1 মাস
 Return/Exchange Policy: ডেলিভারি নেওয়ার সময় ডেলিভারিম্যানের সামনে প্রোডাক্ট চেক করে নিন। পছন্দ না হলে তখনই ফেরত দেওয়া যাবে (ডেলিভারি চার্জ প্রযোজ্য)। ডেলিভারির পর কোনো সমস্যা পেলে ৩ দিনের মধ্যে আমাদের জানাতে হবে — এর পরে exchange বা return applicable হবে না।
 Available Sizes: 39–44
 </p>
-
 `,
 };
 
@@ -120,10 +122,10 @@ const SingleProductInedx = () => {
     <>
       <Container maxWidth="xl">
         <Grid container spacing={7}>
-          <Grid size={{ xs: 12, md: 6, lg: 5 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 7 }}>
             <ImageContainer media={media} />
           </Grid>
-          <Grid size={{ xs: 12, md: 6, lg: 7 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
             <ProductDetails
               changedBycolor={changeProductByColor}
               details={details}

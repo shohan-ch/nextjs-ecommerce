@@ -51,39 +51,37 @@ const DeliveryTerms = (props: Props) => {
       <Container maxWidth="xl">
         <Grid container className={styles.gridWrapper}>
           {items.map((i) => (
-            <>
-              <Grid key={i.title} size={{ xs: 6, md: 3 }}>
-                <Stack direction="row" spacing={1}>
-                  <Box className={styles.icon}>{i.icon}</Box>
-                  <Box>
-                    <Typography
-                      variant="h5"
-                      className="pb-4"
-                      sx={{
-                        fontSize: {
-                          xs: "14px",
-                          sm: "19px",
-                        },
-                      }}
-                    >
-                      {i.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontSize: {
-                          xs: "12px",
-                          sm: "16px",
-                        },
-                        color: "secondary.dark",
-                      }}
-                    >
-                      {i.subTitle}
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Grid>
-            </>
+            <Grid key={i.title} size={{ xs: 6, md: 3 }}>
+              <Stack direction="row" spacing={1}>
+                <Box className={styles.icon}>{i.icon}</Box>
+                <Box>
+                  <Typography
+                    variant="h5"
+                    className="pb-4"
+                    sx={{
+                      fontSize: {
+                        xs: "14px",
+                        sm: "19px",
+                      },
+                    }}
+                  >
+                    {i.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: {
+                        xs: "12px",
+                        sm: "16px",
+                      },
+                      color: "secondary.dark",
+                    }}
+                  >
+                    {i.subTitle}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Grid>
           ))}
         </Grid>
       </Container>
