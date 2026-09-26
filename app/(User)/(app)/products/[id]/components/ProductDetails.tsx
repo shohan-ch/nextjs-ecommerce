@@ -29,22 +29,32 @@ const colorList: Record<string, string> = {
 };
 
 const ProductDetails = ({ details, changedBycolor }: Props) => {
+  const [showMore, setShowMore] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState<string>(
     details.colors?.[0] ?? "",
   );
   const [selectedSize, setSelectedSize] = React.useState<string>("");
+  const [stock, setStock] = React.useState<number>(0);
   const [quantity, setQuantity] = React.useState<number>(1);
 
   const handleColorClick = (color: string) => {
     setSelectedColor(color);
     changedBycolor(color);
     setSelectedSize("");
+    setQuantity(1);
   };
 
   const getSize = (e: React.MouseEvent<HTMLButtonElement>) => {
     const value = e.currentTarget.value;
-    console.log(value, "val");
+    // console.log(value, "val");
     setSelectedSize(value);
+    setStock(Number(details.sizes[Number(value)]));
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((quantity) => quantity - 1);
+    }
   };
 
   const addQuantity = () => {
@@ -52,16 +62,27 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
       alert("select size first");
       return;
     }
+    if (quantity >= stock) {
+      alert("out of stock");
+      return;
+    }
+    setQuantity((prev) => prev + 1);
+  };
 
-    setQuantity(quantity + 1);
-  };
-  const decreaseQuantity = () => {
-    setQuantity(quantity - 1);
-  };
-  // useEffect(() => {
-  //   const selectSize = JSON.parse(selectedSize);
-  //   console.log(selectSize, "sz");
-  // }, [quantity]);
+  const shouldShowMore = details.description.length > 500;
+
+  const shortDescription = React.useMemo(() => {
+    if (!shouldShowMore) {
+      return details.description;
+    }
+    const first500 = details.description.slice(0, 500);
+    // Find the last space before 500
+    const lastSpace = first500.lastIndexOf(" ");
+    let text = first500.slice(0, lastSpace);
+    const div = document.createElement("div");
+    div.innerHTML = text;
+    return div.innerHTML;
+  }, [shouldShowMore]);
 
   return (
     <Box>
@@ -74,7 +95,8 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
         {/* Price */}
         <Stack direction="row" spacing={1.5} className={styles.priceRow}>
           <Typography variant="h5" className={styles.price}>
-            ${details.price}
+            <span style={{ color: "gray" }}>৳ </span>
+            {details.price}
           </Typography>
           {details.originalPrice && (
             <Typography variant="body1" className={styles.originalPrice}>
@@ -204,12 +226,25 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
           </Button>
         </Stack>
 
-        <Box
-          className="description"
-          dangerouslySetInnerHTML={{
-            __html: details.description,
-          }}
-        />
+        <Box className={styles.description}>
+          <Box
+            dangerouslySetInnerHTML={{
+              __html: showMore ? details.description : shortDescription,
+            }}
+          />
+
+          {shouldShowMore && (
+            <Box className={!showMore ? styles.readMoreWrapper : ""}>
+              <button
+                type="button"
+                onClick={() => setShowMore((prev) => !prev)}
+                className={styles.readMoreBtn}
+              >
+                {showMore ? "Show Less" : "Show More"}
+              </button>
+            </Box>
+          )}
+        </Box>
       </Stack>
     </Box>
   );
