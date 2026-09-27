@@ -6,6 +6,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import styles from "./ProductDetails.module.scss";
+import { useSnackBar } from "@/providers/SnackbarProvider";
 
 type Props = {
   details: {
@@ -29,6 +30,7 @@ const colorList: Record<string, string> = {
 };
 
 const ProductDetails = ({ details, changedBycolor }: Props) => {
+  const snackbar = useSnackBar();
   const [showMore, setShowMore] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState<string>(
     details.colors?.[0] ?? "",
@@ -59,11 +61,14 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
 
   const addQuantity = () => {
     if (!selectedSize) {
-      alert("select size first");
+      snackbar?.open({ type: "error", message: "please select size first" });
       return;
     }
     if (quantity >= stock) {
-      alert("out of stock");
+      snackbar?.open({
+        type: "error",
+        message: "Product quantity exceeded stock on hand",
+      });
       return;
     }
     setQuantity((prev) => prev + 1);
