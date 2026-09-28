@@ -1,13 +1,14 @@
 "use client";
 
-import { Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import ImageContainer from "./ImageContainer";
 import ProductDetails from "./ProductDetails";
+import ProductsCarousel from "@/app/(User)/components/ProductsCarousel/ProductsCarousel";
 
 const product = {
   id: 1,
-  title: "Zuqo Men's Half Shoe - Black Canvas",
+  name: "Zuqo Men's Half Shoe - Black Canvas",
   price: 1500,
   varients: [
     {
@@ -80,7 +81,7 @@ Available Sizes: 39–44
 };
 
 type Details = {
-  title: string;
+  name: string;
   price: number;
   description: string;
   colors: string[];
@@ -95,6 +96,27 @@ type Varients = {
   sizes: any;
 };
 
+const likeProducts = [
+  {
+    id: 1,
+    name: "Zuqo Men's Half Shoe - Black Canvas",
+    price: 1500,
+    image: "https://m.media-amazon.com/images/I/81TnPk42c5L._AC_SY550_.jpg",
+  },
+  {
+    id: 2,
+    name: "Zuqo Men's Half Shoe - Black Canvas 2",
+    price: 1500,
+    image: "https://m.media-amazon.com/images/I/81TnPk42c5L._AC_SY550_.jpg",
+  },
+  {
+    id: 3,
+    name: "Zuqo Men's Half Shoe - Black Canvas 3",
+    price: 1500,
+    image: "https://m.media-amazon.com/images/I/81TnPk42c5L._AC_SY550_.jpg",
+  },
+];
+
 const SingleProductInedx = () => {
   const [media, setMedia] = React.useState<string[]>([
     ...product.varients[0].images,
@@ -103,7 +125,7 @@ const SingleProductInedx = () => {
 
   let colors = product.varients.flatMap((v) => v.color);
   const [details, setDetails] = React.useState<Details>({
-    title: product.title,
+    name: product.name,
     price: product.price,
     description: product.description,
     colors: colors,
@@ -132,6 +154,9 @@ const SingleProductInedx = () => {
             />
           </Grid>
         </Grid>
+        <Box className="pt-7">
+          <ProductsCarousel title="You may also like" products={likeProducts} />
+        </Box>
       </Container>
     </>
   );

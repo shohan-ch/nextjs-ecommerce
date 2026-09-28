@@ -10,7 +10,7 @@ import { useSnackBar } from "@/providers/SnackbarProvider";
 
 type Props = {
   details: {
-    title: string;
+    name: string;
     price: number;
     sizes: Record<number, string>;
     description: string;
@@ -94,7 +94,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
       <Stack direction="column" spacing={2.5}>
         {/* Title */}
         <Typography variant="h5" className={styles.title}>
-          {details.title}
+          {details.name}
         </Typography>
 
         {/* Price */}
