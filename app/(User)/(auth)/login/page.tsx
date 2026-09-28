@@ -1,9 +1,13 @@
-import React from "react";
+import Login from "./components/Login";
 
 type Props = {};
 
 const pages = (props: Props) => {
-  return <div>Login page</div>;
+  return (
+    <>
+      <Login />
+    </>
+  );
 };
 
 export default pages;

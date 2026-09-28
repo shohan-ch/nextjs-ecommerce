@@ -1,10 +1,8 @@
 import StoreProvider from "@/store/StoreProvider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
-import "./globals.css";
-import Navbar from "./(User)/(app)/navbar";
-import Footer from "./(User)/(app)/footer";
+import "./globals.scss";
+import SnackbarProvider from "@/providers/SnackbarProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +17,9 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </StoreProvider>
       </body>
     </html>
   );

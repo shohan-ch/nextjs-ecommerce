@@ -1,0 +1,78 @@
+$gray-deep : #e5e5e5;
+
+.gridWrapper {
+    border-top: 1px solid $gray-deep;
+
+    >* {
+        :global(.MuiBox-root) {
+            border-color: $gray-deep;
+            /* padding-left: 2px; */
+            padding: 25px 0 25px 5px;
+            
+            @media(min-width:1200px){
+                padding-left: 0;
+            }
+        }
+    }
+
+    > :nth-child(1) {
+        border-left: 1px solid $gray-deep;
+        border-right: 1px solid $gray-deep;
+    }
+
+    > :nth-child(2) {
+     border-right: 1px solid $gray-deep;
+    }
+    > :nth-child(3) {
+        border-left: 1px solid $gray-deep;
+        border-top: 1px solid $gray-deep;
+        border-right: 1px solid $gray-deep;
+    }
+    > :nth-child(4) {
+        border-top: 1px solid $gray-deep;
+        border-right: 1px solid $gray-deep;
+    }
+
+@media (min-width: 900px) {
+        > :global(.MuiGrid-root) {
+            padding: 45px 15px;
+            @media(min-width:1536px){
+                &:first-child {
+                    padding-left: 0;
+                }
+            }
+        }
+    
+        border-top: 0;
+        > :nth-child(1) {
+            border-left: 0;
+        }
+        > :nth-child(3) {
+            border-left: 0;
+            border-top: 0;
+        }
+        > :nth-child(4) {
+            border-top: 0;
+            border-right: 0;
+        }
+    }
+}
+
+
+
+.icon {
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    :global(.MuiSvgIcon-root) {
+        font-size: 24px;
+    }
+
+    @media (min-width: 1200px) {
+        :global(.MuiSvgIcon-root) {
+            font-size: 30px;
+        }
+    }
+}
+

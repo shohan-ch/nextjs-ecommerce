@@ -1,0 +1,34 @@
+@use '../../styles/mixin';
+
+
+.drawerInner{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 100%;
+    
+}
+
+.closeIcon{
+    position: absolute !important;
+    right: 10px; 
+    top: -5px 
+}
+
+.mobileLinks{
+    display: flex;
+    gap: 2;
+    justify-content: center;
+    margin-top: auto;
+}
+
+
+.flexWrapper{
+    @include mixin.flex-between;
+    width: 100%;
+}
+
+
+
+
+

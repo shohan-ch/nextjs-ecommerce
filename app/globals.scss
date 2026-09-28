@@ -1,0 +1,131 @@
+@use './styles/variable';
+@use './styles/mixin';
+
+body {
+  background: variable.$background-color;
+  color: variable.$foreground-color;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper{
+  padding: 20px;
+}
+
+
+
+
+.arrowLinkBtn{
+  text-decoration: none;
+  color: variable.$primary-color;
+}
+
+.heading{
+  font-weight: 600 !important;
+  @media (max-width:600px) {
+    font-size: 14px !important;
+    
+  }
+  @media (min-width:600px) {
+    font-size: 18px !important;
+    
+  }
+}
+
+
+
+
+
+// Common for all project
+.display-block{
+  display: block
+}
+.display-none{
+  display: none
+}
+.flex-center {
+  @include mixin.flex-center;
+}
+.flex-start{
+  display: flex;
+  justify-content: start
+}
+
+.flex-end{
+  display: flex;
+  justify-content: end
+}
+
+.align-center{
+@include mixin.align-center;
+}
+
+.flex-between {
+  @include mixin.flex-between;
+}
+
+.mx-auto{
+  margin-left:auto ;
+  margin-right: auto;
+}
+
+$spacing-unit: 4px;
+
+@for $i from 1 through 50 {
+
+  .p-#{$i} {
+    padding: $i * $spacing-unit;
+  }
+  .pt-#{$i} {
+    padding-top: $i * $spacing-unit;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i * $spacing-unit;
+  }
+  .pl-#{$i} {
+    padding-left: $i * $spacing-unit;
+  }
+  .pr-#{$i} {
+    padding-right: $i * $spacing-unit;
+  }
+  .px-#{$i} {
+      padding-left:   $i * $spacing-unit;
+      padding-right:   $i * $spacing-unit;
+  }
+
+  .m-#{$i} {
+    margin: $i * $spacing-unit;
+  }
+  .mt-#{$i} {
+    margin-top: $i * $spacing-unit;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i * $spacing-unit;
+  }
+  .ml-#{$i} {
+    margin-left: $i * $spacing-unit;
+  }
+  .mr-#{$i} {
+    margin-right: $i * $spacing-unit;
+  }
+  .gap-#{$i}{
+    gap: $i * $spacing-unit;
+  }
+
+  // Breakpoint spacing
+
+  .sm\:px-#{$i} {
+    @media (min-width:600px) {
+      padding-left: $i * $spacing-unit;
+      padding-right: $i * $spacing-unit;
+    }
+  }
+  .md\:px-#{$i} {
+    @media (min-width:900px) {
+      padding-left: $i * $spacing-unit;
+      padding-right: $i * $spacing-unit;
+    }
+  }
+}
+
