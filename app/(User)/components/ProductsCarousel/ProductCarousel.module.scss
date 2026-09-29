@@ -11,3 +11,43 @@
 }
 
 
+.iconBtn {
+    &.iconBtn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        width: 30px;
+        height: 55px;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        color: #111;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+    }
+}
+
+
+
+
+
+// .slide {
+//     animation: slide 80ms cubic-bezier(0.33, 1, 0.68, 1);
+// }
+
+// @keyframes slide {
+//     from {
+//         transform: translateX(0);
+//     }
+
+//     to {
+//         transform: translateX(0);
+//     }
+// }
+
