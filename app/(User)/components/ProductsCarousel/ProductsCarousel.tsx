@@ -2,8 +2,16 @@
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import CarouselSingleProduct from "./CarouselSingleProduct";
 import styles from "./ProductCarousel.module.scss";
 type Props = {
@@ -21,6 +29,7 @@ let index = 0;
 const ProductsCarousel = ({ title, products }: Props) => {
   const [carouselProducts, setCarouselProcducts] = useState(products);
 
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const handleNext = () => {
     let sliceProducts = carouselProducts.slice(2);
     sliceProducts.push(carouselProducts[index]);
@@ -40,6 +49,19 @@ const ProductsCarousel = ({ title, products }: Props) => {
     sliceProducts.unshift(lastSecondProduct);
     setCarouselProcducts(sliceProducts);
   };
+
+  // Breakpoint extract for carousel button
+  const theme = useTheme();
+  const useCheckBreakPoint = (device: "xs" | "sm" | "md" | "lg" | "xl") => {
+    return useMediaQuery(theme.breakpoints.only(device));
+  };
+  const isXl = useCheckBreakPoint("xl");
+  const isLg = useCheckBreakPoint("lg");
+  const isMd = useCheckBreakPoint("md");
+  const isSm = useCheckBreakPoint("sm");
+  const visibleColumns = isXl ? 6 : isLg ? 5 : isMd ? 4 : isSm ? 3 : 2;
+  const isShowButton = carouselProducts.length > visibleColumns;
+
   return (
     <Box className="pt-10 " sx={{ position: "relative" }}>
       <Stack
@@ -55,36 +77,43 @@ const ProductsCarousel = ({ title, products }: Props) => {
         <Box sx={{ borderTop: "1px solid black", flexGrow: 1 }}></Box>
       </Stack>
 
-      <Box>
-        <IconButton
-          aria-label="Previous"
-          onClick={handlePrev}
-          className={styles.iconBtn}
-          sx={{
-            left: -1,
-          }}
-        >
-          <ChevronLeftIcon />
-        </IconButton>
+      {/* Buttons */}
 
-        <IconButton
-          aria-label="Next"
-          onClick={handleNext}
-          className={styles.iconBtn}
-          sx={{
-            right: -1,
-          }}
-        >
-          <ChevronRightIcon />
-        </IconButton>
-      </Box>
-      <Box className="px-5">
+      {isShowButton && (
+        <Box>
+          <IconButton
+            aria-label="Previous"
+            onClick={handlePrev}
+            className={styles.iconBtn}
+            sx={{
+              left: -1,
+            }}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+
+          <IconButton
+            aria-label="Next"
+            onClick={handleNext}
+            className={styles.iconBtn}
+            sx={{
+              right: -1,
+            }}
+          >
+            <ChevronRightIcon />
+          </IconButton>
+        </Box>
+      )}
+
+      {/* Grid container */}
+      <Box className={isShowButton ? "px-5" : ""}>
         <Grid
+          ref={scrollRef}
           container
           wrap="nowrap"
           spacing={2}
           sx={{
-            p: 1,
+            p: "0.2rem",
             width: "100%",
             overflowX: "auto",
             overflowY: "hidden",
@@ -114,11 +143,6 @@ const ProductsCarousel = ({ title, products }: Props) => {
               </Grid>
             ))}
         </Grid>
-      </Box>
-
-      <Box className="pt-15">
-        <button onClick={handlePrev}>Prev</button>
-        <button onClick={handleNext}>Next</button>
       </Box>
     </Box>
   );
