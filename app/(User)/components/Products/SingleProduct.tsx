@@ -16,7 +16,7 @@ type Props = {
     id: number;
     name: string;
     image: string;
-    price: string;
+    price: string | number;
   };
 };
 
@@ -27,7 +27,7 @@ const SingleProduct = (props: Props) => {
     <Card
       sx={{
         width: "100%",
-        maxWidth: { xs: "100%", sm: 280 },
+        // maxWidth: { xs: "100%", sm: 280 },
         mx: "auto",
         display: "flex",
         flexDirection: "column",

@@ -1,5 +1,12 @@
+import { Container, Grid } from "@mui/material";
+import ProductsIndex from "./components/ProductsIndex";
+
 const ProductsPage = () => {
-  return <div>ProductsPage</div>;
+  return (
+    <>
+      <ProductsIndex />
+    </>
+  );
 };
 
 export default ProductsPage;
