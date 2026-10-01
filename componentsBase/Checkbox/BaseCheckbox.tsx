@@ -25,6 +25,7 @@ const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
           items?.map((i, index) => (
             <FormControlLabel
               key={index}
+              value={i.id}
               control={
                 <Checkbox
                   checked={checkedItems.includes(String(i.id))}
@@ -34,6 +35,13 @@ const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
                 />
               }
               label={i.name}
+              slotProps={{
+                typography: {
+                  sx: {
+                    fontSize: "15px",
+                  },
+                },
+              }}
             />
           ))}
       </FormGroup>

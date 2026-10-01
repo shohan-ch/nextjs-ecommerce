@@ -97,6 +97,8 @@ type Filter = {
   categoryIds: string[];
   brandIds: string[];
   priceRange: number[];
+  sizeId: string;
+  colorId: string;
 };
 
 const ProductsIndex = (props: Props) => {
@@ -104,6 +106,8 @@ const ProductsIndex = (props: Props) => {
     categoryIds: [],
     brandIds: [],
     priceRange: [700, 1500],
+    sizeId: "",
+    colorId: "",
   });
   const handleCheckboxChange =
     (type: ArrayFilterKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +129,8 @@ const ProductsIndex = (props: Props) => {
       categoryIds: [],
       brandIds: [],
       priceRange: [700, 1500],
+      sizeId: "",
+      colorId: "",
     });
   };
 
