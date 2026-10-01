@@ -1,17 +1,42 @@
 "use client";
 
-import { TextField } from "@mui/material";
-import React from "react";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  TextField,
+} from "@mui/material";
+import React, { useState } from "react";
 
 type Props = {
-  items?: { label: string; value: string | number }[];
-  onChange?: () => void;
+  title?: string;
+  items: { name: string; id: string | number; checked?: boolean }[];
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checkedItems: string[];
 };
 
-const BaseCheckbox = ({ items, onChange }: Props) => {
+const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
   return (
     <>
-      <TextField type="checkbox" label="check me"></TextField>
+      <FormLabel>{title || ""}</FormLabel>
+      <FormGroup>
+        {items?.length > 0 &&
+          items?.map((i, index) => (
+            <FormControlLabel
+              key={index}
+              control={
+                <Checkbox
+                  checked={checkedItems.includes(String(i.id))}
+                  onChange={handleChange}
+                  value={i.id}
+                  size="small"
+                />
+              }
+              label={i.name}
+            />
+          ))}
+      </FormGroup>
     </>
   );
 };

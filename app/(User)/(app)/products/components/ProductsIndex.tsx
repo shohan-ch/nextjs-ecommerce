@@ -1,7 +1,10 @@
-import React from "react";
-import { Container, Grid, Typography } from "@mui/material";
+"use client";
+
+import React, { useState } from "react";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import SingleProduct from "@/app/(User)/components/Products/SingleProduct";
 import BaseCheckbox from "@/componentsBase/Checkbox/BaseCheckbox";
+import BaseRangeSlider from "@/componentsBase/RangeSlider/BaseRangeSlider";
 
 type Props = {};
 
@@ -56,11 +59,82 @@ const products = [
   },
 ];
 
+const categories = [
+  {
+    id: 1,
+    name: "Sneaker",
+  },
+  {
+    id: 2,
+    name: "Casual",
+  },
+  {
+    id: 3,
+    name: "Sandal",
+  },
+  {
+    id: 4,
+    name: "Half Shoes",
+  },
+];
+const brands = [
+  {
+    id: 1,
+    name: "Adidas",
+  },
+  {
+    id: 2,
+    name: "Nike",
+  },
+  {
+    id: 3,
+    name: "Polo",
+  },
+];
+
+type ArrayFilterKeys = "categoryIds" | "brandIds";
+type Filter = {
+  categoryIds: string[];
+  brandIds: string[];
+  priceRange: number[];
+};
+
 const ProductsIndex = (props: Props) => {
+  const [filter, setFilter] = useState<Filter>({
+    categoryIds: [],
+    brandIds: [],
+    priceRange: [700, 1500],
+  });
+  const handleCheckboxChange =
+    (type: ArrayFilterKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      let value = e.target.value;
+      if (e.target.checked && !filter[type].includes(value)) {
+        setFilter((prev) => ({ ...prev, [type]: [...prev[type], value] }));
+      } else {
+        const filterUnchecked = filter[type].filter((f) => f !== value);
+        setFilter((prev) => ({ ...prev, [type]: filterUnchecked }));
+      }
+    };
+
+  const handelRangeChange = (e: Event, newValue: number[]) => {
+    setFilter((prev) => ({ ...prev, priceRange: newValue }));
+  };
+
+  const resetFilter = () => {
+    setFilter({
+      categoryIds: [],
+      brandIds: [],
+      priceRange: [700, 1500],
+    });
+  };
+
+  console.log(filter, "ff");
+
   return (
     <>
       <Container maxWidth="xl" className="pt-4 pb-4">
         <Grid container columnSpacing={7}>
+          {/* Filter section */}
           <Grid
             size={{ md: 2 }}
             sx={{
@@ -69,12 +143,36 @@ const ProductsIndex = (props: Props) => {
               display: { xs: "none", md: "block" },
             }}
           >
-            <Typography variant="h5">Filter</Typography>
+            <Stack direction={"row"} className="flex-between pb-2">
+              <Typography variant="h5" className="heading">
+                Filter
+              </Typography>
+              <Button
+                size="small"
+                sx={{ fontWeight: 600, textTransform: "capitalize" }}
+                onClick={resetFilter}
+              >
+                Clear All
+              </Button>
+            </Stack>
 
-            <BaseCheckbox />
+            <BaseCheckbox
+              items={categories}
+              title="Category"
+              handleChange={handleCheckboxChange("categoryIds")}
+              checkedItems={filter.categoryIds}
+            />
+            <Box className="pr-5 pt-5">
+              <BaseRangeSlider
+                values={filter.priceRange}
+                handleChange={handelRangeChange}
+              />
+            </Box>
           </Grid>
+
+          {/* Products section */}
           <Grid size={{ xs: 12, md: 10 }}>
-            <Typography variant="h5" className="pb-7">
+            <Typography variant="h5" className="pb-5">
               Product page
             </Typography>
             <Grid
