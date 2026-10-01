@@ -5,6 +5,8 @@ import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import SingleProduct from "@/app/(User)/components/Products/SingleProduct";
 import BaseCheckbox from "@/componentsBase/Checkbox/BaseCheckbox";
 import BaseRangeSlider from "@/componentsBase/RangeSlider/BaseRangeSlider";
+import BaseSizeRadio from "@/componentsBase/Radio/BaseSizeRadio";
+import BaseColorRadio from "@/componentsBase/Radio/BaseColorRadio";
 
 type Props = {};
 
@@ -77,18 +79,23 @@ const categories = [
     name: "Half Shoes",
   },
 ];
-const brands = [
+const sizes = ["39", "40", "41", "42", "43", "44"];
+
+const colors = [
   {
     id: 1,
-    name: "Adidas",
+    name: "Black",
+    colorCode: "#000000",
   },
   {
     id: 2,
-    name: "Nike",
+    name: "White",
+    colorCode: "#FFFFFF",
   },
   {
     id: 3,
-    name: "Polo",
+    name: "Brown",
+    colorCode: "#8d2f05",
   },
 ];
 
@@ -97,7 +104,7 @@ type Filter = {
   categoryIds: string[];
   brandIds: string[];
   priceRange: number[];
-  sizeId: string;
+  size: string;
   colorId: string;
 };
 
@@ -106,7 +113,7 @@ const ProductsIndex = (props: Props) => {
     categoryIds: [],
     brandIds: [],
     priceRange: [700, 1500],
-    sizeId: "",
+    size: "",
     colorId: "",
   });
   const handleCheckboxChange =
@@ -129,7 +136,7 @@ const ProductsIndex = (props: Props) => {
       categoryIds: [],
       brandIds: [],
       priceRange: [700, 1500],
-      sizeId: "",
+      size: "",
       colorId: "",
     });
   };
@@ -149,8 +156,8 @@ const ProductsIndex = (props: Props) => {
               display: { xs: "none", md: "block" },
             }}
           >
-            <Stack direction={"row"} className="flex-between pb-2">
-              <Typography variant="h5" className="heading">
+            <Stack direction={"row"} className="flex-between pb-6 pr-1">
+              <Typography variant="h5" className="subHeading">
                 Filter
               </Typography>
               <Button
@@ -168,17 +175,37 @@ const ProductsIndex = (props: Props) => {
               handleChange={handleCheckboxChange("categoryIds")}
               checkedItems={filter.categoryIds}
             />
-            <Box className="pr-5 pt-5">
+            <Box className="pr-4 pt-6">
               <BaseRangeSlider
                 values={filter.priceRange}
                 handleChange={handelRangeChange}
+              />
+            </Box>
+            <Box className="pt-6">
+              <BaseSizeRadio
+                title="Size"
+                items={sizes}
+                onChange={(size: string) =>
+                  setFilter((prev) => ({ ...prev, size: size }))
+                }
+                checkedItem={filter.size}
+              />
+            </Box>
+            <Box className="pt-6">
+              <BaseColorRadio
+                title="Color"
+                items={colors}
+                onChange={(color: string) =>
+                  setFilter((prev) => ({ ...prev, colorId: color }))
+                }
+                checkedItem={filter.colorId}
               />
             </Box>
           </Grid>
 
           {/* Products section */}
           <Grid size={{ xs: 12, md: 10 }}>
-            <Typography variant="h5" className="pb-5">
+            <Typography variant="h5" className="pb-5 heading">
               Product page
             </Typography>
             <Grid

@@ -19,7 +19,9 @@ type Props = {
 const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
   return (
     <>
-      <FormLabel>{title || ""}</FormLabel>
+      <FormLabel className="subHeading" sx={{ color: "text.primary" }}>
+        {title || ""}
+      </FormLabel>
       <FormGroup>
         {items?.length > 0 &&
           items?.map((i, index) => (

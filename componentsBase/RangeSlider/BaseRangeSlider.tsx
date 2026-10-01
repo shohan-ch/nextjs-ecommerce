@@ -10,7 +10,7 @@ const BaseRangeSlider = ({ values, handleChange }: Props) => {
   return (
     <>
       <Box>
-        <Typography variant="h6" className="heading">
+        <Typography variant="h6" className="subHeading">
           Price Range
         </Typography>
 
