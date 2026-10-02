@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import SingleProduct from "@/app/(User)/components/Products/SingleProduct";
-import BaseCheckbox from "@/componentsBase/Checkbox/BaseCheckbox";
-import BaseRangeSlider from "@/componentsBase/RangeSlider/BaseRangeSlider";
-import BaseSizeRadio from "@/componentsBase/Radio/BaseSizeRadio";
-import BaseColorRadio from "@/componentsBase/Radio/BaseColorRadio";
+import {
+  Button,
+  Container,
+  Grid,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
+import FilterOptionList, { IFilter } from "./FilterOptionList";
 
 type Props = {};
 
@@ -99,37 +104,29 @@ const colors = [
   },
 ];
 
-type ArrayFilterKeys = "categoryIds" | "brandIds";
-type Filter = {
-  categoryIds: string[];
-  brandIds: string[];
-  priceRange: number[];
-  size: string;
-  colorId: string;
-};
-
+const sortList = [
+  {
+    name: "Regular",
+    value: "regular",
+  },
+  {
+    name: "Price: Low to High",
+    value: "low",
+  },
+  {
+    name: "Price: High to Low",
+    value: "high",
+  },
+];
 const ProductsIndex = (props: Props) => {
-  const [filter, setFilter] = useState<Filter>({
+  const [filter, setFilter] = useState<IFilter>({
     categoryIds: [],
     brandIds: [],
     priceRange: [700, 1500],
     size: "",
     colorId: "",
+    sortBy: "",
   });
-  const handleCheckboxChange =
-    (type: ArrayFilterKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
-      if (e.target.checked && !filter[type].includes(value)) {
-        setFilter((prev) => ({ ...prev, [type]: [...prev[type], value] }));
-      } else {
-        const filterUnchecked = filter[type].filter((f) => f !== value);
-        setFilter((prev) => ({ ...prev, [type]: filterUnchecked }));
-      }
-    };
-
-  const handelRangeChange = (e: Event, newValue: number[]) => {
-    setFilter((prev) => ({ ...prev, priceRange: newValue }));
-  };
 
   const resetFilter = () => {
     setFilter({
@@ -138,10 +135,10 @@ const ProductsIndex = (props: Props) => {
       priceRange: [700, 1500],
       size: "",
       colorId: "",
+      sortBy: "regular",
     });
   };
-
-  console.log(filter, "ff");
+  console.log(filter, "filterData");
 
   return (
     <>
@@ -152,7 +149,7 @@ const ProductsIndex = (props: Props) => {
             size={{ md: 2 }}
             sx={{
               borderRight: "1px solid",
-              borderColor: "secondary.dark",
+              borderColor: "primary.light",
               display: { xs: "none", md: "block" },
             }}
           >
@@ -169,45 +166,37 @@ const ProductsIndex = (props: Props) => {
               </Button>
             </Stack>
 
-            <BaseCheckbox
-              items={categories}
-              title="Category"
-              handleChange={handleCheckboxChange("categoryIds")}
-              checkedItems={filter.categoryIds}
+            <FilterOptionList
+              data={{ categories, sizes, colors }}
+              filterData={filter}
+              setFilterData={setFilter}
             />
-            <Box className="pr-4 pt-6">
-              <BaseRangeSlider
-                values={filter.priceRange}
-                handleChange={handelRangeChange}
-              />
-            </Box>
-            <Box className="pt-6">
-              <BaseSizeRadio
-                title="Size"
-                items={sizes}
-                onChange={(size: string) =>
-                  setFilter((prev) => ({ ...prev, size: size }))
-                }
-                checkedItem={filter.size}
-              />
-            </Box>
-            <Box className="pt-6">
-              <BaseColorRadio
-                title="Color"
-                items={colors}
-                onChange={(color: string) =>
-                  setFilter((prev) => ({ ...prev, colorId: color }))
-                }
-                checkedItem={filter.colorId}
-              />
-            </Box>
           </Grid>
 
           {/* Products section */}
           <Grid size={{ xs: 12, md: 10 }}>
-            <Typography variant="h5" className="pb-5 heading">
-              Product page
-            </Typography>
+            <Stack direction={"row"} className="flex-between pb-6">
+              <Typography variant="h5" className=" heading">
+                Product page
+              </Typography>
+
+              <TextField
+                select
+                label="Sort By"
+                size="small"
+                sx={{ minWidth: "140px" }}
+                defaultValue={"regular"}
+                onChange={(e) =>
+                  setFilter((prev) => ({ ...prev, sortBy: e.target.value }))
+                }
+              >
+                {sortList.map((s) => (
+                  <MenuItem key={s.name} value={s.value}>
+                    {s.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Stack>
             <Grid
               container
               spacing={2}

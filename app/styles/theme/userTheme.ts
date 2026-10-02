@@ -14,11 +14,12 @@ export const userTheme = createTheme({
   palette: {
     primary: {
       main: "#000000",
+      light: "#E5E5E5",
     },
     secondary: {
       light: "#f9fafd",
       main: "#f6f6f7",
-      dark: "#E5E5E5",
+      dark: "#000000A6",
     },
     text: {
       secondary: "#9b9b9b",
@@ -26,6 +27,17 @@ export const userTheme = createTheme({
 
     blue: {
       main: "#1976d2",
+    },
+  },
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "&.MuiInputBase-sizeSmall": {
+            height: "34px",
+          },
+        },
+      },
     },
   },
 });
