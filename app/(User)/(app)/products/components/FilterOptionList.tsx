@@ -28,9 +28,8 @@ type Props = {
 
 const FilterOptionList = ({ data, filterData, setFilterData }: Props) => {
   const handleCheckboxChange =
-    (field: CheckBoxFieldKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
-      if (e.target.checked && !filterData[field].includes(value)) {
+    (field: CheckBoxFieldKeys) => (value: string, isChecked: boolean) => {
+      if (isChecked && !filterData[field].includes(value)) {
         setFilterData((prev) => ({
           ...prev,
           [field]: [...prev[field], value],

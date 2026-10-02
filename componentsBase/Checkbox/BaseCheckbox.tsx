@@ -12,11 +12,17 @@ import React, { useState } from "react";
 type Props = {
   title?: string;
   items: { name: string; id: string | number; checked?: boolean }[];
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (value: string, isChecked: boolean) => void;
   checkedItems: string[];
 };
 
 const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
+    handleChange(value, isChecked);
+  };
+
   return (
     <>
       <FormLabel className="subHeading" sx={{ color: "text.primary" }}>
@@ -31,7 +37,7 @@ const BaseCheckbox = ({ title, items, handleChange, checkedItems }: Props) => {
               control={
                 <Checkbox
                   checked={checkedItems.includes(String(i.id))}
-                  onChange={handleChange}
+                  onChange={onChange}
                   value={i.id}
                   size="small"
                 />
