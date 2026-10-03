@@ -6,7 +6,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import XIcon from "@mui/icons-material/X";
-import { Box } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -21,17 +21,18 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 
 import "./navbar.scss";
+import Link from "next/link";
 type Props = {};
 
 const navItems = [
   {
     title: "Men",
-    url: "/men",
+    url: "/products?gender=men",
   },
 
   {
     title: "Women",
-    url: "/women",
+    url: "/products?gender=women",
   },
 ];
 
@@ -110,9 +111,11 @@ const Navbar = (props: Props) => {
         <List>
           {navItems.map((item) => (
             <ListItem key={item.title} disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
+              <ListItemText primary={item.title} sx={{ textAlign: "center" }}>
+                <Link key={item.title} href={item.url}>
+                  {item.title}
+                </Link>
+              </ListItemText>
             </ListItem>
           ))}
         </List>
@@ -130,27 +133,38 @@ const Navbar = (props: Props) => {
             color="inherit"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, pl: 4, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
 
-          <Box className="flexWrapper">
-            <Typography variant="h6" component="div">
-              ShoeStore
-            </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item) => (
-                <Button key={item.title} sx={{ color: "#fff" }}>
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
+          <Container maxWidth="xl">
+            <Stack
+              direction={"row"}
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Link href={"/"}> ShoeStore</Link>
 
-            <Box sx={{ display: { sm: "flex", xs: "none" }, gap: 2 }}>
-              {importantLinks}
-            </Box>
-          </Box>
+              <Box
+                sx={{ display: { xs: "none", sm: "flex" } }}
+                className="gap-5"
+              >
+                {navItems.map((item) => (
+                  <Link key={item.title} href={item.url}>
+                    {item.title}
+                  </Link>
+                ))}
+              </Box>
+
+              <Box sx={{ display: { sm: "flex", xs: "none" }, gap: 2 }}>
+                {importantLinks}
+              </Box>
+            </Stack>
+          </Container>
         </Toolbar>
       </AppBar>
       {/* Mobile drawer */}

@@ -1,5 +1,6 @@
 import BaseCheckbox from "@/componentsBase/Checkbox/BaseCheckbox";
 import BaseColorRadio from "@/componentsBase/Radio/BaseColorRadio";
+import BaseRadio from "@/componentsBase/Radio/BaseRadio";
 import BaseSizeRadio from "@/componentsBase/Radio/BaseSizeRadio";
 import BaseRangeSlider from "@/componentsBase/RangeSlider/BaseRangeSlider";
 import { Box } from "@mui/material";
@@ -14,6 +15,7 @@ export type IFilter = {
   size: string;
   colorId: string;
   sortBy: string;
+  gender: string;
 };
 
 type Props = {
@@ -21,6 +23,7 @@ type Props = {
     categories: any[];
     sizes: any[];
     colors: any[];
+    genders: any[];
   };
   filterData: IFilter;
   setFilterData: React.Dispatch<React.SetStateAction<IFilter>>;
@@ -58,22 +61,34 @@ const FilterOptionList = ({ data, filterData, setFilterData }: Props) => {
           handleChange={handelRangeChange}
         />
       </Box>
+
+      <Box className="pt-6">
+        <BaseRadio
+          items={data.genders}
+          title="Gender"
+          checkedItems={filterData.gender}
+          onChange={(value: string) =>
+            setFilterData((prev) => ({ ...prev, gender: value }))
+          }
+        />
+      </Box>
       <Box className="pt-6">
         <BaseSizeRadio
           title="Size"
           items={data.sizes}
-          onChange={(size: string) =>
-            setFilterData((prev) => ({ ...prev, size: size }))
+          onChange={(value: string) =>
+            setFilterData((prev) => ({ ...prev, size: value }))
           }
           checkedItem={filterData.size}
         />
       </Box>
+
       <Box className="pt-6">
         <BaseColorRadio
           title="Color"
           items={data.colors}
-          onChange={(color: string) =>
-            setFilterData((prev) => ({ ...prev, colorId: color }))
+          onChange={(value: string) =>
+            setFilterData((prev) => ({ ...prev, colorId: value }))
           }
           checkedItem={filterData.colorId}
         />

@@ -23,7 +23,7 @@ const BaseDrawer = ({ children, ref, width = "100%", title }: Props) => {
       toggleDrawer: toggleDrawer,
     };
   });
-  console.log(open, "opt");
+
   return (
     <>
       <Drawer

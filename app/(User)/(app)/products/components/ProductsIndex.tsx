@@ -13,10 +13,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FilterOptionList, { IFilter } from "./FilterOptionList";
 import TuneIcon from "@mui/icons-material/Tune";
 import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
+import { useSearchParams } from "next/navigation";
 type Props = {};
 
 const products = [
@@ -73,11 +74,12 @@ const products = [
 const categories = [
   {
     id: 1,
-    name: "Sneaker",
+    name: "Sneakers",
+    image: "dfdsf",
   },
   {
     id: 2,
-    name: "Casual",
+    name: "Half Shoes",
   },
   {
     id: 3,
@@ -85,7 +87,7 @@ const categories = [
   },
   {
     id: 4,
-    name: "Half Shoes",
+    name: "Casual",
   },
 ];
 const sizes = ["39", "40", "41", "42", "43", "44"];
@@ -122,7 +124,14 @@ const sortList = [
     value: "high",
   },
 ];
+
+const genders = ["Male", "Female"];
 const ProductsIndex = (props: Props) => {
+  const searchParams = useSearchParams();
+  const key = Array.from(searchParams.keys())[0];
+  const categoryParam = searchParams.get("category")!;
+  const genderParam = searchParams.get("gender");
+
   const drawerRef = useRef<DrawerRef>(null);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [filter, setFilter] = useState<IFilter>({
@@ -132,6 +141,7 @@ const ProductsIndex = (props: Props) => {
     size: "",
     colorId: "",
     sortBy: "",
+    gender: "",
   });
 
   const resetFilter = () => {
@@ -142,11 +152,29 @@ const ProductsIndex = (props: Props) => {
       size: "",
       colorId: "",
       sortBy: "regular",
+      gender: "",
     });
   };
 
+  useEffect(() => {
+    if (categoryParam) {
+      let categoryId = categoryParam.split("-")[1];
+      console.log(categoryParam, "cat");
+      console.log(categoryId, "cat");
+      const selectedCategory = categories
+        .filter((f) => String(f.id) == categoryId)
+        .flatMap((m) => String(m.id));
+
+      if (selectedCategory) {
+        setFilter((prev) => ({
+          ...prev,
+          categoryIds: selectedCategory,
+        }));
+      }
+    }
+  }, []);
+
   console.log(filter, "filterData");
-  console.log(drawerVisible, "dt");
 
   const filterSectionHeader = (
     <>
@@ -181,7 +209,7 @@ const ProductsIndex = (props: Props) => {
             {filterSectionHeader}
             {/* Filter options */}
             <FilterOptionList
-              data={{ categories, sizes, colors }}
+              data={{ categories, sizes, colors, genders }}
               filterData={filter}
               setFilterData={setFilter}
             />
@@ -195,7 +223,7 @@ const ProductsIndex = (props: Props) => {
                 <BaseDrawer ref={drawerRef}>
                   {filterSectionHeader}
                   <FilterOptionList
-                    data={{ categories, sizes, colors }}
+                    data={{ categories, sizes, colors, genders }}
                     filterData={filter}
                     setFilterData={setFilter}
                   />
