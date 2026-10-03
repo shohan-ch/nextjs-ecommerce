@@ -27,12 +27,12 @@ type Props = {};
 const navItems = [
   {
     title: "Men",
-    url: "/products?gender=men",
+    url: "/products?gender=Male",
   },
 
   {
     title: "Women",
-    url: "/products?gender=women",
+    url: "/products?gender=Female",
   },
 ];
 

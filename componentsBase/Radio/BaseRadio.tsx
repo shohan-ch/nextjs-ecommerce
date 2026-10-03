@@ -19,7 +19,9 @@ const BaseRadio = ({ title = "", items, checkedItems, onChange }: Props) => {
   console.log(checkedItems, "ck");
   return (
     <>
-      <FormLabel className="subHeading">{title}</FormLabel>
+      <FormLabel className="subHeading" sx={{ color: "text.primary" }}>
+        {title}
+      </FormLabel>
 
       <FormGroup>
         {items.length &&

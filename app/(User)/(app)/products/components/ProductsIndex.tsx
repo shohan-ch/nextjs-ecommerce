@@ -157,6 +157,8 @@ const ProductsIndex = (props: Props) => {
   };
 
   useEffect(() => {
+    resetFilter();
+
     if (categoryParam) {
       let categoryId = categoryParam.split("-")[1];
       console.log(categoryParam, "cat");
@@ -172,7 +174,15 @@ const ProductsIndex = (props: Props) => {
         }));
       }
     }
-  }, []);
+
+    if (genderParam) {
+      console.log(genderParam, "gen");
+      setFilter((prev) => ({
+        ...prev,
+        gender: genderParam,
+      }));
+    }
+  }, [genderParam, categoryParam]);
 
   console.log(filter, "filterData");
 
