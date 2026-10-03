@@ -2,17 +2,21 @@
 
 import SingleProduct from "@/app/(User)/components/Products/SingleProduct";
 import {
+  Box,
   Button,
   Container,
+  Drawer,
   Grid,
+  IconButton,
   MenuItem,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import FilterOptionList, { IFilter } from "./FilterOptionList";
-
+import TuneIcon from "@mui/icons-material/Tune";
+import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
 type Props = {};
 
 const products = [
@@ -119,6 +123,8 @@ const sortList = [
   },
 ];
 const ProductsIndex = (props: Props) => {
+  const drawerRef = useRef<DrawerRef>(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [filter, setFilter] = useState<IFilter>({
     categoryIds: [],
     brandIds: [],
@@ -138,7 +144,26 @@ const ProductsIndex = (props: Props) => {
       sortBy: "regular",
     });
   };
+
   console.log(filter, "filterData");
+  console.log(drawerVisible, "dt");
+
+  const filterSectionHeader = (
+    <>
+      <Stack direction={"row"} className="flex-between pb-6 pr-1">
+        <Typography variant="h5" className="subHeading">
+          Filter
+        </Typography>
+        <Button
+          size="small"
+          sx={{ fontWeight: 600, textTransform: "capitalize" }}
+          onClick={resetFilter}
+        >
+          Clear All
+        </Button>
+      </Stack>
+    </>
+  );
 
   return (
     <>
@@ -146,26 +171,15 @@ const ProductsIndex = (props: Props) => {
         <Grid container columnSpacing={7}>
           {/* Filter section */}
           <Grid
-            size={{ md: 2 }}
+            size={{ md: 3, lg: 2 }}
             sx={{
               borderRight: "1px solid",
               borderColor: "primary.light",
               display: { xs: "none", md: "block" },
             }}
           >
-            <Stack direction={"row"} className="flex-between pb-6 pr-1">
-              <Typography variant="h5" className="subHeading">
-                Filter
-              </Typography>
-              <Button
-                size="small"
-                sx={{ fontWeight: 600, textTransform: "capitalize" }}
-                onClick={resetFilter}
-              >
-                Clear All
-              </Button>
-            </Stack>
-
+            {filterSectionHeader}
+            {/* Filter options */}
             <FilterOptionList
               data={{ categories, sizes, colors }}
               filterData={filter}
@@ -174,9 +188,24 @@ const ProductsIndex = (props: Props) => {
           </Grid>
 
           {/* Products section */}
-          <Grid size={{ xs: 12, md: 10 }}>
+          <Grid size={{ xs: 12, md: 9, lg: 10 }}>
             <Stack direction={"row"} className="flex-between pb-6">
-              <Typography variant="h5" className=" heading">
+              <Typography variant="h5" className="heading">
+                {/* Drawer & button for small device  */}
+                <BaseDrawer ref={drawerRef}>
+                  {filterSectionHeader}
+                  <FilterOptionList
+                    data={{ categories, sizes, colors }}
+                    filterData={filter}
+                    setFilterData={setFilter}
+                  />
+                </BaseDrawer>
+                <IconButton
+                  onClick={() => drawerRef?.current?.toggleDrawer()}
+                  sx={{ paddingLeft: 0, display: { md: "none" } }}
+                >
+                  <TuneIcon></TuneIcon>
+                </IconButton>
                 Product page
               </Typography>
 
