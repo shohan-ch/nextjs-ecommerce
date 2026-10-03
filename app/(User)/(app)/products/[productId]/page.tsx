@@ -1,7 +1,9 @@
 import { Container } from "@mui/material";
 import SingleProductInedx from "./components/SingleProductInedx";
 
-const SingleProductPage = () => {
+type Props = {};
+
+const SingleProductPage = async () => {
   return (
     <>
       <SingleProductInedx />

@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import ImageContainer from "./ImageContainer";
 import ProductDetails from "./ProductDetails";
 import ProductsCarousel from "@/app/(User)/components/ProductsCarousel/ProductsCarousel";
+import { useParams } from "next/navigation";
 
 const product = {
   id: 1,
@@ -148,6 +149,8 @@ const likeProducts = [
 ];
 
 const SingleProductInedx = () => {
+  const { productId } = useParams();
+  console.log(productId, "pp");
   const [media, setMedia] = React.useState<string[]>([
     ...product.varients[0].images,
     ...product.varients[0].videos,
