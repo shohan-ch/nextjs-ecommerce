@@ -8,6 +8,7 @@ type Cart = {
   color: string;
   quantity: number;
   size: string;
+  stockSizes: Record<string, string>;
   price: number | string;
 };
 
@@ -34,6 +35,8 @@ const cartSlice = createSlice({
 
     incrementCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
+
+      console.log(productVarientId, "pp id");
       let product = state.find((p) => p.productVariantId === productVarientId);
       if (product) product.quantity = product?.quantity + 1;
     },
@@ -46,7 +49,8 @@ const cartSlice = createSlice({
 
     removeCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
-      state.filter((f) => f.productVariantId != productVarientId);
+      console.log(productVarientId);
+      return state.filter((f) => f.productVariantId != productVarientId);
     },
   },
 

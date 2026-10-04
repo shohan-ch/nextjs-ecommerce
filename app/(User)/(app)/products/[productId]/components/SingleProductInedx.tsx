@@ -16,7 +16,7 @@ type Details = {
   description: string;
   colors: string[];
   sizes: any;
-  image?: string;
+  image: string;
 };
 
 type ProductVarientType = {
@@ -98,6 +98,7 @@ const SingleProductInedx = () => {
     description: product.description,
     colors: colors,
     sizes: product.productVariants[0].sizes,
+    image: product.productVariants[0].images[0],
   });
 
   const changeProductByColor = (color: string) => {

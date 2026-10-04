@@ -18,10 +18,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useRef } from "react";
 
 import "./navbar.scss";
 import Link from "next/link";
+import { useAppSelector } from "@/store/store";
+import { selectAllCarts } from "@/store/slices/CartSlice";
+import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
+import CartIndex from "../components/Cart/CartIndex";
 type Props = {};
 
 const navItems = [
@@ -39,10 +43,15 @@ const navItems = [
 const Navbar = (props: Props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const drawerRef = useRef<DrawerRef>(null);
+  const carts = useAppSelector(selectAllCarts);
+
   const handleDrawerToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMobileOpen((prevState) => !prevState);
   };
+
+  console.log(carts, "cart nab");
 
   const importantLinks = (
     <>
@@ -73,10 +82,13 @@ const Navbar = (props: Props) => {
         <XIcon />
       </IconButton>
 
-      <IconButton color="inherit">
+      <IconButton
+        color="inherit"
+        onClick={() => drawerRef.current?.toggleDrawer()}
+      >
         <Box className="cart-icon">
           <ShoppingBagOutlinedIcon />
-          <small className="cart-badge">1</small>
+          <small className="cart-badge">{carts.length}</small>
         </Box>
       </IconButton>
 
@@ -127,6 +139,12 @@ const Navbar = (props: Props) => {
 
   return (
     <>
+      {/* cart drawer */}
+
+      <BaseDrawer ref={drawerRef} title="Shopping Bag" position="right">
+        <CartIndex />
+      </BaseDrawer>
+
       <AppBar component="nav" position="sticky">
         <Toolbar>
           <IconButton

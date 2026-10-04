@@ -120,7 +120,13 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
 
   const handelAddCart = () => {
     let { sizes, colors, description, originalPrice, ...rest } = details;
-    let payload = { ...rest, size: selectedSize, quantity: quantity };
+    let payload = {
+      ...rest,
+      stockSizes: sizes,
+      size: selectedSize,
+      quantity: quantity,
+      color: selectedColor,
+    };
     console.log(payload, "cartData");
     dispatch(addCart(payload));
   };

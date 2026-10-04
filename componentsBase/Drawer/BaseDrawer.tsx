@@ -10,9 +10,16 @@ type Props = {
   ref: any;
   width?: string;
   title?: string;
+  position?: "left" | "right" | "bottom" | "top";
 };
 
-const BaseDrawer = ({ children, ref, width = "100%", title }: Props) => {
+const BaseDrawer = ({
+  children,
+  ref,
+  width = "auto",
+  title,
+  position = "left",
+}: Props) => {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen((prev) => !prev);
@@ -29,15 +36,19 @@ const BaseDrawer = ({ children, ref, width = "100%", title }: Props) => {
       <Drawer
         open={open}
         onClose={toggleDrawer}
-        // slotProps={{
-        //   paper: {
-        //     sx: {
-        //       width: width,
-        //     },
-        //   },
-        // }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: {
+                xs: "100%",
+                sm: width,
+              },
+            },
+          },
+        }}
+        anchor={position}
       >
-        <Box sx={{ pl: 1.5, pr: 1 }}>
+        <Box sx={{ px: 3 }}>
           <Box
             sx={{
               display: "flex",
@@ -52,7 +63,11 @@ const BaseDrawer = ({ children, ref, width = "100%", title }: Props) => {
               </Typography>
             )}
 
-            <IconButton aria-label="close" onClick={() => setOpen(false)}>
+            <IconButton
+              sx={{ pr: 0 }}
+              aria-label="close"
+              onClick={() => setOpen(false)}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
