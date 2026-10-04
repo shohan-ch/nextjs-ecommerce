@@ -24,24 +24,27 @@ const cartSlice = createSlice({
       let product = state.find(
         (p) => p.productVariantId === payload.productVariantId,
       );
-      console.log(product, "from cart");
-      if (!product) state.push(payload);
+      if (!product) {
+        state.push(payload);
+      } else {
+        product.quantity = payload.quantity;
+        product.size = payload.size;
+      }
     },
 
-    increment: (state, action) => {
+    incrementCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
-      let product = state.find((p) => p.productVariantId === productVarientId)!;
-
+      let product = state.find((p) => p.productVariantId === productVarientId);
       if (product) product.quantity = product?.quantity + 1;
     },
 
-    decrement: (state, action) => {
+    decrementCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
-      let product = state.find((p) => p.productVariantId === productVarientId)!;
+      let product = state.find((p) => p.productVariantId === productVarientId);
       if (product) product.quantity = product?.quantity - 1;
     },
 
-    remove: (state, action) => {
+    removeCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
       state.filter((f) => f.productVariantId != productVarientId);
     },
@@ -54,7 +57,8 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addCart, increment, decrement, remove } = cartSlice.actions;
+export const { addCart, incrementCart, decrementCart, removeCart } =
+  cartSlice.actions;
 
 export const { selectAllCarts } = cartSlice.selectors;
 

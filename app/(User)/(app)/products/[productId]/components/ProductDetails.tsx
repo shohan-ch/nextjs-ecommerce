@@ -7,20 +7,20 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import styles from "./ProductDetails.module.scss";
 import { useSnackBar } from "@/providers/SnackbarProvider";
+import { useAppDispatch } from "@/store/store";
+import { addCart } from "@/store/slices/CartSlice";
 
 type Props = {
   details: {
     productId?: number;
     productVariantId?: number;
+    image?: string;
     name: string;
     price: number;
     sizes: Record<number, string>;
     description: string;
     colors: string[];
-    rating?: number;
-    reviewCount?: number;
     originalPrice?: number;
-    discountPercent?: number;
   };
   changedBycolor: (color: string) => void;
 };
@@ -28,10 +28,37 @@ type Props = {
 const colorList: Record<string, string> = {
   Black: "#000000",
   White: "#FFFFFF",
-  Brown: "#573a30",
+  Grey: "#808080",
+  "Light Grey": "#D3D3D3",
+  "Dark Grey": "#4A4A4A",
+  "Navy Blue": "#000080",
+  Blue: "#0000FF",
+  "Sky Blue": "#87CEEB",
+  Brown: "#573A30",
+  "Dark Brown": "#5C4033",
+  Tan: "#D2B48C",
+  Beige: "#F5F5DC",
+  Cream: "#FFFDD0",
+  "Off White": "#FAF9F6",
+  Red: "#FF0000",
+  Maroon: "#800000",
+  Wine: "#722F37",
+  Green: "#008000",
+  Olive: "#808000",
+  "Mint Green": "#98FF98",
+  Yellow: "#FFFF00",
+  Mustard: "#FFDB58",
+  Orange: "#FFA500",
+  Pink: "#FFC0CB",
+  Rose: "#FF007F",
+  Purple: "#800080",
+  Lavender: "#E6E6FA",
+  Teal: "#008080",
+  Khaki: "#F0E68C",
 };
 
 const ProductDetails = ({ details, changedBycolor }: Props) => {
+  const dispatch = useAppDispatch();
   const snackbar = useSnackBar();
   const [showMore, setShowMore] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState<string>(
@@ -90,6 +117,17 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
     div.innerHTML = text;
     return div.innerHTML;
   }, [shouldShowMore]);
+
+  const handelAddCart = () => {
+    let { sizes, colors, description, originalPrice, ...rest } = details;
+    let payload = { ...rest, size: selectedSize, quantity: quantity };
+    console.log(payload, "cartData");
+    dispatch(addCart(payload));
+  };
+
+  const handleBuy = () => {
+    handelAddCart();
+  };
 
   return (
     <Box>
@@ -221,7 +259,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
             variant="outlined"
             startIcon={<ShoppingCartOutlinedIcon />}
             className={`${styles.actionButton} ${styles.cartButton}`}
-            // onClick={}
+            onClick={handelAddCart}
           >
             Add to Cart
           </Button>
@@ -229,6 +267,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
             variant="contained"
             startIcon={<ShoppingBagOutlinedIcon />}
             className={`${styles.actionButton} ${styles.buyButton}`}
+            onClick={handleBuy}
           >
             Buy Now
           </Button>
