@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import counter from "./slices/CountSlice";
+import cart from "./slices/CartSlice";
 
 export const store = configureStore({
   reducer: {
     counter,
+    cart,
   },
 });
 

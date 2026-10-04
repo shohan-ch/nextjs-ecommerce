@@ -10,6 +10,8 @@ import { useSnackBar } from "@/providers/SnackbarProvider";
 
 type Props = {
   details: {
+    productId?: number;
+    productVariantId?: number;
     name: string;
     price: number;
     sizes: Record<number, string>;
@@ -219,6 +221,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
             variant="outlined"
             startIcon={<ShoppingCartOutlinedIcon />}
             className={`${styles.actionButton} ${styles.cartButton}`}
+            // onClick={}
           >
             Add to Cart
           </Button>
