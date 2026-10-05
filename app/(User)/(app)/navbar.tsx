@@ -26,6 +26,7 @@ import { useAppSelector } from "@/store/store";
 import { selectAllCarts } from "@/store/slices/CartSlice";
 import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
 import CartIndex from "../components/Cart/CartIndex";
+import CartSummary from "../components/Cart/CartSummary";
 type Props = {};
 
 const navItems = [
@@ -142,7 +143,18 @@ const Navbar = (props: Props) => {
       {/* cart drawer */}
 
       <BaseDrawer ref={drawerRef} title="Shopping Bag" position="right">
-        <CartIndex />
+        <Stack
+          direction={"column"}
+          sx={{
+            height: "90vh",
+            justifyContent: "space-between",
+          }}
+        >
+          <CartIndex />
+          <Box>
+            <CartSummary />
+          </Box>
+        </Stack>
       </BaseDrawer>
 
       <AppBar component="nav" position="sticky">
