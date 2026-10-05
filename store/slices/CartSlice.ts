@@ -20,6 +20,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: initialState,
   reducers: {
+    setCart: (state, action) => {
+      return action.payload;
+    },
     addCart: (state, action) => {
       let payload: Cart = action.payload;
       let product = state.find(
@@ -35,7 +38,6 @@ const cartSlice = createSlice({
 
     incrementCart: (state, action) => {
       let productVarientId = action.payload.productVariantId;
-
       console.log(productVarientId, "pp id");
       let product = state.find((p) => p.productVariantId === productVarientId);
       if (product) product.quantity = product?.quantity + 1;
@@ -61,7 +63,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addCart, incrementCart, decrementCart, removeCart } =
+export const { setCart, addCart, incrementCart, decrementCart, removeCart } =
   cartSlice.actions;
 
 export const { selectAllCarts } = cartSlice.selectors;

@@ -1,14 +1,14 @@
-import RemoveIcon from "@mui/icons-material/Remove";
+import { useSnackBar } from "@/providers/SnackbarProvider";
+import { addCart } from "@/store/slices/CartSlice";
+import { useAppDispatch } from "@/store/store";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./ProductDetails.module.scss";
-import { useSnackBar } from "@/providers/SnackbarProvider";
-import { useAppDispatch } from "@/store/store";
-import { addCart } from "@/store/slices/CartSlice";
 
 type Props = {
   details: {
@@ -119,6 +119,10 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
   }, [shouldShowMore]);
 
   const handelAddCart = () => {
+    if (!selectedSize) {
+      snackbar?.open({ type: "error", message: "please select size first" });
+      return;
+    }
     let { sizes, colors, description, originalPrice, ...rest } = details;
     let payload = {
       ...rest,
@@ -127,7 +131,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
       quantity: quantity,
       color: selectedColor,
     };
-    console.log(payload, "cartData");
+    // console.log(payload, "cartData");
     dispatch(addCart(payload));
   };
 
