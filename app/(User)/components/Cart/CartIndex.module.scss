@@ -127,7 +127,7 @@ font-weight: 600 !important;
 
 @media (min-width: 600px) {
 .cartItems {
-        width: 390px;
+        min-width: 390px;
     }
 
     .cartItem {

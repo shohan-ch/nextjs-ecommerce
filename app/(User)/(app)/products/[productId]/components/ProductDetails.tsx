@@ -1,3 +1,5 @@
+"use client";
+
 import { useSnackBar } from "@/providers/SnackbarProvider";
 import { addCart } from "@/store/slices/CartSlice";
 import { useAppDispatch } from "@/store/store";
@@ -9,6 +11,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import React from "react";
 import styles from "./ProductDetails.module.scss";
+import { useRouter } from "next/navigation";
 
 type Props = {
   details: {
@@ -58,6 +61,7 @@ const colorList: Record<string, string> = {
 };
 
 const ProductDetails = ({ details, changedBycolor }: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const snackbar = useSnackBar();
   const [showMore, setShowMore] = React.useState(false);
@@ -137,6 +141,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
 
   const handleBuy = () => {
     handelAddCart();
+    router.push("/checkout");
   };
 
   return (

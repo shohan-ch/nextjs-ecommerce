@@ -16,15 +16,17 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./CartIndex.module.scss";
 import { useSnackBar } from "@/providers/SnackbarProvider";
-
+import { usePathname, useRouter } from "next/navigation";
 type Props = {};
 
 const CartIndex = (props: Props) => {
+  const router = useRouter();
+  const patname = usePathname();
   const carts = useSelector(selectAllCarts);
   const snackbar = useSnackBar();
   const dispatch = useDispatch();
@@ -40,11 +42,7 @@ const CartIndex = (props: Props) => {
   };
   const increment = (variantId: number) => {
     let product = carts.find((c) => c.productVariantId == variantId);
-
-    console.log(product, "pp");
     let quantityInStock = product?.stockSizes[Number(product.size)];
-
-    console.log(quantityInStock, "qtt");
     if (Number(product?.quantity) >= Number(quantityInStock))
       snackbar?.open({
         type: "error",
@@ -57,6 +55,11 @@ const CartIndex = (props: Props) => {
         }),
       );
   };
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart")!);
+    if (!cart.length) router.push("/");
+  }, [carts]);
 
   return (
     <Box className={styles.container}>
