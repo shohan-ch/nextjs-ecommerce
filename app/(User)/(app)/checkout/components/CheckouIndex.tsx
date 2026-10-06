@@ -11,12 +11,12 @@ type Props = {};
 const CheckoutIndex = (props: Props) => {
   return (
     <>
-      <Container maxWidth="xl">
-        <Typography variant="h3" className="heading">
+      <Container maxWidth="lg">
+        <Typography variant="h3" className="heading ">
           Checkout page
         </Typography>
-        <Grid container>
-          <Grid size={{ xs: 12, sm: 7 }}>
+        <Grid container spacing={10}>
+          <Grid className="pt-10" size={{ xs: 12, sm: 7 }}>
             <CheckOutForm />
           </Grid>
           <Grid size={{ xs: 12, sm: 5 }}>
