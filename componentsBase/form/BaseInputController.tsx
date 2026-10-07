@@ -4,9 +4,11 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
+  MenuItem,
   Radio,
   TextField,
 } from "@mui/material";
+import { retry } from "@reduxjs/toolkit/query";
 import React, { useState } from "react";
 import { Control, Controller, Field, useForm } from "react-hook-form";
 import { text } from "stream/consumers";
@@ -33,9 +35,7 @@ const BaseInputController = (props: Props) => {
   return (
     <>
       <Controller
-        defaultValue={
-          type === "checkbox" || type === "radio" ? checkedItem : ""
-        }
+        defaultValue={type !== "text" ? checkedItem : ""}
         name={name}
         control={control}
         render={({ field, fieldState }) => {
@@ -129,6 +129,36 @@ const BaseInputController = (props: Props) => {
                     </FormHelperText>
                   )}
                 </FormGroup>
+              </>
+            );
+          }
+
+          if (type === "select") {
+            console.log(field.value, "f value");
+            return (
+              <>
+                <TextField
+                  select
+                  label={label}
+                  size="small"
+                  error={fieldState.invalid}
+                  helperText={fieldState.error ? fieldState.error.message : ""}
+                  fullWidth
+                  {...field}
+                >
+                  {items.map((item, index) => {
+                    let itemValue = item.id ? item.id : item;
+                    let select = field.value == itemValue;
+                    const label = item.id ? item.name : item;
+
+                    return (
+                      <MenuItem key={index} value={itemValue} selected={select}>
+                        {" "}
+                        {label}{" "}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
               </>
             );
           } else {

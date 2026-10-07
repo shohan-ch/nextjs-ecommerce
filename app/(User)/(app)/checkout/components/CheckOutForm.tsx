@@ -24,6 +24,7 @@ const CheckoutSchema = z.object({
   // address: z.string("Address is required"),
   fruits: z.array(z.number()).min(1, "please select one"),
   gender: z.string("Gender required").nonempty(),
+  city: z.number("City is  required"),
 });
 type CheckoutFormType = z.infer<typeof CheckoutSchema>;
 
@@ -71,6 +72,20 @@ const CheckOutForm = (props: Props) => {
               items={[
                 { id: 1, name: "Male" },
                 { id: 2, name: "Female" },
+              ]}
+              // checkedItem={[2]}
+            />
+          </Box>
+
+          <Box>
+            <BaseInputController
+              type="select"
+              name="city"
+              label="City"
+              control={control}
+              items={[
+                { id: 1, name: "Dhaka" },
+                { id: 2, name: "Sylhet" },
               ]}
               checkedItem={[2]}
             />
