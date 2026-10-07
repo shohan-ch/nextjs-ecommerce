@@ -1,21 +1,10 @@
 import BaseInputController from "@/componentsBase/form/BaseInputController";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckBox } from "@mui/icons-material";
-import {
-  TextField,
-  Button,
-  Input,
-  OutlinedInput,
-  InputLabel,
-  FormControl,
-  Box,
-  Stack,
-} from "@mui/material";
-import React from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import z, { email } from "zod";
-
-type Props = {};
+import { X } from "@mui/icons-material";
+import { Grid, Typography } from "@mui/material";
+import { useImperativeHandle } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import z from "zod";
 
 const CheckoutSchema = z.object({
   name: z.string("Name is required").trim().nonempty(),
@@ -24,43 +13,108 @@ const CheckoutSchema = z.object({
     .nonempty("Mobile is required")
     .regex(/^01\d{9}$/, "Enter a valid 11-digit mobile number"),
   email: z.optional(z.email("Not valid email")),
-  address: z.string("Address is required").nonempty(),
-  city: z.string("City is  required").nonempty(),
+  address: z.string("Address is required").trim().nonempty(),
+  city: z.string("City is  required").trim().nonempty(),
+  paymentType: z.number(),
 });
 type CheckoutFormType = z.infer<typeof CheckoutSchema>;
 
-const CheckOutForm = (props: Props) => {
+type Props = {
+  ref: any;
+};
+const CheckOutForm = ({ ref }: Props) => {
   const { control, handleSubmit } = useForm<CheckoutFormType>({
     resolver: zodResolver(CheckoutSchema),
   });
 
   const onSubmit: SubmitHandler<CheckoutFormType> = (formData) => {
-    console.log(formData, "data");
+    // console.log(formData, "data");
+    // setFormData(formData);
   };
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () =>
+      new Promise<CheckoutFormType | null>((resolve) => {
+        handleSubmit(
+          (data) => resolve(data),
+          () => resolve(null),
+        )();
+      }),
+  }));
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack direction={"column"} spacing={3}>
-          <BaseInputController
-            name="mobile"
-            label="Mobile"
-            control={control}
-            helperText="Mobile is required"
-          />
-          <BaseInputController name="name" label="Name" control={control} />
-          <BaseInputController
-            name="address"
-            label="Address"
-            control={control}
-          />
-          <BaseInputController name="city" label="City" control={control} />
-          <BaseInputController name="email" label="Email" control={control} />
-        </Stack>
+      <form>
+        <Typography variant="h6" className="heading pb-3">
+          Contact
+        </Typography>
+        <Grid container spacing={1}>
+          <Grid size={12}>
+            <BaseInputController
+              name="mobile"
+              label="Mobile"
+              control={control}
+              helperText="Mobile is required"
+            />
+          </Grid>
 
-        <Button type="submit" variant="contained" color="primary">
+          <Typography variant="h6" className="heading  pt-3">
+            Payment Method
+          </Typography>
+
+          <Grid size={12}>
+            <BaseInputController
+              type="radio"
+              name="paymentType"
+              control={control}
+              items={[
+                {
+                  id: 1,
+                  name: "Cash On Delivery",
+                  disable: false,
+                },
+                {
+                  id: 2,
+                  name: "Online Payment",
+                  disable: true,
+                },
+              ]}
+              checkedItem={1}
+            />
+          </Grid>
+        </Grid>
+
+        <Typography variant="h6" className="heading pb-3 pt-3">
+          Delivery Information
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <BaseInputController
+              name="name"
+              label="Name"
+              control={control}
+              helperText="Name is required"
+            />
+          </Grid>
+          <Grid size={6}>
+            <BaseInputController
+              name="address"
+              label="Address"
+              control={control}
+              helperText="Address is required"
+            />
+          </Grid>
+          <Grid size={6}>
+            <BaseInputController name="city" label="City" control={control} />
+          </Grid>
+          <Grid size={12}>
+            <BaseInputController name="email" label="Email" control={control} />
+          </Grid>
+        </Grid>
+
+        {/* <Button variant="contained" color="primary" onClick={handleClick}>
           SUbmit
-        </Button>
+        </Button> */}
       </form>
     </>
   );

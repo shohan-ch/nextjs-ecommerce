@@ -1,0 +1,100 @@
+.completeOrderButton {
+    margin-top: 24px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+
+    @media (min-width: 900px) {
+        display: none !important;
+    }
+}
+
+.mobileOrderSummary {
+    &.mobileOrderSummary {
+        display: block !important;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e6e8f0;
+        background: #fff;
+        box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+        &::before {
+            display: none;
+        }
+
+        &.Mui-expanded {
+            margin: 0 0 20px;
+            border-color: #c7d2fe;
+            box-shadow: 0 8px 28px rgba(79, 70, 229, 0.18);
+        }
+
+        .MuiAccordionSummary-root {
+            padding: 6px 18px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+        }
+
+        .MuiAccordionSummary-content h3 {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #312e81;
+        }
+
+        .MuiAccordionSummary-expandIconWrapper {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            color: #4f46e5;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+
+            &.Mui-expanded {
+                background: #4f46e5;
+                color: #fff;
+            }
+        }
+
+        .MuiAccordionDetails-root {
+            padding: 16px 18px 20px;
+            border-top: 1px dashed #c7d2fe;
+        }
+
+        @media (min-width: 900px) {
+            display: none !important;
+        }
+    }
+}
+
+
+
+
+
+.desktopCart {
+    display: none !important;
+
+    @media (min-width: 900px) {
+        display: block !important;
+    }
+}
+
+.cartScroll {
+    max-height: 45vh !important;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    &:hover::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #999;
+        border-radius: 4px;
+    }
+}

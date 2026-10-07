@@ -27,6 +27,7 @@ import { selectAllCarts } from "@/store/slices/CartSlice";
 import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
 import CartIndex from "../components/Cart/CartIndex";
 import CartSummary from "../components/Cart/CartSummary";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 const navItems = [
@@ -44,6 +45,7 @@ const navItems = [
 const Navbar = (props: Props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const router = useRouter();
   const drawerRef = useRef<DrawerRef>(null);
   const carts = useAppSelector(selectAllCarts);
 
@@ -152,7 +154,12 @@ const Navbar = (props: Props) => {
         >
           <CartIndex />
           <Box>
-            <CartSummary />
+            <CartSummary
+              handleAction={() => {
+                router.push("/checkout");
+                drawerRef.current?.toggleDrawer();
+              }}
+            />
           </Box>
         </Stack>
       </BaseDrawer>

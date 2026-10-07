@@ -17,10 +17,10 @@ import { text } from "stream/consumers";
 type Props = {
   control: any;
   name: string;
-  label: string;
+  label?: string;
   type?: "text" | "select" | "checkbox" | "radio";
   items?: any[];
-  checkedItem?: any[];
+  checkedItem?: any;
   helperText?: string;
 };
 
@@ -106,22 +106,30 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "radio") {
+            console.log(field.value, "radio val");
             return (
               <>
-                <FormLabel>{label}</FormLabel>
+                {label && (
+                  <>
+                    <FormLabel>{label}</FormLabel>
+                  </>
+                )}
                 <FormGroup>
                   {items.map((item, index) => {
+                    const label = item.id ? item.name : item;
+                    let disable = item.disable && item.disable;
                     let itemValue = item.id ? item.id : item;
                     let checked = field.value == itemValue;
                     return (
                       <FormControlLabel
                         key={index}
-                        label={item.name}
+                        label={label}
                         control={
                           <Radio
                             checked={checked}
                             size="small"
                             value={itemValue}
+                            disabled={disable}
                             onChange={(e) => {
                               field.onChange(e.target.value);
                             }}

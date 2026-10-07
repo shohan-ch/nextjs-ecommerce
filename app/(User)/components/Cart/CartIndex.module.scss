@@ -48,26 +48,26 @@ $secondary: #000000A6;
 }
 
 .productName {
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
     line-height: 1.4 !important;
 }
 
 .productPrice {
     flex-shrink: 0;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
 }
 
 .productColor {
     margin-top: 4px !important;
     color: $secondary;
-    font-size: 13px !important;
+    font-size: 11px !important;
 }
 
 .productSize {
     color: $secondary;
-    font-size: 13px !important;
+    font-size: 11px !important;
 }
 
 .bottomRow {
@@ -95,7 +95,7 @@ $secondary: #000000A6;
 }
 
 .quantityIcon {
-    font-size: 17px !important;
+    font-size: 15px !important;
 }
 
 .quantity {
@@ -121,11 +121,97 @@ font-weight: 600 !important;
     width: 100%;
 }
 
+
+
+
+
 /* -------------------------
-   Tablet / Desktop
+   Small Tablet
 -------------------------- */
 
-@media (min-width: 600px) {
+@media (min-width: 600px) and (max-width: 899px) {
+    .cartItems {
+        min-width: 100%;
+    }
+
+    .cartItem {
+        gap: 14px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .imageWrapper {
+        width: 76px;
+        height: 76px;
+    }
+
+    .productName {
+        font-size: 14px !important;
+    }
+
+    .productPrice {
+        font-size: 13px !important;
+    }
+
+    .productColor,
+    .productSize {
+        font-size: 13px !important;
+    }
+
+    .bottomRow {
+        margin-top: 12px;
+    }
+
+    .removeButton {
+        font-size: 12px !important;
+    }
+}
+
+
+/* -------------------------
+   Tablet / Small Laptop
+-------------------------- */
+
+@media (min-width: 900px) and (max-width: 1199px) {
+    .cartItems {
+        min-width: 100%;
+    }
+
+    .cartItem {
+        gap: 16px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    .imageWrapper {
+        width: 82px;
+        height: 82px;
+    }
+
+    .productName {
+        font-size: 13px !important;
+    }
+
+    .productPrice {
+        font-size: 13px !important;
+    }
+
+    .productColor,
+    .productSize {
+        font-size: 12px !important;
+    }
+
+    .bottomRow {
+        margin-top: 13px;
+    }
+
+    .removeButton {
+        font-size: 12px !important;
+    }
+}
+
+
+@media (min-width: 1200px) {
 .cartItems {
         min-width: 390px;
     }
@@ -142,7 +228,7 @@ font-weight: 600 !important;
     }
 
     .productName {
-        font-size: 15px !important;
+        font-size: 13px !important;
     }
 
     .productPrice {
@@ -151,14 +237,14 @@ font-weight: 600 !important;
 
     .productColor,
     .productSize {
-        font-size: 14px !important;
+        font-size: 13px !important;
     }
 
     .bottomRow {
-        margin-top: 16px;
+        margin-top: 13px;
     }
 
     .removeButton {
-        font-size: 13px !important;
+        font-size: 12px !important;
     }
 }
