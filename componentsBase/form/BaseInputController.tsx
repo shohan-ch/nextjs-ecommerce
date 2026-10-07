@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -20,6 +21,7 @@ type Props = {
   type?: "text" | "select" | "checkbox" | "radio";
   items?: any[];
   checkedItem?: any[];
+  helperText?: string;
 };
 
 const BaseInputController = (props: Props) => {
@@ -30,28 +32,34 @@ const BaseInputController = (props: Props) => {
     label,
     items = [],
     checkedItem = [],
+    helperText,
   } = props;
 
   return (
-    <>
+    <Box>
       <Controller
         defaultValue={type !== "text" ? checkedItem : ""}
         name={name}
         control={control}
         render={({ field, fieldState }) => {
           //   console.log(field, "field");
+
+          let textShowFirstLoad =
+            helperText && !fieldState.isTouched ? helperText : undefined;
+
           if (type == "text") {
             return (
               <TextField
                 {...field}
                 label={label}
                 error={fieldState.invalid}
-                helperText={fieldState.error?.message}
+                helperText={fieldState.error?.message || textShowFirstLoad}
                 size="small"
                 fullWidth
               />
             );
           }
+
           if (type === "checkbox") {
             const selectedValues = field.value ?? [];
             return (
@@ -166,7 +174,7 @@ const BaseInputController = (props: Props) => {
           }
         }}
       ></Controller>
-    </>
+    </Box>
   );
 };
 

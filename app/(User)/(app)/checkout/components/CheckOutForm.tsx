@@ -19,21 +19,18 @@ type Props = {};
 
 const CheckoutSchema = z.object({
   name: z.string("Name is required").trim().nonempty(),
-  // mobile: z.string().length(11),
-  // email: z.email("Not valid email"),
-  // address: z.string("Address is required"),
-  fruits: z.array(z.number()).min(1, "please select one"),
-  gender: z.string("Gender required").nonempty(),
-  city: z.number("City is  required"),
+  mobile: z
+    .string()
+    .nonempty("Mobile is required")
+    .regex(/^01\d{9}$/, "Enter a valid 11-digit mobile number"),
+  email: z.optional(z.email("Not valid email")),
+  address: z.string("Address is required").nonempty(),
+  city: z.string("City is  required").nonempty(),
 });
 type CheckoutFormType = z.infer<typeof CheckoutSchema>;
 
 const CheckOutForm = (props: Props) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CheckoutFormType>({
+  const { control, handleSubmit } = useForm<CheckoutFormType>({
     resolver: zodResolver(CheckoutSchema),
   });
 
@@ -46,54 +43,20 @@ const CheckOutForm = (props: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction={"column"} spacing={3}>
           <BaseInputController
-            type="text"
-            name="name"
-            label="Name 123"
+            name="mobile"
+            label="Mobile"
+            control={control}
+            helperText="Mobile is required"
+          />
+          <BaseInputController name="name" label="Name" control={control} />
+          <BaseInputController
+            name="address"
+            label="Address"
             control={control}
           />
-
-          <Box>
-            <BaseInputController
-              type="checkbox"
-              name="fruits"
-              label="Fruits"
-              control={control}
-              items={[{ id: 1, name: "Orange" }]}
-              checkedItem={[1]}
-            />
-          </Box>
-
-          <Box>
-            <BaseInputController
-              type="radio"
-              name="gender"
-              label="Gender"
-              control={control}
-              items={[
-                { id: 1, name: "Male" },
-                { id: 2, name: "Female" },
-              ]}
-              // checkedItem={[2]}
-            />
-          </Box>
-
-          <Box>
-            <BaseInputController
-              type="select"
-              name="city"
-              label="City"
-              control={control}
-              items={[
-                { id: 1, name: "Dhaka" },
-                { id: 2, name: "Sylhet" },
-              ]}
-              checkedItem={[2]}
-            />
-          </Box>
+          <BaseInputController name="city" label="City" control={control} />
+          <BaseInputController name="email" label="Email" control={control} />
         </Stack>
-
-        <br></br>
-        <br></br>
 
         <Button type="submit" variant="contained" color="primary">
           SUbmit
