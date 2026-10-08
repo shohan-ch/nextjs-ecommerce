@@ -35,5 +35,29 @@ a{
     color: white;
 }
 
+.cartItemsScroll{
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    margin-bottom: 32px !important;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
 
+.cartItemsScroll:hover{
+    scrollbar-color: auto;
+}
+
+.cartItemsScroll::-webkit-scrollbar{
+    width: 6px;
+}
+
+.cartItemsScroll::-webkit-scrollbar-thumb{
+    background-color: transparent;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.cartItemsScroll:hover::-webkit-scrollbar-thumb{
+    background-color: #888;
+}
 

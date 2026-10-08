@@ -4,6 +4,7 @@ import { selectAllCarts } from "@/store/slices/CartSlice";
 import { useAppSelector } from "@/store/store";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Button, Divider, Stack, Typography } from "@mui/material";
+import { usePathname } from "next/navigation";
 import React from "react";
 type Props = {
   btnText?: string;
@@ -12,6 +13,7 @@ type Props = {
 
 const CartSummary = React.memo(
   ({ handleAction, btnText = "Buy Now" }: Props) => {
+    const path = usePathname();
     const carts = useAppSelector(selectAllCarts);
     let subtotal = 0;
     let shippingPrice = 90;
@@ -66,7 +68,7 @@ const CartSummary = React.memo(
                 mt: 3,
                 fontWeight: 600,
                 display: {
-                  xs: "none",
+                  xs: path === "/checkout" ? "none" : "",
                   md: "flex",
                 },
                 whiteSpace: "nowrap",

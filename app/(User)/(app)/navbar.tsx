@@ -150,7 +150,9 @@ const Navbar = (props: Props) => {
             justifyContent: "space-between",
           }}
         >
-          <CartIndex />
+          <Box className="cartItemsScroll">
+            <CartIndex />
+          </Box>
           <Box>
             <CartSummary
               handleAction={() => {
