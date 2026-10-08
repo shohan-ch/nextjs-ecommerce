@@ -56,7 +56,7 @@ export default function Register() {
               <Typography component="h1" variant="h4">
                 Register
               </Typography>
-              <Typography color="text.secondary">
+              <Typography color="textSecondary">
                 Create an account to get started
               </Typography>
             </Box>

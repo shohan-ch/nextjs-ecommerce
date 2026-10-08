@@ -4,10 +4,9 @@ import BaseInputController from "@/componentsBase/form/BaseInputController";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
-import styles from "./Login.module.scss";
-import Link from "next/link";
 
 const LoginSchema = z.object({
   email: z.email("Enter a valid email address"),
@@ -45,7 +44,7 @@ const Login = () => {
               <Typography component="h1" variant="h4">
                 Welcome back
               </Typography>
-              <Typography color="text.secondary">
+              <Typography color="textSecondary">
                 Sign in to continue to your account
               </Typography>
             </Box>
@@ -73,7 +72,7 @@ const Login = () => {
                 />
 
                 <Typography variant="body2" sx={linkStyle}>
-                  Forgot Password?
+                  <Link href="/forgot-password">Forgot Password?</Link>
                 </Typography>
               </Stack>
             </Box>
@@ -83,7 +82,7 @@ const Login = () => {
             </Button>
 
             <Typography variant="body2">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Box component={"span"} sx={linkStyle}>
                 <Link href={"/register"}>Sign Up</Link>
               </Box>

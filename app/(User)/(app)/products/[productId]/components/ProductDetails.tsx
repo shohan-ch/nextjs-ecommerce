@@ -181,7 +181,7 @@ const ProductDetails = ({ details, changedBycolor }: Props) => {
         <Box>
           <Typography variant="body2" className={styles.colorLabel}>
             Color:{" "}
-            <Typography component="span" variant="body2" color="text.secondary">
+            <Typography component="span" variant="body2" color="textSecondary">
               {selectedColor}
             </Typography>
           </Typography>
