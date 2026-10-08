@@ -15,17 +15,18 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 
 import styles from "./CheckoutIndex.module.scss";
+import { useCartTotalPrice } from "@/hooks/useCartTotalPrice";
 
 type Props = {};
 
 const CheckoutIndex = (props: Props) => {
   const formRef = useRef<any>(null);
-
+  const totalPrice = useCartTotalPrice();
   const carts = useAppSelector(selectAllCarts);
 
-  const formSubmit = async (totalPrice: number) => {
-    console.log(carts, "allcarts");
-    console.log(totalPrice, "total");
+  const formSubmit = async () => {
+    // console.log(carts, "allcarts");
+    // console.log(totalPrice, "total");
     const data = await formRef.current?.submitForm();
     if (!data) {
       return;
@@ -51,14 +52,19 @@ const CheckoutIndex = (props: Props) => {
       <Container maxWidth="lg">
         <SectionTitle title="Order Summary" />
 
-        {/* Small device Accordion */}
+        {/* Accordion for Small device */}
         <Accordion className={styles.mobileOrderSummary}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
-            <Typography component="h3">Order Summary</Typography>
+            <Typography component="h3" className="subHeading">
+              Products In Bag
+            </Typography>
+            <Typography className="heading" component="h3">
+              Tk {totalPrice}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>{cartDetails}</AccordionDetails>
         </Accordion>
@@ -74,7 +80,7 @@ const CheckoutIndex = (props: Props) => {
               variant="contained"
               color="primary"
               fullWidth
-              // onClick={() => handleAction(total)}
+              onClick={formSubmit}
             >
               Complete Order
             </Button>

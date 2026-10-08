@@ -7,7 +7,7 @@ import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 type Props = {
   btnText?: string;
-  handleAction: (totalPrice: number) => void;
+  handleAction: () => void;
 };
 
 const CartSummary = React.memo(
@@ -76,7 +76,7 @@ const CartSummary = React.memo(
               variant="contained"
               color="primary"
               fullWidth
-              onClick={() => handleAction(total)}
+              onClick={() => handleAction()}
             >
               {btnText}
             </Button>
