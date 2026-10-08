@@ -30,17 +30,98 @@ const Login = () => {
   };
 
   return (
-    <Box component="main" className={styles.loginPage}>
-      <Box className={styles.loginCard}>
-        <section className={styles.formPanel}>
+    // <Box component="main" className={loginPage}>
+    //   <Box className={loginCard}>
+    //     <section className={formPanel}>
+    //       <Stack
+    //         component="form"
+    //         className={form}
+    //         spacing={2.5}
+    //         onSubmit={handleSubmit(onSubmit)}
+    //         noValidate
+    //       >
+    //         <Box className={heading}>
+    //           <Typography component="h1" variant="h4">
+    //             Welcome back
+    //           </Typography>
+    //           <Typography color="text.secondary">
+    //             Sign in to continue to your account
+    //           </Typography>
+    //         </Box>
+    //         <BaseInputController
+    //           control={control}
+    //           inputType="email"
+    //           label="Email"
+    //           name="email"
+    //         />
+    //         <BaseInputController
+    //           control={control}
+    //           inputType="password"
+    //           label="Password"
+    //           name="password"
+    //         />
+
+    //         <Box className={rememberMe}>
+    //           <Stack direction={"row"} className="flex-between">
+    //             <BaseInputController
+    //               control={control}
+    //               type="checkbox"
+    //               label="Remember me"
+    //               name="rememberMe"
+    //               checkedItem={false}
+    //             />
+
+    //             <Typography variant="body2">Forgot Password?</Typography>
+    //           </Stack>
+    //         </Box>
+
+    //         <Button type="submit" variant="contained">
+    //           Sign in
+    //         </Button>
+
+    //         <Typography variant="body2">
+    //           Don't have an account?{" "}
+    //           <Box
+    //             component={"span"}
+    //             sx={{ color: "blue !important", textDecoration: "underline" }}
+    //           >
+    //             Sign Up
+    //           </Box>
+    //         </Typography>
+    //       </Stack>
+    //     </section>
+    //     <Box className={visualPanel}>
+    //       <span className={orbit} aria-hidden="true" />
+    //       <span
+    //         className={`${orbit} ${orbitInner}`}
+    //         aria-hidden="true"
+    //       />
+    //       <span
+    //         className={`${orbit} ${orbitOuter}`}
+    //         aria-hidden="true"
+    //       />
+    //       <Image
+    //         className={logo}
+    //         src="/logos/logoBlack.svg"
+    //         alt="Shoe store"
+    //         width={250}
+    //         height={73}
+    //       />
+    //     </Box>
+    //   </Box>
+    // </Box>
+
+    <Box component="main" className={"loginPage"}>
+      <Box className={"loginCard"}>
+        <section className={"formPanel"}>
           <Stack
             component="form"
-            className={styles.form}
+            className={"form"}
             spacing={2.5}
             onSubmit={handleSubmit(onSubmit)}
             noValidate
           >
-            <Box className={styles.heading}>
+            <Box className={"heading"}>
               <Typography component="h1" variant="h4">
                 Welcome back
               </Typography>
@@ -61,33 +142,40 @@ const Login = () => {
               name="password"
             />
 
-            <Box className={styles.rememberMe}>
-              <BaseInputController
-                control={control}
-                type="checkbox"
-                label="Remember me"
-                name="rememberMe"
-                checkedItem={false}
-              />
+            <Box className={"rememberMe"}>
+              <Stack direction={"row"} className="flex-between">
+                <BaseInputController
+                  control={control}
+                  type="checkbox"
+                  label="Remember me"
+                  name="rememberMe"
+                  checkedItem={false}
+                />
+
+                <Typography variant="body2" sx={linkStyle}>
+                  Forgot Password?
+                </Typography>
+              </Stack>
             </Box>
 
             <Button type="submit" variant="contained">
               Sign in
             </Button>
+
+            <Typography variant="body2">
+              Don't have an account?{" "}
+              <Box component={"span"} sx={linkStyle}>
+                Sign Up
+              </Box>
+            </Typography>
           </Stack>
         </section>
-        <Box className={styles.visualPanel}>
-          <span className={styles.orbit} aria-hidden="true" />
-          <span
-            className={`${styles.orbit} ${styles.orbitInner}`}
-            aria-hidden="true"
-          />
-          <span
-            className={`${styles.orbit} ${styles.orbitOuter}`}
-            aria-hidden="true"
-          />
+        <Box className={"visualPanel"}>
+          <span className={"orbit"} aria-hidden="true" />
+          <span className={`${"orbit"} ${"orbitInner"}`} aria-hidden="true" />
+          <span className={`${"orbit"} ${"orbitOuter"}`} aria-hidden="true" />
           <Image
-            className={styles.logo}
+            className={"logo"}
             src="/logos/logoBlack.svg"
             alt="Shoe store"
             width={250}
@@ -100,3 +188,5 @@ const Login = () => {
 };
 
 export default Login;
+
+const linkStyle = { color: "blue !important", textDecoration: "underline" };
