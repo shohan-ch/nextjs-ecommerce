@@ -138,6 +138,10 @@ font-weight: 600 !important;
         gap: 14px;
         padding-top: 16px;
         padding-bottom: 16px;
+
+        &:first-child {
+                padding-top: 0 !important;
+            }
     }
 
     .imageWrapper {
@@ -181,6 +185,9 @@ font-weight: 600 !important;
         gap: 16px;
         padding-top: 18px;
         padding-bottom: 18px;
+        &:first-child {
+                padding-top: 0 !important;
+            }
     }
 
     .imageWrapper {
@@ -220,6 +227,9 @@ font-weight: 600 !important;
         gap: 16px;
         padding-top: 20px;
         padding-bottom: 20px;
+        &:first-child {
+                padding-top: 0 !important;
+            }
     }
 
     .imageWrapper {

@@ -94,9 +94,35 @@
     }
 }
 
+// .cartScroll {
+//     max-height: 45vh !important;
+//     overflow-y: auto;
+
+//     &::-webkit-scrollbar {
+//         width: 0;
+//     }
+
+//     &:hover::-webkit-scrollbar {
+//         width: 4px;
+//     }
+
+//     &::-webkit-scrollbar-thumb {
+//         background: #999;
+//         border-radius: 4px;
+//     }
+// }
+
+
 .cartScroll {
-    max-height: 45vh !important;
+    max-height: clamp(300px, 45vh, 600px);
     overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    &:hover {
+        scrollbar-color: #999 transparent;
+    }
 
     &::-webkit-scrollbar {
         width: 0;
