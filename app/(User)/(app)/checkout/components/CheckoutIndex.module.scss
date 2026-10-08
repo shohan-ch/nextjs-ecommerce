@@ -13,12 +13,14 @@
     &.mobileOrderSummary {
         display: block !important;
         margin-bottom: 20px;
-        border-radius: 10px;
+        // border-radius: 10px;
         overflow: hidden;
         border: 1px solid #e6e8f0;
         background: #fff;
         box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
         transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        margin-left: -48px  !important;
+        margin-right: -37px  !important;
 
         &::before {
             display: none;
@@ -30,18 +32,19 @@
             box-shadow: 0 8px 28px rgba(79, 70, 229, 0.18);
         }
 
-        .MuiAccordionSummary-root {
-            padding: 6px 18px;
+
+        :global(.MuiAccordionSummary-root) {
+            padding-left: 45px !important;
             background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
         }
 
-        .MuiAccordionSummary-content h3 {
+        :global(.MuiAccordionSummary-content h3) {
             font-weight: 700;
             letter-spacing: 0.3px;
             color: #312e81;
         }
 
-        .MuiAccordionSummary-expandIconWrapper {
+        :global(.MuiAccordionSummary-expandIconWrapper) {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -52,14 +55,16 @@
             justify-content: center;
             transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 
-            &.Mui-expanded {
-                background: #4f46e5;
-                color: #fff;
-            }
+         
         }
 
-        .MuiAccordionDetails-root {
-            padding: 16px 18px 20px;
+        :global(.MuiAccordionSummary-expandIconWrapper.Mui-expanded) {
+            background: #4f46e5 !important;
+            color: #fff !important;
+        }
+
+        :global(.MuiAccordionDetails-root) {
+            padding: 16px 18px 20px 45px !important;
             border-top: 1px dashed #c7d2fe;
         }
 

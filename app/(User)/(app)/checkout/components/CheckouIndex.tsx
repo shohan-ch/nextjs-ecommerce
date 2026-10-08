@@ -3,7 +3,7 @@ import CartIndex from "@/app/(User)/components/Cart/CartIndex";
 import CartSummary from "@/app/(User)/components/Cart/CartSummary";
 import { selectAllCarts } from "@/store/slices/CartSlice";
 import { useAppSelector } from "@/store/store";
-import { Box, Container, Grid, Stack, Typography, Button } from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { useRef } from "react";
 import CheckOutForm from "./CheckOutForm";
 
@@ -51,6 +51,7 @@ const CheckoutIndex = (props: Props) => {
       <Container maxWidth="lg">
         <SectionTitle title="Order Summary" />
 
+        {/* Small device Accordion */}
         <Accordion className={styles.mobileOrderSummary}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
