@@ -7,6 +7,7 @@ import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 import styles from "./Login.module.scss";
+import Link from "next/link";
 
 const LoginSchema = z.object({
   email: z.email("Enter a valid email address"),
@@ -30,87 +31,6 @@ const Login = () => {
   };
 
   return (
-    // <Box component="main" className={loginPage}>
-    //   <Box className={loginCard}>
-    //     <section className={formPanel}>
-    //       <Stack
-    //         component="form"
-    //         className={form}
-    //         spacing={2.5}
-    //         onSubmit={handleSubmit(onSubmit)}
-    //         noValidate
-    //       >
-    //         <Box className={heading}>
-    //           <Typography component="h1" variant="h4">
-    //             Welcome back
-    //           </Typography>
-    //           <Typography color="text.secondary">
-    //             Sign in to continue to your account
-    //           </Typography>
-    //         </Box>
-    //         <BaseInputController
-    //           control={control}
-    //           inputType="email"
-    //           label="Email"
-    //           name="email"
-    //         />
-    //         <BaseInputController
-    //           control={control}
-    //           inputType="password"
-    //           label="Password"
-    //           name="password"
-    //         />
-
-    //         <Box className={rememberMe}>
-    //           <Stack direction={"row"} className="flex-between">
-    //             <BaseInputController
-    //               control={control}
-    //               type="checkbox"
-    //               label="Remember me"
-    //               name="rememberMe"
-    //               checkedItem={false}
-    //             />
-
-    //             <Typography variant="body2">Forgot Password?</Typography>
-    //           </Stack>
-    //         </Box>
-
-    //         <Button type="submit" variant="contained">
-    //           Sign in
-    //         </Button>
-
-    //         <Typography variant="body2">
-    //           Don't have an account?{" "}
-    //           <Box
-    //             component={"span"}
-    //             sx={{ color: "blue !important", textDecoration: "underline" }}
-    //           >
-    //             Sign Up
-    //           </Box>
-    //         </Typography>
-    //       </Stack>
-    //     </section>
-    //     <Box className={visualPanel}>
-    //       <span className={orbit} aria-hidden="true" />
-    //       <span
-    //         className={`${orbit} ${orbitInner}`}
-    //         aria-hidden="true"
-    //       />
-    //       <span
-    //         className={`${orbit} ${orbitOuter}`}
-    //         aria-hidden="true"
-    //       />
-    //       <Image
-    //         className={logo}
-    //         src="/logos/logoBlack.svg"
-    //         alt="Shoe store"
-    //         width={250}
-    //         height={73}
-    //       />
-    //     </Box>
-    //   </Box>
-    // </Box>
-
     <Box component="main" className={"loginPage"}>
       <Box className={"loginCard"}>
         <section className={"formPanel"}>
@@ -165,7 +85,7 @@ const Login = () => {
             <Typography variant="body2">
               Don't have an account?{" "}
               <Box component={"span"} sx={linkStyle}>
-                Sign Up
+                <Link href={"/register"}>Sign Up</Link>
               </Box>
             </Typography>
           </Stack>
