@@ -8,13 +8,11 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import XIcon from "@mui/icons-material/X";
 import { Box, Container, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -184,7 +182,12 @@ const Navbar = (props: Props) => {
                 width: "100%",
               }}
             >
-              <Link href={"/"}> ShoeStore</Link>
+              <img
+                src={"/logos/logoWhite.svg"}
+                width={"120px"}
+                height={"50px"}
+              />
+              {/* <Link href={"/"}> ShoeStore</Link> */}
 
               <Box
                 sx={{ display: { xs: "none", sm: "flex" } }}

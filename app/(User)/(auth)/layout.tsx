@@ -1,3 +1,4 @@
+import { MuiUserThemeProvider } from "@/providers/UserThemeProvider";
 import React from "react";
 
 type Props = {
@@ -7,5 +8,9 @@ type Props = {
 export default (props: Props) => {
   const { children } = props;
 
-  return <>{children}</>;
+  return (
+    <>
+      <MuiUserThemeProvider>{children}</MuiUserThemeProvider>
+    </>
+  );
 };

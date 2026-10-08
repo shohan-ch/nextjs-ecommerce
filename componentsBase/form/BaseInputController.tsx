@@ -19,6 +19,7 @@ type Props = {
   name: string;
   label?: string;
   type?: "text" | "select" | "checkbox" | "radio";
+  inputType?: React.HTMLInputTypeAttribute;
   items?: any[];
   checkedItem?: any;
   helperText?: string;
@@ -29,6 +30,7 @@ const BaseInputController = (props: Props) => {
     control,
     name,
     type = "text",
+    inputType = "text",
     label,
     items = [],
     checkedItem = [],
@@ -50,6 +52,7 @@ const BaseInputController = (props: Props) => {
           if (type == "text") {
             return (
               <TextField
+                type={inputType}
                 {...field}
                 label={label}
                 error={fieldState.invalid}
@@ -61,6 +64,21 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "checkbox") {
+            if (items.length === 0) {
+              return (
+                <FormControlLabel
+                  label={label}
+                  control={
+                    <Checkbox
+                      checked={Boolean(field.value)}
+                      onChange={(event) => field.onChange(event.target.checked)}
+                      size="small"
+                    />
+                  }
+                />
+              );
+            }
+
             const selectedValues = field.value ?? [];
             return (
               <>
