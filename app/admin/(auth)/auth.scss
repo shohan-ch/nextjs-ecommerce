@@ -1,0 +1,186 @@
+.loginPage {
+    display: grid;
+    min-height: 100svh;
+    box-sizing: border-box;
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(18px, 4vw, 56px);
+    background:
+        radial-gradient(ellipse at 8% 10%, rgb(224 214 196 / 38%), transparent 34%),
+        radial-gradient(ellipse at 96% 90%, rgb(212 223 221 / 46%), transparent 36%),
+        #f8f7f4;
+}
+
+.loginCard {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.22fr);
+    width: min(100%, 1160px);
+    min-height: min(690px, calc(100svh - 2 * clamp(18px, 4vw, 56px)));
+    overflow: hidden;
+    border: 1px solid rgb(52 44 41 / 7%);
+    border-radius: 28px;
+    background: rgb(255 255 255 / 92%);
+    box-shadow:
+        0 34px 90px rgb(56 48 41 / 12%),
+        0 4px 16px rgb(56 48 41 / 4%);
+}
+
+.formPanel {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(34px, 6vw, 40px);
+    background:
+        radial-gradient(ellipse at 0 100%, rgb(245 240 231 / 56%), transparent 48%),
+        #fff;
+}
+
+.form {
+    width: 100%;
+    max-width: 370px;
+}
+
+.heading {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.visualPanel {
+    position: relative;
+    display: grid;
+    min-height: 100%;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        radial-gradient(ellipse at 70% 20%, rgb(236 224 204 / 70%), transparent 34%),
+        linear-gradient(145deg, #e8e5df 0%, #d6d8d1 52%, #c7d0cb 100%);
+}
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    width: min(76%, 510px);
+    aspect-ratio: 1;
+    border: 1px dashed rgb(75 86 75 / 32%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+    animation: orbit-spin 20s linear infinite !important;
+}
+
+.orbitInner {
+    width: min(58%, 390px);
+    border-color: rgb(120 78 52 / 32%);
+    animation-duration: 15s !important;
+    animation-direction: reverse !important;
+}
+
+.orbitOuter {
+    width: min(94%, 620px);
+    border-color: rgb(75 86 75 / 20%);
+    border-style: solid;
+    animation-duration: 28s !important;
+}
+
+.orbit::before,
+.orbit::after {
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    content: "";
+}
+
+.orbit::before {
+    top: 8%;
+    left: 50%;
+    width: 12px;
+    background: linear-gradient(90deg, #fff 100%, );
+    box-shadow: 0 0 14px 4px rgb(255 255 255 / 70%);
+    transform: translateX(-50%);
+}
+
+.orbit::after {
+    right: 16%;
+    bottom: 14%;
+    width: 8px;
+    background: linear-gradient(90deg, #fff 50%, );
+    box-shadow: 0 0 12px 3px rgb(255 255 255 / 60%);
+}
+
+.logo {
+    z-index: 1;
+    width: min(250px, 80%);
+    height: auto;
+    object-fit: contain;
+}
+
+@keyframes orbit-spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@media (max-width: 780px) {
+    .loginPage {
+        overflow: auto;
+        align-items: start;
+        padding: 14px 12px;
+    }
+
+    .loginCard {
+        grid-template-columns: minmax(0, 1fr);
+        width: min(100%, 520px);
+        min-height: auto;
+        border-radius: 24px;
+    }
+
+    .formPanel {
+        z-index: 2;
+        order: 1;
+        margin-top: -26px;
+        border-radius: 24px 24px 0 0;
+        padding: 28px clamp(24px, 8vw, 52px) 38px;
+    }
+
+    .visualPanel {
+        order: 0;
+        min-height: 0;
+        height: clamp(340px, 30svh, 250px);
+        aspect-ratio: auto;
+        background:
+            radial-gradient(ellipse at 50% 30%, rgb(255 255 255 / 60%), transparent 58%),
+            linear-gradient(150deg, #e9e5eb 0%, #e1e4df 58%, #d7dfda 100%);
+    }
+
+    .orbit {
+        width: min(52vw, 210px);
+    }
+
+    .orbitInner {
+        width: min(42vw, 170px);
+    }
+
+    .orbitOuter {
+        width: min(66vw, 270px);
+    }
+}
+
+@media (max-width: 380px) {
+    .loginPage {
+        padding: 12px;
+    }
+
+    .formPanel {
+        padding: 25px 20px 32px;
+    }
+}

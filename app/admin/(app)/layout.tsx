@@ -6,15 +6,13 @@ type Props = {
   children: React.ReactNode;
 };
 
-const layout = (props: Props) => {
+const layout = ({ children }: Props) => {
   return (
-    <html>
-      <body>
-        <Navbar />
-        {props.children}
-        <Footer />
-      </body>
-    </html>
+    <>
+      <Navbar />
+      <section className="wrapper">{children}</section>
+      <Footer />
+    </>
   );
 };
 

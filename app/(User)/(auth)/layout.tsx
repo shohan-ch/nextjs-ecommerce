@@ -1,4 +1,3 @@
-import { MuiUserThemeProvider } from "@/providers/UserThemeProvider";
 import React from "react";
 
 import "./auth.scss";
@@ -12,7 +11,7 @@ export default (props: Props) => {
 
   return (
     <>
-      <MuiUserThemeProvider>{children}</MuiUserThemeProvider>
+      <>{children}</>
     </>
   );
 };
