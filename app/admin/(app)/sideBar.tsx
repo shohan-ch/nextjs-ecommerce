@@ -101,84 +101,80 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
     },
   ];
 
-  console.log(openMenus, "menus");
+  const menuContents = (item: MenuItemType) => {
+    if (Object.hasOwn(item, "isShow") && !item.isShow) return null;
 
-  let menuContents = (item: MenuItemType) => (
-    <>
-      {Object.hasOwn(item, "isShow") && !item.isShow ? (
-        <></>
-      ) : (
+    if (item.type === "menu")
+      return (
         <>
-          {item.type == "menu" ? (
-            <>
-              <MenuItem
-                selected={item.menuItems!.some((menuItem: any) =>
-                  path.includes(menuItem.link),
-                )}
-                onClick={() =>
-                  setOpenMenus((previous) => ({
-                    ...previous,
-                    [item.label]: !previous[item.label],
-                  }))
-                }
-                sx={styles.menuItem}
-              >
-                <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
-                <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
-                {openMenus[item.label] ? (
-                  <ExpandLessIcon />
-                ) : (
-                  <ExpandMoreIcon />
-                )}
-              </MenuItem>
-              <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
-                <MenuList>
-                  {item.menuItems!.map((menuItem: any) => (
-                    <Link
-                      key={menuItem.label}
-                      href={menuItem.link}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <MenuItem
-                        selected={path.includes(menuItem.link)}
-                        sx={{ ...styles.menuItem, pl: 4 }}
-                      >
-                        {/* <ListItemIcon sx={styles.icon}>
-                                <CategoryOutlinedIcon />
-                              </ListItemIcon> */}
-                        <ListItemText sx={styles.itemText}>
-                          {menuItem.label}
-                        </ListItemText>
-                      </MenuItem>
-                    </Link>
-                  ))}
-                </MenuList>
-              </Collapse>
-            </>
-          ) : (
-            <>
-              <Link
-                href={item.link!}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                }}
-              >
-                <MenuItem
-                  selected={path.includes(item.link!)}
-                  sx={styles.menuItem}
-                  className="hlo<"
+          <MenuItem
+            selected={item.menuItems!.some((menuItem) =>
+              path.includes(menuItem.link),
+            )}
+            onClick={() =>
+              setOpenMenus((previous) => ({
+                ...previous,
+                [item.label]: !previous[item.label],
+              }))
+            }
+            sx={styles.menuItem}
+          >
+            <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
+            <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
+            {openMenus[item.label] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </MenuItem>
+          <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
+            <MenuList>
+              {item.menuItems!.map((menuItem) => (
+                <Link
+                  key={menuItem.label}
+                  href={menuItem.link}
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
-                  <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
-                </MenuItem>
-              </Link>
-            </>
-          )}
+                  <MenuItem
+                    selected={path.includes(menuItem.link)}
+                    sx={{ ...styles.menuItem, pl: 4 }}
+                  >
+                    <ListItemText sx={styles.itemText}>
+                      {menuItem.label}
+                    </ListItemText>
+                  </MenuItem>
+                </Link>
+              ))}
+            </MenuList>
+          </Collapse>
         </>
-      )}
-    </>
-  );
+      );
+
+    return (
+      <Link
+        href={item.link!}
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <MenuItem
+          selected={path.includes(item.link!)}
+          sx={styles.menuItem}
+          className="hlo<"
+        >
+          <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
+          <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
+        </MenuItem>
+      </Link>
+    );
+  };
+
+  const renderItems = (heading?: string) =>
+    items
+      .filter((item) =>
+        heading === undefined
+          ? true
+          : item.heading
+            ? item.heading === heading
+            : heading === "" || (heading === "Others" && !item.heading),
+      )
+      .map((item) => (
+        <React.Fragment key={item.label}>{menuContents(item)}</React.Fragment>
+      ));
 
   return (
     <>
@@ -203,31 +199,11 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
                   <Typography sx={styles.sectionHeading}>{heading}</Typography>
                   <Box sx={styles.divider} />
                 </Stack>
-
-                <MenuList>
-                  {items
-                    .filter((f) =>
-                      f.heading
-                        ? f.heading === heading
-                        : heading == "" ||
-                          (heading == "Others" && f.heading === undefined),
-                    )
-                    .map((item) => (
-                      <React.Fragment key={item.label}>
-                        {menuContents(item)}
-                      </React.Fragment>
-                    ))}
-                </MenuList>
+                <MenuList>{renderItems(heading)}</MenuList>
               </React.Fragment>
             ))
           ) : (
-            <MenuList>
-              {items.map((item) => (
-                <React.Fragment key={item.label}>
-                  {menuContents(item)}
-                </React.Fragment>
-              ))}
-            </MenuList>
+            <MenuList>{renderItems()}</MenuList>
           )}
         </Box>
       </Drawer>
