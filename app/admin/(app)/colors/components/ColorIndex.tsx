@@ -20,12 +20,13 @@ import {
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { Delete, DeleteOutlineOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Props = {};
 
 const ColorIndex = (props: Props) => {
-  const [selectedIds, setSelectedIds] = useState<any[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
   const columns: GridColDef<(typeof rows)[number]>[] = [
     { field: "id", headerName: "ID", width: 70 },
     {
@@ -90,13 +91,12 @@ const ColorIndex = (props: Props) => {
     alert("Delete " + id);
   };
 
-  const handleSelectChange = (row: GridRowSelectionModel) => {
-    const selectIds = Array.from(row.ids);
-    setSelectedIds(selectIds);
+  const handleSelectChange = (selectedIds: number[]) => {
+    setSelectedIds(selectedIds);
   };
 
-  const handleActivate = (type: boolean) => {
-    if (type) console.log(selectedIds, "active");
+  const handleActivate = (isActivate: boolean) => {
+    if (isActivate) console.log(selectedIds, "active");
     else console.log(selectedIds, "Inactive");
     setSelectedIds([]);
   };
@@ -143,10 +143,10 @@ const ColorIndex = (props: Props) => {
       <BaseTable
         onSelectchange={handleSelectChange}
         onActivateChange={handleActivate}
-        selectedIds={selectedIds}
         data={rows}
         columns={columns}
         isFooter={true}
+        // isShowSelection={false}
       />
     </>
   );

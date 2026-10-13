@@ -4,7 +4,7 @@ import {
   GridRowSelectionModel,
   GridValidRowModel,
 } from "@mui/x-data-grid";
-import React from "react";
+import React, { useRef, useState } from "react";
 import BaseTableFooter from "./BaseTableFooter";
 import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material/styles";
@@ -13,9 +13,9 @@ type Props<T extends GridValidRowModel> = {
   data: T[];
   columns: GridColDef<T>[];
   isFooter?: boolean;
-  onSelectchange?: (id: GridRowSelectionModel) => void;
-  selectedIds?: number[];
+  onSelectchange?: (ids: number[]) => void;
   onActivateChange?: (type: boolean) => void;
+  isShowSelection?: boolean;
 };
 
 const BaseTable = <T extends GridValidRowModel>({
@@ -23,18 +23,34 @@ const BaseTable = <T extends GridValidRowModel>({
   data,
   isFooter,
   onSelectchange,
-  selectedIds,
   onActivateChange,
+  isShowSelection = true,
 }: Props<T>) => {
-  // footer: isFooter ? BaseTableFooter : () => <></>,
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const handleSelectChange = (row: GridRowSelectionModel) => {
+    const visibleIds = Array.from(
+      tableRef.current?.querySelectorAll<HTMLElement>(
+        ".MuiDataGrid-row[data-id]",
+      ) ?? [],
+    )
+      .map((element) => Number(element.dataset.id))
+      .filter(Number.isFinite);
 
-  const id = 1;
+    const selectIds = visibleIds.filter((id) =>
+      row.type === "exclude" ? !row.ids.has(id) : row.ids.has(id),
+    );
+    setSelectedRowIds(selectIds);
+    if (onSelectchange) {
+      onSelectchange(selectIds);
+    }
+  };
+
   return (
     <>
       <DataGrid
-        onRowSelectionModelChange={(e) => {
-          if (onSelectchange) onSelectchange(e);
-        }}
+        ref={tableRef}
+        onRowSelectionModelChange={handleSelectChange}
         rows={data}
         columns={columns}
         showCellVerticalBorder={false}
@@ -47,14 +63,14 @@ const BaseTable = <T extends GridValidRowModel>({
           pagination: { paginationModel: { page: 0, pageSize: 10 } },
         }}
         pageSizeOptions={[5, 10, 25, 100]}
-        checkboxSelection
+        checkboxSelection={isShowSelection}
         disableRowSelectionOnClick
         slots={
           isFooter
             ? {
                 footer: () => (
                   <BaseTableFooter
-                    selectedIds={selectedIds}
+                    selectedIds={selectedRowIds}
                     onActiveChange={onActivateChange}
                   />
                 ),
