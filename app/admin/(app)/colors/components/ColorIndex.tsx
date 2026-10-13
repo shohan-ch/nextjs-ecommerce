@@ -101,8 +101,6 @@ const ColorIndex = (props: Props) => {
     setSelectedIds([]);
   };
 
-  console.log(selectedIds, "ids select");
-
   return (
     <>
       <Box className="mb-7">
@@ -141,10 +139,11 @@ const ColorIndex = (props: Props) => {
       {/* Table */}
 
       <BaseTable
-        onSelectchange={handleSelectChange}
-        onActivateChange={handleActivate}
         data={rows}
         columns={columns}
+        onSelectchange={handleSelectChange}
+        onActivateChange={handleActivate}
+        selectedIds={selectedIds}
         isFooter={true}
         // isShowSelection={false}
       />

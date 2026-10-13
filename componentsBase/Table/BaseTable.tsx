@@ -14,6 +14,7 @@ type Props<T extends GridValidRowModel> = {
   columns: GridColDef<T>[];
   isFooter?: boolean;
   onSelectchange?: (ids: number[]) => void;
+  selectedIds?: number[];
   onActivateChange?: (type: boolean) => void;
   isShowSelection?: boolean;
 };
@@ -23,11 +24,12 @@ const BaseTable = <T extends GridValidRowModel>({
   data,
   isFooter,
   onSelectchange,
+  selectedIds,
   onActivateChange,
   isShowSelection = true,
 }: Props<T>) => {
-  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const tableRef = useRef<HTMLDivElement>(null);
+
   const handleSelectChange = (row: GridRowSelectionModel) => {
     const visibleIds = Array.from(
       tableRef.current?.querySelectorAll<HTMLElement>(
@@ -40,15 +42,20 @@ const BaseTable = <T extends GridValidRowModel>({
     const selectIds = visibleIds.filter((id) =>
       row.type === "exclude" ? !row.ids.has(id) : row.ids.has(id),
     );
-    setSelectedRowIds(selectIds);
     if (onSelectchange) {
       onSelectchange(selectIds);
     }
   };
 
+  console.log(selectedIds, "sx");
+
   return (
     <>
       <DataGrid
+        rowSelectionModel={{
+          type: "include",
+          ids: new Set(selectedIds),
+        }}
         ref={tableRef}
         onRowSelectionModelChange={handleSelectChange}
         rows={data}
@@ -70,7 +77,7 @@ const BaseTable = <T extends GridValidRowModel>({
             ? {
                 footer: () => (
                   <BaseTableFooter
-                    selectedIds={selectedRowIds}
+                    selectedIds={selectedIds}
                     onActiveChange={onActivateChange}
                   />
                 ),
