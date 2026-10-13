@@ -142,11 +142,11 @@ const ColorIndex = (props: Props) => {
 
       <BaseTable
         onSelectchange={handleSelectChange}
-        // onActiveChange={handleActivate}
+        onActivateChange={handleActivate}
         selectedIds={selectedIds}
         data={rows}
         columns={columns}
-        // isFooter={true}
+        isFooter={true}
       />
     </>
   );

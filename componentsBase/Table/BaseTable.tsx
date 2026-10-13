@@ -13,9 +13,9 @@ type Props<T extends GridValidRowModel> = {
   data: T[];
   columns: GridColDef<T>[];
   isFooter?: boolean;
-  onSelectchange: (id: GridRowSelectionModel) => void;
+  onSelectchange?: (id: GridRowSelectionModel) => void;
   selectedIds?: number[];
-  onActiveChange?: (type: boolean) => void;
+  onActivateChange?: (type: boolean) => void;
 };
 
 const BaseTable = <T extends GridValidRowModel>({
@@ -24,7 +24,7 @@ const BaseTable = <T extends GridValidRowModel>({
   isFooter,
   onSelectchange,
   selectedIds,
-  onActiveChange,
+  onActivateChange,
 }: Props<T>) => {
   // footer: isFooter ? BaseTableFooter : () => <></>,
 
@@ -32,7 +32,9 @@ const BaseTable = <T extends GridValidRowModel>({
   return (
     <>
       <DataGrid
-        onRowSelectionModelChange={(e) => onSelectchange(e)}
+        onRowSelectionModelChange={(e) => {
+          if (onSelectchange) onSelectchange(e);
+        }}
         rows={data}
         columns={columns}
         showCellVerticalBorder={false}
@@ -53,7 +55,7 @@ const BaseTable = <T extends GridValidRowModel>({
                 footer: () => (
                   <BaseTableFooter
                     selectedIds={selectedIds}
-                    onActiveChange={onActiveChange}
+                    onActiveChange={onActivateChange}
                   />
                 ),
               }
