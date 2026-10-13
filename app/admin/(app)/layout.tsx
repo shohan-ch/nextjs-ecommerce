@@ -58,6 +58,7 @@ export default layout;
 
 const contentWrapper: SxProps = {
   flex: 1,
+  minWidth: 0,
   minHeight: {
     xs: "calc(100vh - 88px)",
     md: "calc(100vh - 96px)",

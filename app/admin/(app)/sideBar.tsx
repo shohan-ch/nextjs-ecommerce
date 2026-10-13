@@ -1,3 +1,5 @@
+"use client";
+
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
@@ -20,7 +22,7 @@ import {
 import type { SxProps, Theme } from "@mui/material/styles";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 type Props = {
   handleToggle: () => void;
   open: boolean;
@@ -42,7 +44,7 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
   const path = usePathname();
   const [openMenus, setOpenMenus] = React.useState<Record<string, boolean>>({});
   // const headings = []!;
-  const headings = ["Core", "Administrative", "Others"];
+  const headings = ["Core", "Products & Varations", "Others"];
 
   const items: MenuItemType[] = [
     {
@@ -53,12 +55,7 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
     },
 
     {
-      label: "Customers",
-      link: "/admin/customers",
-      icon: <SupervisorAccountOutlinedIcon />,
-    },
-    {
-      heading: "Core",
+      heading: "Products & Varations",
       type: "menu",
       label: "Products",
       icon: <Inventory2OutlinedIcon />,
@@ -70,13 +67,19 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
         },
         {
           label: "Color",
-          link: "/admin/categories",
+          link: "/admin/colors",
         },
         {
           label: "Size",
           link: "/admin/categories",
         },
       ],
+    },
+    {
+      heading: "Products & Varations",
+      label: "Customers",
+      link: "/admin/customers",
+      icon: <SupervisorAccountOutlinedIcon />,
     },
     {
       heading: "Administrative",
@@ -117,7 +120,11 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
                 [item.label]: !previous[item.label],
               }))
             }
-            sx={styles.menuItem}
+            sx={{
+              "&.Mui-selected": {
+                background: "transparent",
+              },
+            }}
           >
             <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
             <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
@@ -175,6 +182,8 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
       .map((item) => (
         <React.Fragment key={item.label}>{menuContents(item)}</React.Fragment>
       ));
+
+  // console.log(openMenus, "opt");
 
   return (
     <>
