@@ -19,14 +19,22 @@ import {
   GridRowSelectionCheckboxParams,
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { Delete, DeleteOutlineOutlined } from "@mui/icons-material";
+import {
+  Delete,
+  DeleteOutlineOutlined,
+  EditOutlined,
+} from "@mui/icons-material";
 import { useRef, useState } from "react";
+import BaseModal from "@/componentsBase/Modal/BaseModal";
+import CreateColorIndex from "./CreateColorIndex";
+import { IColor } from "@/types/type";
+import { useModalService } from "@/providers/ModalProvider";
 
 type Props = {};
 
 const ColorIndex = (props: Props) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const tableRef = useRef<HTMLDivElement>(null);
+  const modal = useModalService();
   const columns: GridColDef<(typeof rows)[number]>[] = [
     { field: "id", headerName: "ID", width: 70 },
     {
@@ -66,11 +74,20 @@ const ColorIndex = (props: Props) => {
       headerName: "Action",
       sortable: false,
       width: 100,
-      renderCell: ({ row: { id } }) => (
-        <IconButton onClick={() => handleDelete(id)} size="small">
-          <DeleteOutlineOutlined color="primary" />
-        </IconButton>
-      ),
+      renderCell: ({ row }) => {
+        const { id } = row;
+
+        return (
+          <>
+            <IconButton onClick={() => handleModal(row)} size="small">
+              <EditOutlined color="primary" />
+            </IconButton>
+            <IconButton onClick={() => handleDelete(id)} size="small">
+              <DeleteOutlineOutlined color="primary" />
+            </IconButton>
+          </>
+        );
+      },
     },
   ];
 
@@ -89,6 +106,16 @@ const ColorIndex = (props: Props) => {
 
   const handleDelete = (id: number) => {
     alert("Delete " + id);
+  };
+
+  const handleModal = (row?: any) => {
+    const data = row ? row : null;
+    const title = row ? "Update Color" : "Add Color";
+
+    modal?.open({
+      title,
+      component: <CreateColorIndex data={data} />,
+    });
   };
 
   const handleSelectChange = (selectedIds: number[]) => {
@@ -130,6 +157,7 @@ const ColorIndex = (props: Props) => {
             startIcon={<AddIcon fontSize="small" />}
             variant="contained"
             size="small"
+            onClick={() => handleModal()}
           >
             Add New
           </Button>
