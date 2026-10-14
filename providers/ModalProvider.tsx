@@ -33,7 +33,7 @@ const ModalProvider = ({ children }: Props) => {
   const [modalState, setModalState] = useState<ModalOpenType>();
 
   const handleOpen = (param: ModalOpenType) => {
-    console.log(param, "param got");
+    // console.log(param, "param got");
     setOpen(true);
     setModalState({
       title: param.title,

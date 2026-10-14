@@ -12,29 +12,23 @@ import {
 } from "@mui/material";
 
 import BaseTable from "@/componentsBase/Table/BaseTable";
+import { useModalService } from "@/providers/ModalProvider";
+import { DeleteOutlineOutlined, EditOutlined } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import {
-  GridColDef,
-  GridRowSelectionCheckboxParams,
-  GridRowSelectionModel,
-} from "@mui/x-data-grid";
-import {
-  Delete,
-  DeleteOutlineOutlined,
-  EditOutlined,
-} from "@mui/icons-material";
-import { useRef, useState } from "react";
-import BaseModal from "@/componentsBase/Modal/BaseModal";
+import { GridColDef } from "@mui/x-data-grid";
+import { useState } from "react";
 import CreateColorIndex from "./CreateColorIndex";
-import { IColor } from "@/types/type";
-import { useModalService } from "@/providers/ModalProvider";
+import { usePopConfirmService } from "@/providers/PopConfirmProvider";
+import { useSnackBar } from "@/providers/SnackbarProvider";
 
 type Props = {};
 
 const ColorIndex = (props: Props) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const modal = useModalService();
+  const confirm = usePopConfirmService();
+  const snackBar = useSnackBar();
   const columns: GridColDef<(typeof rows)[number]>[] = [
     { field: "id", headerName: "ID", width: 70 },
     {
@@ -82,7 +76,10 @@ const ColorIndex = (props: Props) => {
             <IconButton onClick={() => handleModal(row)} size="small">
               <EditOutlined color="primary" />
             </IconButton>
-            <IconButton onClick={() => handleDelete(id)} size="small">
+            <IconButton
+              onClick={(e) => handleDelete(id, e.currentTarget)}
+              size="small"
+            >
               <DeleteOutlineOutlined color="primary" />
             </IconButton>
           </>
@@ -104,8 +101,15 @@ const ColorIndex = (props: Props) => {
     { id: 10, name: "sdsRoxie", colorCode: "ddHarvey", status: 0 },
   ];
 
-  const handleDelete = (id: number) => {
-    alert("Delete " + id);
+  const handleDelete = (id: number, element: any) => {
+    confirm.open({
+      title: "Are you sure",
+      anchorEl: element,
+      handleOk: () => {
+        console.log(id);
+        snackBar?.open({ type: "success", message: "Succefully deleted!" });
+      },
+    });
   };
 
   const handleModal = (row?: any) => {

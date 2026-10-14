@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import React from "react";
 import "./globals.scss";
 import StoreProvider from "@/store/StoreProvider";
+import PopConfirmProvider from "@/providers/PopConfirmProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <body>
         <StoreProvider>
-          <SnackbarProvider>{children}</SnackbarProvider>
+          <PopConfirmProvider>
+            <SnackbarProvider>{children}</SnackbarProvider>
+          </PopConfirmProvider>
         </StoreProvider>
       </body>
     </html>

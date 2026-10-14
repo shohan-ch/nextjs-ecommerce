@@ -46,7 +46,11 @@ const SnackbarProvider = ({ children }: { children: React.ReactNode }) => {
           autoHideDuration={3000}
           onClose={handleClose}
         >
-          <Alert onClose={handleClose} severity={type || "success"}>
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity={type || "success"}
+          >
             {message}
           </Alert>
         </Snackbar>

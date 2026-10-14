@@ -7,7 +7,7 @@ type Props = {
 };
 
 const CreateColorIndex = ({ data }: Props) => {
-  console.log(data, "modalData");
+  // console.log(data, "modalData");
   let modal = useModalService();
 
   return (
