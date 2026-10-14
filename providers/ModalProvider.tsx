@@ -1,12 +1,11 @@
 "use client";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
+  Zoom,
 } from "@mui/material";
 import React, { createContext, useContext, useState } from "react";
 
@@ -68,7 +67,26 @@ const ModalProvider = ({ children }: Props) => {
           close: handleClose,
         }}
       >
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog
+          transitionDuration={{ enter: 200, exit: 150 }}
+          open={open}
+          onClose={handleClose}
+          slots={{
+            transition: Zoom,
+          }}
+          slotProps={{
+            container: {
+              sx: {
+                alignItems: "flex-start",
+              },
+            },
+            paper: {
+              sx: {
+                mt: 10,
+              },
+            },
+          }}
+        >
           <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
             {modalState?.title}{" "}
           </DialogTitle>

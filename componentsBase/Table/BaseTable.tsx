@@ -90,7 +90,7 @@ const BaseTable = <T extends GridValidRowModel>({
   );
 };
 
-export default BaseTable;
+export default React.memo(BaseTable) as typeof BaseTable;
 
 const styles = {
   border: "none",
