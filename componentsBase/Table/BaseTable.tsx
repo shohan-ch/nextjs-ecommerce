@@ -96,6 +96,7 @@ const styles = {
   border: "none",
   "& .MuiDataGrid-cell": {
     border: "none",
+    // fontSize: "12px",
   },
 
   "& .MuiDataGrid-columnHeader": {

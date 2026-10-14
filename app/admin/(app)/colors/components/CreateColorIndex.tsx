@@ -1,28 +1,74 @@
+import BaseInputController from "@/componentsBase/form/BaseInputController";
 import { useModalService } from "@/providers/ModalProvider";
-import { Button, Divider, Stack } from "@mui/material";
-import React, { Ref } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, Divider, Stack } from "@mui/material";
+import React, { Ref, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { infer, z } from "zod";
 
 type Props = {
   data?: any;
 };
 
+const ColorForm = z.object({
+  name: z.string("Name is required").trim().nonempty(),
+  colorCode: z.string("Color code is required").trim().nonempty(),
+  status: z.string("Status is required"),
+});
+
+type ColorFormType = z.infer<typeof ColorForm>;
+
 const CreateColorIndex = ({ data }: Props) => {
-  // console.log(data, "modalData");
+  console.log(data, "dts");
   let modal = useModalService();
+  const { control, handleSubmit, setValue, setValues } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(ColorForm),
+  });
+
+  useEffect(() => {
+    if (data) {
+      setValues({
+        name: data.name,
+        colorCode: data.colorCode,
+        status: data.status ? "Active" : "Inactive",
+      });
+    }
+  }, []);
+  const onSubmit = (formData: ColorFormType) => {
+    console.log(formData);
+  };
 
   return (
     <>
-      <p>
-        {" "}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
-        nostrum quia suscipit quasi nesciunt beatae minima alias cupiditate
-        fugiat natus?
-      </p>
+      <Stack direction={"column"} spacing={3} className="mt-3">
+        <BaseInputController
+          placeHolder="Name"
+          label="Color Name"
+          control={control}
+          name="name"
+        />
+        <BaseInputController
+          placeHolder="Code"
+          label="Color Code"
+          control={control}
+          name="colorCode"
+        />
 
-      {data ? JSON.stringify(data) : ""}
+        <Box sx={{ width: "40%" }}>
+          <BaseInputController
+            placeHolder="Status"
+            label="Status"
+            control={control}
+            name="status"
+            type="select"
+            items={["Active", "Inactive"]}
+          />
+        </Box>
+      </Stack>
 
       <Stack
-        className="pt-4"
+        className="pt-12"
         direction="row"
         spacing={2}
         sx={{ justifyContent: "end" }}
@@ -30,7 +76,9 @@ const CreateColorIndex = ({ data }: Props) => {
         <Button variant="outlined" onClick={modal.close}>
           Cancel{" "}
         </Button>
-        <Button variant="contained">Add </Button>
+        <Button onClick={handleSubmit(onSubmit)} variant="contained">
+          {data ? "Update" : "Add"}
+        </Button>
       </Stack>
     </>
   );

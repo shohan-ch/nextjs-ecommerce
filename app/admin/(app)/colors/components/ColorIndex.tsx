@@ -30,7 +30,20 @@ const ColorIndex = (props: Props) => {
   const confirm = usePopConfirmService();
   const snackBar = useSnackBar();
   const columns: GridColDef<(typeof rows)[number]>[] = [
-    { field: "id", headerName: "ID", width: 70 },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+
+      renderCell: ({ value }) => (
+        <Typography
+          component={"span"}
+          sx={{ fontWeight: "600", color: "primary.main", fontSize: "14px " }}
+        >
+          {value}
+        </Typography>
+      ),
+    },
     {
       field: "name",
       headerName: "Color Name",
@@ -119,6 +132,7 @@ const ColorIndex = (props: Props) => {
     modal?.open({
       title,
       component: <CreateColorIndex data={data} />,
+      width: "xs",
     });
   };
 

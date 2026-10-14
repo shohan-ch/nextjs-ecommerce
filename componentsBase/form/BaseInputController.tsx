@@ -5,6 +5,7 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
+  InputLabel,
   MenuItem,
   Radio,
   TextField,
@@ -17,7 +18,8 @@ import { text } from "stream/consumers";
 type Props = {
   control: any;
   name: string;
-  label?: string;
+  label: string;
+  placeHolder?: string;
   type?: "text" | "select" | "checkbox" | "radio";
   inputType?: React.HTMLInputTypeAttribute;
   items?: any[];
@@ -32,6 +34,7 @@ const BaseInputController = (props: Props) => {
     type = "text",
     inputType = "text",
     label,
+    placeHolder,
     items = [],
     checkedItem = [],
     helperText,
@@ -44,22 +47,41 @@ const BaseInputController = (props: Props) => {
         name={name}
         control={control}
         render={({ field, fieldState }) => {
-          //   console.log(field, "field");
+          console.log(fieldState, "fieldSate");
 
           let textShowFirstLoad =
             helperText && !fieldState.isTouched ? helperText : undefined;
 
           if (type == "text") {
             return (
-              <TextField
-                type={inputType}
-                {...field}
-                label={label}
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message || textShowFirstLoad}
-                size="small"
-                fullWidth
-              />
+              <>
+                {placeHolder && (
+                  <FormLabel
+                    htmlFor={field.name}
+                    sx={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      mb: 1.5,
+                      display: "block",
+                    }}
+                  >
+                    {" "}
+                    {label}
+                  </FormLabel>
+                )}
+
+                <TextField
+                  id={field.name}
+                  type={inputType}
+                  {...field}
+                  label={placeHolder || label}
+                  error={fieldState.invalid}
+                  helperText={fieldState.error?.message || textShowFirstLoad}
+                  size="small"
+                  fullWidth
+                />
+              </>
             );
           }
 
@@ -171,9 +193,24 @@ const BaseInputController = (props: Props) => {
             console.log(field.value, "f value");
             return (
               <>
+                {placeHolder && (
+                  <FormLabel
+                    sx={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      mb: 1.5,
+                      display: "block",
+                    }}
+                  >
+                    {" "}
+                    {label}
+                  </FormLabel>
+                )}
+
                 <TextField
                   select
-                  label={label}
+                  label={placeHolder ? placeHolder : label}
                   size="small"
                   error={fieldState.invalid}
                   helperText={fieldState.error ? fieldState.error.message : ""}
@@ -204,4 +241,4 @@ const BaseInputController = (props: Props) => {
   );
 };
 
-export default BaseInputController;
+export default React.memo(BaseInputController);

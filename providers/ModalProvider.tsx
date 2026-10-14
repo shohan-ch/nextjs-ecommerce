@@ -12,6 +12,7 @@ import React, { createContext, useContext, useState } from "react";
 type ModalOpenType = {
   title: string;
   component: React.ReactNode;
+  width?: "xs" | "sm" | "md" | "lg" | "xl";
   onOk?: () => void | null;
   onCancel?: () => void | null;
 };
@@ -32,14 +33,16 @@ const ModalProvider = ({ children }: Props) => {
   const [modalState, setModalState] = useState<ModalOpenType>();
 
   const handleOpen = (param: ModalOpenType) => {
-    // console.log(param, "param got");
+    console.log(param, "param got");
     setOpen(true);
-    setModalState({
-      title: param.title,
-      component: param.component,
-      onOk: param.onOk ? param.onOk : undefined,
-      onCancel: param.onCancel ? param.onCancel : undefined,
-    });
+    // setModalState({
+    //   title: param.title,
+    //   component: param.component,
+    //   onOk: param.onOk ? param.onOk : undefined,
+    //   onCancel: param.onCancel ? param.onCancel : undefined,
+    //   width: param.width,
+    // });
+    setModalState(param);
   };
 
   const handleClose = () => {
@@ -68,6 +71,8 @@ const ModalProvider = ({ children }: Props) => {
         }}
       >
         <Dialog
+          maxWidth={modalState?.width || "sm"}
+          fullWidth
           transitionDuration={{ enter: 200, exit: 150 }}
           open={open}
           onClose={handleClose}
@@ -83,11 +88,15 @@ const ModalProvider = ({ children }: Props) => {
             paper: {
               sx: {
                 mt: 10,
+                // minWidth: { xs: "88vw", sm: 550 },
               },
             },
           }}
         >
-          <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          <DialogTitle
+            sx={{ m: 0, p: 2, fontWeight: 600 }}
+            id="customized-dialog-title"
+          >
             {modalState?.title}{" "}
           </DialogTitle>
           <IconButton
