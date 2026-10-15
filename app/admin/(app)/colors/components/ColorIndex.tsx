@@ -18,7 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import CreateColorIndex from "./CreateColorIndex";
+import CreateColorIndex from "./ColorDetails";
 import { usePopConfirmService } from "@/providers/PopConfirmProvider";
 import { useSnackBar } from "@/providers/SnackbarProvider";
 
