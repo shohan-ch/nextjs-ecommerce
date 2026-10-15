@@ -71,7 +71,7 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
         },
         {
           label: "Size",
-          link: "/admin/categories",
+          link: "/admin/sizes",
         },
       ],
     },
