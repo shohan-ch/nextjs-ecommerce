@@ -19,7 +19,6 @@ const layout = ({ children }: Props) => {
     setOpen((prev) => !prev);
   };
   const drawerWidth = "200";
-  console.log(isSmallScreen, "parent");
 
   return (
     <>

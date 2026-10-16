@@ -17,19 +17,28 @@ import { DeleteOutlineOutlined, EditOutlined } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateColorIndex from "./ColorDetails";
 import { usePopConfirmService } from "@/providers/PopConfirmProvider";
 import { useSnackBar } from "@/providers/SnackbarProvider";
+import {
+  useDeleteColorMutation,
+  useGetColorsQuery,
+} from "@/store/api/admin/colorApi";
+import { IColor } from "@/types/type";
 
 type Props = {};
 
 const ColorIndex = (props: Props) => {
+  const { data, isFetching, isLoading } = useGetColorsQuery();
+  const [listOfData, setListOfData] = useState<IColor[]>();
+
+  const [deleteApiCall] = useDeleteColorMutation();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const modal = useModalService();
   const confirm = usePopConfirmService();
   const snackBar = useSnackBar();
-  const columns: GridColDef<(typeof rows)[number]>[] = [
+  const columns: GridColDef<IColor>[] = [
     {
       field: "id",
       headerName: "ID",
@@ -101,26 +110,22 @@ const ColorIndex = (props: Props) => {
     },
   ];
 
-  const rows = [
-    { id: 1, name: "Brown", colorCode: "Jon", status: 1 },
-    { id: 2, name: "Black", colorCode: "Cersei", status: 0 },
-    { id: 3, name: "Black", colorCode: "Jaime", status: 0 },
-    { id: 4, name: "Stark", colorCode: "Arya", status: 1 },
-    { id: 5, name: "White", colorCode: "Daenerys", status: 0 },
-    { id: 6, name: "Melisandre", colorCode: null, status: 1 },
-    { id: 7, name: "Gray", colorCode: "Ferrara", status: 0 },
-    { id: 8, name: "Frances", colorCode: "Rossini", status: 1 },
-    { id: 9, name: "Roxie", colorCode: "Harvey", status: 1 },
-    { id: 10, name: "sdsRoxie", colorCode: "ddHarvey", status: 0 },
-  ];
+  useEffect(() => {
+    if (data) setListOfData(data);
+  }, [data]);
 
   const handleDelete = (id: number, element: any) => {
     confirm.open({
       title: "Are you sure",
       anchorEl: element,
-      handleOk: () => {
-        console.log(id);
-        snackBar?.open({ type: "success", message: "Succefully deleted!" });
+      handleOk: async () => {
+        try {
+          const deleteRecord = await deleteApiCall(id).unwrap();
+          snackBar?.open({ type: "success", message: "Succefully deleted!" });
+        } catch (error: any) {
+          console.log(error);
+          snackBar?.open({ type: "error", message: "Failed to delete!" });
+        }
       },
     });
   };
@@ -128,8 +133,7 @@ const ColorIndex = (props: Props) => {
   const handleModal = (row?: any) => {
     const data = row ? row : null;
     const title = row ? "Update Color" : "Add Color";
-
-    modal?.open({
+    modal.open({
       title,
       component: <CreateColorIndex data={data} />,
       width: "xs",
@@ -144,6 +148,21 @@ const ColorIndex = (props: Props) => {
     if (isActivate) console.log(selectedIds, "active");
     else console.log(selectedIds, "Inactive");
     setSelectedIds([]);
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim().toLowerCase();
+    if (!value) {
+      setListOfData(data);
+      return;
+    }
+    setListOfData(
+      data?.filter(
+        (f) =>
+          f.name.toLowerCase().includes(value) ||
+          f.colorCode.toLowerCase().includes(value),
+      ),
+    );
   };
 
   return (
@@ -168,6 +187,7 @@ const ColorIndex = (props: Props) => {
                 ),
               },
             }}
+            onChange={handleSearch}
           />
 
           <Button
@@ -185,16 +205,17 @@ const ColorIndex = (props: Props) => {
       {/* Table */}
 
       <BaseTable
-        data={rows}
+        data={listOfData ?? []}
         columns={columns}
         onSelectchange={handleSelectChange}
         onActivateChange={handleActivate}
         selectedIds={selectedIds}
         isFooter={true}
+        isLoading={isFetching}
         // isShowSelection={false}
       />
     </>
   );
 };
 
-export default ColorIndex;
+export default React.memo(ColorIndex);

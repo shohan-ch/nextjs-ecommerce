@@ -1,8 +1,8 @@
 export interface IColor {
-  id?: number;
+  id: number;
   name: string;
   colorCode: string;
-  active: boolean;
+  status: number;
   createdAt?: string;
   updatedAt?: string;
 }

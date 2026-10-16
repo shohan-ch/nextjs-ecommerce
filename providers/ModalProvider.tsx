@@ -19,7 +19,7 @@ type ModalOpenType = {
 
 type ModalContextType = {
   open: (param: ModalOpenType) => void;
-  close?: () => void;
+  close: () => void;
 };
 
 const ModalContext = createContext<ModalContextType | null>(null);

@@ -47,7 +47,7 @@ const BaseInputController = (props: Props) => {
         name={name}
         control={control}
         render={({ field, fieldState }) => {
-          console.log(fieldState, "fieldSate");
+          // console.log(fieldState, "fieldSate");
 
           let textShowFirstLoad =
             helperText && !fieldState.isTouched ? helperText : undefined;
@@ -146,7 +146,7 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "radio") {
-            console.log(field.value, "radio val");
+            // console.log(field.value, "radio val");
             return (
               <>
                 {label && (
@@ -190,7 +190,7 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "select") {
-            console.log(field.value, "f value");
+            // console.log(field.value, "f value");
             return (
               <>
                 {placeHolder && (
@@ -210,7 +210,7 @@ const BaseInputController = (props: Props) => {
 
                 <TextField
                   select
-                  label={placeHolder ? placeHolder : label}
+                  label={placeHolder || label}
                   size="small"
                   error={fieldState.invalid}
                   helperText={fieldState.error ? fieldState.error.message : ""}
@@ -218,9 +218,12 @@ const BaseInputController = (props: Props) => {
                   {...field}
                 >
                   {items.map((item, index) => {
-                    let itemValue = item.id ? item.id : item;
+                    let itemValue = item.id ?? item.value ?? item;
                     let select = field.value == itemValue;
-                    const label = item.id ? item.name : item;
+                    const label =
+                      item.id !== undefined || item.value !== undefined
+                        ? item.name
+                        : item;
 
                     return (
                       <MenuItem key={index} value={itemValue} selected={select}>

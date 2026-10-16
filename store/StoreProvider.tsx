@@ -21,7 +21,7 @@ const StoreProvider = ({ children }: Props) => {
     const unsubscribe = store.subscribe(() => {
       const carts = store.getState().cart;
       localStorage.setItem("cart", JSON.stringify(carts));
-      console.log("run page change");
+      // console.log("run page change");
     });
     return unsubscribe;
   }, []);

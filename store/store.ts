@@ -2,12 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import counter from "./slices/CountSlice";
 import cart from "./slices/CartSlice";
+import { adminApi } from "./api/admin/api";
 
 export const store = configureStore({
   reducer: {
     counter,
     cart,
+    [adminApi.reducerPath]: adminApi.reducer,
   },
+  middleware: (getDefault) => getDefault().concat(adminApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

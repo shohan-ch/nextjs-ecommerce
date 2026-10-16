@@ -17,6 +17,7 @@ type Props<T extends GridValidRowModel> = {
   selectedIds?: number[];
   onActivateChange?: (type: boolean) => void;
   isShowSelection?: boolean;
+  isLoading?: boolean;
 };
 
 const BaseTable = <T extends GridValidRowModel>({
@@ -27,6 +28,7 @@ const BaseTable = <T extends GridValidRowModel>({
   selectedIds,
   onActivateChange,
   isShowSelection = true,
+  isLoading = false,
 }: Props<T>) => {
   const tableRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +49,7 @@ const BaseTable = <T extends GridValidRowModel>({
     }
   };
 
-  console.log(selectedIds, "sx");
+  console.log("table render");
 
   return (
     <>
@@ -72,6 +74,7 @@ const BaseTable = <T extends GridValidRowModel>({
         pageSizeOptions={[5, 10, 25, 100]}
         checkboxSelection={isShowSelection}
         disableRowSelectionOnClick
+        loading={isLoading}
         slots={
           isFooter
             ? {
