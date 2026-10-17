@@ -1,3 +1,4 @@
+import ConfirmProvider from "@/providers/ConfirmProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import { MuiThemeProvider } from "@/providers/ThemeProvider";
 import React from "react";
@@ -9,7 +10,9 @@ type Props = {
 const layout = ({ children }: Props) => {
   return (
     <MuiThemeProvider theme={"admin"}>
-      <ModalProvider>{children}</ModalProvider>
+      <ConfirmProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </ConfirmProvider>
     </MuiThemeProvider>
   );
 };

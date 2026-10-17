@@ -13,109 +13,125 @@ import {
 
 import BaseTable from "@/componentsBase/Table/BaseTable";
 import { useModalService } from "@/providers/ModalProvider";
-import { DeleteOutlineOutlined, EditOutlined } from "@mui/icons-material";
-import AddIcon from "@mui/icons-material/Add";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { GridColDef } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
-import CreateColorIndex from "./ColorDetails";
 import { usePopConfirmService } from "@/providers/PopConfirmProvider";
 import { useSnackBar } from "@/providers/SnackbarProvider";
 import {
   useDeleteColorMutation,
   useGetColorsQuery,
+  useToggelStatusMutation,
 } from "@/store/api/admin/colorApi";
 import { IColor } from "@/types/type";
+import { DeleteOutlineOutlined, EditOutlined, Try } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { GridColDef } from "@mui/x-data-grid";
+import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
+import CreateColorIndex from "./ColorDetails";
+import { useConfirmService } from "@/providers/ConfirmProvider";
 
 type Props = {};
 
 const ColorIndex = (props: Props) => {
   const { data, isFetching, isLoading } = useGetColorsQuery();
-  const [listOfData, setListOfData] = useState<IColor[]>();
-
+  const [toggleStatusApi] = useToggelStatusMutation();
   const [deleteApiCall] = useDeleteColorMutation();
+  const [searchText, setSearchText] = useState("");
+  const deferredSearch = useDeferredValue(searchText);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const modal = useModalService();
-  const confirm = usePopConfirmService();
+  const confirmService = useConfirmService();
+  const popConfirm = usePopConfirmService();
   const snackBar = useSnackBar();
-  const columns: GridColDef<IColor>[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 70,
+  const columns = useMemo<GridColDef<IColor>[]>(
+    () => [
+      {
+        field: "id",
+        headerName: "ID",
+        width: 70,
 
-      renderCell: ({ value }) => (
-        <Typography
-          component={"span"}
-          sx={{ fontWeight: "600", color: "primary.main", fontSize: "14px " }}
-        >
-          {value}
-        </Typography>
-      ),
-    },
-    {
-      field: "name",
-      headerName: "Color Name",
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "colorCode",
-      headerName: "Color Code",
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      minWidth: 150,
-      renderCell: ({ row: { status } }) => {
-        return (
-          <Chip
-            label={status ? "Active" : "Inactive"}
-            sx={{
-              bgcolor: status ? "#44cf6c" : "#f9cb40",
-              color: "white",
-              width: "105px",
-              borderRadius: 2,
-            }}
-          />
-        );
+        renderCell: ({ value }) => (
+          <Typography
+            component={"span"}
+            sx={{ fontWeight: "600", color: "primary.main", fontSize: "14px " }}
+          >
+            {value}
+          </Typography>
+        ),
       },
-    },
-
-    {
-      field: "",
-      headerName: "Action",
-      sortable: false,
-      width: 100,
-      renderCell: ({ row }) => {
-        const { id } = row;
-
-        return (
-          <>
-            <IconButton onClick={() => handleModal(row)} size="small">
-              <EditOutlined color="primary" />
-            </IconButton>
-            <IconButton
-              onClick={(e) => handleDelete(id, e.currentTarget)}
-              size="small"
-            >
-              <DeleteOutlineOutlined color="primary" />
-            </IconButton>
-          </>
-        );
+      {
+        field: "name",
+        headerName: "Color Name",
+        flex: 1,
+        minWidth: 150,
       },
-    },
-  ];
+      {
+        field: "colorCode",
+        headerName: "Color Code",
+        flex: 1,
+        minWidth: 150,
+      },
+      {
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        minWidth: 150,
+        renderCell: ({ row: { status } }) => {
+          return (
+            <Chip
+              label={status ? "Active" : "Inactive"}
+              sx={{
+                bgcolor: status ? "#44cf6c" : "#f9cb40",
+                color: "white",
+                width: "105px",
+                borderRadius: 2,
+              }}
+            />
+          );
+        },
+      },
 
-  useEffect(() => {
-    if (data) setListOfData(data);
-  }, [data]);
+      {
+        field: "",
+        headerName: "Action",
+        sortable: false,
+        width: 100,
+        renderCell: ({ row }) => {
+          const { id } = row;
+
+          return (
+            <>
+              <IconButton onClick={() => handleModal(row)} size="small">
+                <EditOutlined color="primary" />
+              </IconButton>
+              <IconButton
+                onClick={(e) => handleDelete(id, e.currentTarget)}
+                size="small"
+              >
+                <DeleteOutlineOutlined color="primary" />
+              </IconButton>
+            </>
+          );
+        },
+      },
+    ],
+    [],
+  );
+
+  const listOfData = useMemo(() => {
+    const search = deferredSearch.toLowerCase();
+
+    if (!search) {
+      return data ?? [];
+    }
+    return (data ?? []).filter(
+      (item) =>
+        item.name.toLowerCase().includes(search) ||
+        item.colorCode.toLowerCase().includes(search),
+    );
+  }, [data, deferredSearch]);
 
   const handleDelete = (id: number, element: any) => {
-    confirm.open({
+    popConfirm.open({
       title: "Are you sure",
       anchorEl: element,
       handleOk: async () => {
@@ -138,31 +154,48 @@ const ColorIndex = (props: Props) => {
       component: <CreateColorIndex data={data} />,
       width: "xs",
     });
+    setSearchText("");
   };
 
-  const handleSelectChange = (selectedIds: number[]) => {
-    setSelectedIds(selectedIds);
-  };
+  const handleSelectChange = useCallback(
+    (ids: number[], isUnselectAll?: boolean) => {
+      if (isUnselectAll) {
+        setSelectedIds([]);
+        return;
+      }
+      setSelectedIds(ids);
+    },
+    [],
+  );
 
-  const handleActivate = (isActivate: boolean) => {
-    if (isActivate) console.log(selectedIds, "active");
-    else console.log(selectedIds, "Inactive");
-    setSelectedIds([]);
-  };
+  const handleActivate = useCallback(
+    (isActivate: boolean) => {
+      if (selectedIds.length > 0)
+        confirmService.open({
+          title: "Are you sure?",
+          onOk: async () => {
+            try {
+              let result = await toggleStatusApi({
+                ids: selectedIds,
+                status: isActivate ? 1 : 0,
+              }).unwrap();
+              setSelectedIds([]);
+              confirmService.close();
+              snackBar?.open({
+                type: "success",
+                message: "Successfully update",
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          },
+        });
+    },
+    [selectedIds],
+  );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim().toLowerCase();
-    if (!value) {
-      setListOfData(data);
-      return;
-    }
-    setListOfData(
-      data?.filter(
-        (f) =>
-          f.name.toLowerCase().includes(value) ||
-          f.colorCode.toLowerCase().includes(value),
-      ),
-    );
+    setSearchText(e.target.value);
   };
 
   return (
@@ -178,6 +211,7 @@ const ColorIndex = (props: Props) => {
             size="small"
             sx={{ minWidth: "20vw", maxWidth: "52vw" }}
             variant="outlined"
+            value={searchText}
             slotProps={{
               input: {
                 endAdornment: (
@@ -205,14 +239,14 @@ const ColorIndex = (props: Props) => {
       {/* Table */}
 
       <BaseTable
-        data={listOfData ?? []}
+        data={listOfData}
         columns={columns}
         onSelectchange={handleSelectChange}
         onActivateChange={handleActivate}
         selectedIds={selectedIds}
         isFooter={true}
         isLoading={isFetching}
-        // isShowSelection={false}
+        isShowSelection={true}
       />
     </>
   );

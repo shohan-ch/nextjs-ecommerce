@@ -1,6 +1,17 @@
 import { IColor } from "@/types/type";
 import { adminApi } from "./api";
 
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
+const invalidateTags = (
+  result: any,
+  error: FetchBaseQueryError | undefined,
+) => {
+  return error ? [] : (["Color"] as const);
+};
+
+type StatusType = { ids: number[]; status: number };
+
 const userApi = adminApi.injectEndpoints({
   endpoints: (build) => ({
     getColors: build.query<IColor[], void>({
@@ -15,7 +26,7 @@ const userApi = adminApi.injectEndpoints({
         body: data,
       }),
 
-      invalidatesTags: (result, error) => (error ? [] : ["Color"]),
+      invalidatesTags: invalidateTags,
     }),
 
     updateColor: build.mutation<void, Partial<IColor>>({
@@ -27,7 +38,7 @@ const userApi = adminApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: (result, error) => (error ? [] : ["Color"]),
+      invalidatesTags: invalidateTags,
     }),
 
     deleteColor: build.mutation({
@@ -38,7 +49,19 @@ const userApi = adminApi.injectEndpoints({
         };
       },
 
-      invalidatesTags: (result, error) => (error ? [] : ["Color"]),
+      invalidatesTags: invalidateTags,
+    }),
+
+    toggelStatus: build.mutation<void, StatusType>({
+      query: (data) => {
+        return {
+          url: "/colors/status-change",
+          method: "POST",
+          body: { ids: data.ids, status: data.status },
+        };
+      },
+
+      invalidatesTags: invalidateTags,
     }),
   }),
 });
@@ -48,4 +71,5 @@ export const {
   useCreateColorMutation,
   useUpdateColorMutation,
   useDeleteColorMutation,
+  useToggelStatusMutation,
 } = userApi;

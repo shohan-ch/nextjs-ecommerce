@@ -13,7 +13,7 @@ type Props<T extends GridValidRowModel> = {
   data: T[];
   columns: GridColDef<T>[];
   isFooter?: boolean;
-  onSelectchange?: (ids: number[]) => void;
+  onSelectchange?: (ids: number[], isUnselectAll?: boolean) => void;
   selectedIds?: number[];
   onActivateChange?: (type: boolean) => void;
   isShowSelection?: boolean;
@@ -25,31 +25,45 @@ const BaseTable = <T extends GridValidRowModel>({
   data,
   isFooter,
   onSelectchange,
-  selectedIds,
+  selectedIds = [],
   onActivateChange,
-  isShowSelection = true,
+  isShowSelection = false,
   isLoading = false,
 }: Props<T>) => {
   const tableRef = useRef<HTMLDivElement>(null);
 
   const handleSelectChange = (row: GridRowSelectionModel) => {
+    if (!onSelectchange) return;
     const visibleIds = Array.from(
       tableRef.current?.querySelectorAll<HTMLElement>(
         ".MuiDataGrid-row[data-id]",
       ) ?? [],
     )
-      .map((element) => Number(element.dataset.id))
+      .map((el) => Number(el.dataset.id))
       .filter(Number.isFinite);
 
     const selectIds = visibleIds.filter((id) =>
       row.type === "exclude" ? !row.ids.has(id) : row.ids.has(id),
     );
-    if (onSelectchange) {
-      onSelectchange(selectIds);
+
+    const allVisibleAlreadySelected =
+      visibleIds.length > 0 &&
+      visibleIds.every((id) => selectedIds.includes(id));
+
+    const isUnselectAll =
+      (row.type === "include" && row.ids.size === 0) ||
+      (row.type === "exclude" &&
+        row.ids.size === 0 &&
+        allVisibleAlreadySelected) ||
+      selectIds.length === 0;
+    if (isUnselectAll) {
+      onSelectchange([], true);
+      return;
     }
+    onSelectchange(selectIds, false);
   };
 
-  console.log("table render");
+  // console.log("table render");
 
   return (
     <>
