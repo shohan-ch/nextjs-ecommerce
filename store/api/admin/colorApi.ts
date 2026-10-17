@@ -1,18 +1,18 @@
 import { IColor } from "@/types/type";
-import { adminApi } from "./api";
+import { adminApi } from "./baseAdminApi";
 
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const invalidateTags = (
-  result: any,
+  _result: unknown,
   error: FetchBaseQueryError | undefined,
 ) => {
   return error ? [] : (["Color"] as const);
 };
 
-type StatusType = { ids: number[]; status: number };
+type StatusPayload = { ids: number[]; status: number };
 
-const userApi = adminApi.injectEndpoints({
+const colorApi = adminApi.injectEndpoints({
   endpoints: (build) => ({
     getColors: build.query<IColor[], void>({
       query: () => "/colors",
@@ -41,7 +41,7 @@ const userApi = adminApi.injectEndpoints({
       invalidatesTags: invalidateTags,
     }),
 
-    deleteColor: build.mutation({
+    deleteColor: build.mutation<void, number>({
       query: (id: number) => {
         return {
           url: "/colors/" + id,
@@ -52,7 +52,7 @@ const userApi = adminApi.injectEndpoints({
       invalidatesTags: invalidateTags,
     }),
 
-    toggelStatus: build.mutation<void, StatusType>({
+    toggleStatus: build.mutation<void, StatusPayload>({
       query: (data) => {
         return {
           url: "/colors/status-change",
@@ -71,5 +71,5 @@ export const {
   useCreateColorMutation,
   useUpdateColorMutation,
   useDeleteColorMutation,
-  useToggelStatusMutation,
-} = userApi;
+  useToggleStatusMutation,
+} = colorApi;

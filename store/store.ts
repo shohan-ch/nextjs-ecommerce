@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import counter from "./slices/CountSlice";
 import cart from "./slices/CartSlice";
-import { adminApi } from "./api/admin/api";
+import { adminApi } from "./api/admin/baseAdminApi";
 
 export const store = configureStore({
   reducer: {

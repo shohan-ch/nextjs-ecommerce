@@ -18,7 +18,7 @@ import { useSnackBar } from "@/providers/SnackbarProvider";
 import {
   useDeleteColorMutation,
   useGetColorsQuery,
-  useToggelStatusMutation,
+  useToggleStatusMutation,
 } from "@/store/api/admin/colorApi";
 import { IColor } from "@/types/type";
 import { DeleteOutlineOutlined, EditOutlined, Try } from "@mui/icons-material";
@@ -33,7 +33,7 @@ type Props = {};
 
 const ColorIndex = (props: Props) => {
   const { data, isFetching, isLoading } = useGetColorsQuery();
-  const [toggleStatusApi] = useToggelStatusMutation();
+  const [toggleStatusApi] = useToggleStatusMutation();
   const [deleteApiCall] = useDeleteColorMutation();
   const [searchText, setSearchText] = useState("");
   const deferredSearch = useDeferredValue(searchText);
