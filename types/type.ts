@@ -6,3 +6,11 @@ export interface IColor {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface ISize {
+  id: number;
+  name: string;
+  status: number;
+  createdAt?: string;
+  updatedAt?: string;
+}

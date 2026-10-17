@@ -14,124 +14,182 @@ import { DeleteOutlineOutlined, EditOutlined } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
+import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import BaseTable from "@/componentsBase/Table/BaseTable";
+import { useConfirmService } from "@/providers/ConfirmProvider";
 import { useModalService } from "@/providers/ModalProvider";
 import { usePopConfirmService } from "@/providers/PopConfirmProvider";
 import { useSnackBar } from "@/providers/SnackbarProvider";
+import {
+  useDeleteSizeMutation,
+  useGetSizesQuery,
+  useToggleSizeStatusMutation,
+} from "@/store/api/admin/sizeApi";
+import { ISize } from "@/types/type";
 import SizeDetails from "./SizeDetails";
 
-type SizeRow = {
-  id: number;
-  name: string;
-  createdAt: string;
-  status: number;
-};
-
-const rows: SizeRow[] = [
-  { id: 1, name: "Small", createdAt: "2024-01-10", status: 1 },
-  { id: 2, name: "Medium", createdAt: "2024-01-12", status: 1 },
-  { id: 3, name: "Large", createdAt: "2024-01-15", status: 0 },
-  { id: 4, name: "Extra Large", createdAt: "2024-01-18", status: 1 },
-];
-
 const SizeIndex = () => {
+  const { data, isFetching } = useGetSizesQuery();
+  const [toggleStatusApi] = useToggleSizeStatusMutation();
+  const [deleteApiCall] = useDeleteSizeMutation();
+  const [searchText, setSearchText] = useState("");
+  const deferredSearch = useDeferredValue(searchText);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const modal = useModalService();
-  const confirm = usePopConfirmService();
+  const confirmService = useConfirmService();
+  const popConfirm = usePopConfirmService();
   const snackBar = useSnackBar();
 
-  const columns: GridColDef<SizeRow>[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 70,
-      renderCell: ({ value }) => (
-        <Typography
-          component="span"
-          sx={{ fontWeight: "600", color: "primary.main", fontSize: "14px " }}
-        >
-          {value}
-        </Typography>
-      ),
+  const handleDelete = useCallback(
+    (id: number, element: HTMLElement) => {
+      popConfirm.open({
+        title: "Are you sure",
+        anchorEl: element,
+        handleOk: async () => {
+          try {
+            await deleteApiCall(id).unwrap();
+            snackBar?.open({ type: "success", message: "Succefully deleted!" });
+          } catch (error) {
+            console.log(error);
+            snackBar?.open({ type: "error", message: "Failed to delete!" });
+          }
+        },
+      });
     },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      minWidth: 150,
+    [deleteApiCall, popConfirm, snackBar],
+  );
+
+  const handleModal = useCallback(
+    (row?: ISize) => {
+      modal.open({
+        title: row ? "Update Size" : "Add Size",
+        component: <SizeDetails data={row} />,
+        width: "xs",
+      });
+      setSearchText("");
     },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      minWidth: 150,
-      renderCell: ({ row: { status } }) => (
-        <Chip
-          label={status ? "Active" : "Inactive"}
-          sx={{
-            bgcolor: status ? "#44cf6c" : "#f9cb40",
-            color: "white",
-            width: "105px",
-            borderRadius: 2,
-          }}
-        />
-      ),
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      sortable: false,
-      width: 100,
-      renderCell: ({ row }) => (
-        <>
-          <IconButton onClick={() => handleModal(row)} size="small">
-            <EditOutlined color="primary" />
-          </IconButton>
-          <IconButton
-            onClick={(event) => handleDelete(row.id, event.currentTarget)}
-            size="small"
+    [modal],
+  );
+
+  const columns = useMemo<GridColDef<ISize>[]>(
+    () => [
+      {
+        field: "id",
+        headerName: "ID",
+        width: 70,
+        renderCell: ({ value }) => (
+          <Typography
+            component="span"
+            sx={{
+              fontWeight: "600",
+              color: "primary.main",
+              fontSize: "14px ",
+            }}
           >
-            <DeleteOutlineOutlined color="primary" />
-          </IconButton>
-        </>
-      ),
-    },
-  ];
-
-  const handleDelete = (id: number, element: HTMLElement) => {
-    confirm.open({
-      title: "Are you sure",
-      anchorEl: element,
-      handleOk: () => {
-        console.log(id);
-        snackBar?.open({ type: "success", message: "Succefully deleted!" });
+            {value}
+          </Typography>
+        ),
       },
-    });
-  };
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 1,
+        minWidth: 150,
+      },
+      {
+        field: "createdAt",
+        headerName: "CreatedAt",
+        flex: 1,
+        minWidth: 150,
+      },
+      {
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        minWidth: 150,
+        renderCell: ({ row: { status } }) => (
+          <Chip
+            label={status ? "Active" : "Inactive"}
+            sx={{
+              bgcolor: status ? "#44cf6c" : "#f9cb40",
+              color: "white",
+              width: "105px",
+              borderRadius: 2,
+            }}
+          />
+        ),
+      },
+      {
+        field: "action",
+        headerName: "Action",
+        sortable: false,
+        width: 100,
+        renderCell: ({ row }) => (
+          <>
+            <IconButton onClick={() => handleModal(row)} size="small">
+              <EditOutlined color="primary" />
+            </IconButton>
+            <IconButton
+              onClick={(event) => handleDelete(row.id, event.currentTarget)}
+              size="small"
+            >
+              <DeleteOutlineOutlined color="primary" />
+            </IconButton>
+          </>
+        ),
+      },
+    ],
+    [handleDelete, handleModal],
+  );
 
-  const handleModal = (row?: SizeRow) => {
-    modal?.open({
-      title: row ? "Update Size" : "Add Size",
-      component: <SizeDetails data={row} />,
-      width: "xs",
-    });
-  };
+  const listOfData = useMemo(() => {
+    const search = deferredSearch.toLowerCase();
 
-  const handleSelectChange = (ids: number[]) => {
-    setSelectedIds(ids);
-  };
+    if (!search) {
+      return data ?? [];
+    }
+    return (data ?? []).filter((item) => item.name.toLowerCase().includes(search));
+  }, [data, deferredSearch]);
 
-  const handleActivate = (isActivate: boolean) => {
-    if (isActivate) console.log(selectedIds, "active");
-    else console.log(selectedIds, "Inactive");
-    setSelectedIds([]);
+  const handleSelectChange = useCallback(
+    (ids: number[], isUnselectAll?: boolean) => {
+      if (isUnselectAll) {
+        setSelectedIds([]);
+        return;
+      }
+      setSelectedIds(ids);
+    },
+    [],
+  );
+
+  const handleActivate = useCallback(
+    (isActivate: boolean) => {
+      if (selectedIds.length > 0)
+        confirmService.open({
+          title: "Are you sure?",
+          onOk: async () => {
+            try {
+              await toggleStatusApi({
+                ids: selectedIds,
+                status: isActivate ? 1 : 0,
+              }).unwrap();
+              setSelectedIds([]);
+              confirmService.close();
+              snackBar?.open({
+                type: "success",
+                message: "Successfully update",
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        });
+    },
+    [selectedIds, confirmService, toggleStatusApi, snackBar],
+  );
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
   };
 
   return (
@@ -147,6 +205,7 @@ const SizeIndex = () => {
             size="small"
             sx={{ minWidth: "20vw", maxWidth: "52vw" }}
             variant="outlined"
+            value={searchText}
             slotProps={{
               input: {
                 endAdornment: (
@@ -156,6 +215,7 @@ const SizeIndex = () => {
                 ),
               },
             }}
+            onChange={handleSearch}
           />
 
           <Button
@@ -171,15 +231,17 @@ const SizeIndex = () => {
       </Box>
 
       <BaseTable
-        data={rows}
+        data={listOfData}
         columns={columns}
         onSelectchange={handleSelectChange}
         onActivateChange={handleActivate}
         selectedIds={selectedIds}
-        isFooter
+        isFooter={true}
+        isLoading={isFetching}
+        isShowSelection={true}
       />
     </>
   );
 };
 
-export default SizeIndex;
+export default React.memo(SizeIndex);
