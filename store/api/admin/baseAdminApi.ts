@@ -5,5 +5,5 @@ export const adminApi = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({ baseUrl: environmet.apiUrl + "/admin" }),
   endpoints: () => ({}),
-  tagTypes: ["Color", "Size"],
+  tagTypes: ["Color", "Size", "Category"],
 });

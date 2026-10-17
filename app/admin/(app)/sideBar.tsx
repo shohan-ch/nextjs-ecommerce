@@ -62,7 +62,7 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
 
       menuItems: [
         {
-          label: "Category",
+          label: "Categories",
           link: "/admin/categories",
         },
         {
@@ -89,7 +89,7 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
 
       menuItems: [
         {
-          label: "Category",
+          label: "Categories",
           link: "/admin/categories",
         },
         {
