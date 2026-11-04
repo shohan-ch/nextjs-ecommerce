@@ -9,10 +9,11 @@ import {
   type ICategory,
 } from "@/store/api/admin/categoryApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, styled } from "@mui/material";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 type Props = {
   data?: ICategory;
@@ -21,6 +22,7 @@ type Props = {
 const CategoryForm = z.object({
   name: z.string("Name is required").trim().nonempty(),
   status: z.number("Status is required"),
+  image: z.file().min(1),
 });
 
 type CategoryFormType = z.infer<typeof CategoryForm>;
@@ -29,15 +31,27 @@ type ValidationError = {
   constraints?: Record<string, string>;
 };
 
+const VisuallyHiddenInput = styled("input")({
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
 const CategoryDetails = ({ data }: Props) => {
   const snackbar = useSnackBar();
   const [createApi] = useCreateCategoryMutation();
   const [updateApi] = useUpdateCategoryMutation();
   const modal = useModalService();
-  const { control, handleSubmit, setError, setValues } = useForm<CategoryFormType>({
-    mode: "onChange",
-    resolver: zodResolver(CategoryForm),
-  });
+  const { control, handleSubmit, setError, setValues } =
+    useForm<CategoryFormType>({
+      mode: "onChange",
+      resolver: zodResolver(CategoryForm),
+    });
 
   useEffect(() => {
     if (data) {
@@ -69,10 +83,7 @@ const CategoryDetails = ({ data }: Props) => {
         if (validationErrors) {
           validationErrors.forEach(({ property, constraints }) => {
             const message = constraints && Object.values(constraints)[0];
-            if (
-              (property === "name" || property === "status") &&
-              message
-            ) {
+            if ((property === "name" || property === "status") && message) {
               setError(property, { message });
             }
           });
@@ -111,6 +122,31 @@ const CategoryDetails = ({ data }: Props) => {
             checkedItem={1}
           />
         </Box>
+
+        <Controller
+          control={control}
+          name="image"
+          render={({ field }) => (
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload files
+              <VisuallyHiddenInput
+                type="file"
+                name={field.name}
+                onBlur={field.onBlur}
+                ref={field.ref}
+                onChange={(event) => {
+                  field.onChange(event.currentTarget.files?.[0] ?? undefined);
+                }}
+              />
+            </Button>
+          )}
+        />
       </Stack>
 
       <Stack
