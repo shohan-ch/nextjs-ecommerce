@@ -5,6 +5,7 @@ export interface ICategory {
   id: number;
   name: string;
   status: number;
+  image?: any;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -26,11 +27,17 @@ const categoryApi = adminApi.injectEndpoints({
     }),
 
     createCategory: build.mutation<ICategory, Partial<ICategory>>({
-      query: (data) => ({
-        url: "/categories",
-        method: "POST",
-        body: data,
-      }),
+      query: (data) => {
+        let formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        return {
+          url: "/categories",
+          method: "POST",
+          body: formData,
+        };
+      },
       invalidatesTags: invalidateTags,
     }),
 

@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import BaseUpload from "@/componentsBase/Upload/BaseUpload";
 
 type Props = {
   data?: ICategory;
@@ -22,7 +23,7 @@ type Props = {
 const CategoryForm = z.object({
   name: z.string("Name is required").trim().nonempty(),
   status: z.number("Status is required"),
-  image: z.file().min(1),
+  image: z.file("Image is required").min(1),
 });
 
 type CategoryFormType = z.infer<typeof CategoryForm>;
@@ -67,7 +68,9 @@ const CategoryDetails = ({ data }: Props) => {
       if (data) {
         await updateApi({ ...formData, id: data.id }).unwrap();
       } else {
-        await createApi(formData).unwrap();
+        console.log("form data ====", formData);
+
+        await createApi({ ...formData }).unwrap();
       }
       snackbar?.open({
         type: "success",
@@ -123,30 +126,7 @@ const CategoryDetails = ({ data }: Props) => {
           />
         </Box>
 
-        <Controller
-          control={control}
-          name="image"
-          render={({ field }) => (
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload files
-              <VisuallyHiddenInput
-                type="file"
-                name={field.name}
-                onBlur={field.onBlur}
-                ref={field.ref}
-                onChange={(event) => {
-                  field.onChange(event.currentTarget.files?.[0] ?? undefined);
-                }}
-              />
-            </Button>
-          )}
-        />
+        <BaseUpload control={control} name="image" />
       </Stack>
 
       <Stack
