@@ -4,7 +4,7 @@ import { adminApi } from "./baseAdminApi";
 export interface ICategory {
   id: number;
   name: string;
-  status: number;
+  status: string;
   image?: any;
   createdAt?: string;
   updatedAt?: string;
@@ -42,11 +42,17 @@ const categoryApi = adminApi.injectEndpoints({
     }),
 
     updateCategory: build.mutation<void, Partial<ICategory>>({
-      query: (data) => ({
-        url: "/categories/" + data.id,
-        method: "PUT",
-        body: data,
-      }),
+      query: (data) => {
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        return {
+          url: "/categories/" + data.id,
+          method: "PUT",
+          body: formData,
+        };
+      },
       invalidatesTags: invalidateTags,
     }),
 

@@ -1,4 +1,5 @@
 "use client";
+
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
@@ -10,11 +11,11 @@ import {
 import React, { createContext, useContext, useState } from "react";
 
 type ModalOpenType = {
-  title: string;
+  title?: string;
   component: React.ReactNode;
   width?: "xs" | "sm" | "md" | "lg" | "xl";
-  onOk?: () => void | null;
-  onCancel?: () => void | null;
+  onOk?: () => void;
+  onCancel?: () => void;
 };
 
 type ModalContextType = {
@@ -29,53 +30,40 @@ type Props = {
 };
 
 const ModalProvider = ({ children }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [modalState, setModalState] = useState<ModalOpenType>();
+  const [modalStack, setModalStack] = useState<ModalOpenType[]>([]);
 
+  // Push a new modal onto the stack
   const handleOpen = (param: ModalOpenType) => {
-    console.log(param, "param got");
-    setOpen(true);
-    // setModalState({
-    //   title: param.title,
-    //   component: param.component,
-    //   onOk: param.onOk ? param.onOk : undefined,
-    //   onCancel: param.onCancel ? param.onCancel : undefined,
-    //   width: param.width,
-    // });
-    setModalState(param);
+    setModalStack((prev) => [...prev, param]);
   };
 
+  // Remove only the topmost modal
   const handleClose = () => {
-    setOpen(false);
+    setModalStack((prev) => prev.slice(0, -1));
   };
 
-  const handleOk = (callback: Function) => {
-    if (modalState?.onOk) {
-      modalState.onOk();
-    }
-  };
-
-  const onCancel = () => {
-    if (modalState?.onCancel) {
-      modalState.onCancel();
-    }
-    setOpen(false);
+  const handleCancel = (modal: ModalOpenType) => {
+    modal.onCancel?.();
+    handleClose();
   };
 
   return (
-    <>
-      <ModalContext
-        value={{
-          open: handleOpen,
-          close: handleClose,
-        }}
-      >
+    <ModalContext.Provider
+      value={{
+        open: handleOpen,
+        close: handleClose,
+      }}
+    >
+      {children}
+
+      {modalStack.map((modal, index) => (
         <Dialog
-          maxWidth={modalState?.width || "sm"}
+          key={index}
+          maxWidth={modal.width || "sm"}
           fullWidth
           transitionDuration={{ enter: 200, exit: 150 }}
-          open={open}
-          onClose={handleClose}
+          open
+          onClose={() => handleCancel(modal)}
           slots={{
             transition: Zoom,
           }}
@@ -88,47 +76,43 @@ const ModalProvider = ({ children }: Props) => {
             paper: {
               sx: {
                 mt: 10,
-                // minWidth: { xs: "88vw", sm: 550 },
               },
             },
           }}
         >
-          <DialogTitle
-            sx={{ m: 0, p: 2, fontWeight: 600 }}
-            id="customized-dialog-title"
-          >
-            {modalState?.title}{" "}
-          </DialogTitle>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={(theme) => ({
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: theme.palette.grey[500],
-            })}
-          >
-            <CloseIcon />
-          </IconButton>
-          <DialogContent dividers>{modalState?.component}</DialogContent>
-          {/* <DialogActions>
-            <Button size="small" onClick={onCancel} variant="outlined">
-              Cancel
-            </Button>
-            <Button size="small" onClick={() => handleOk} variant="contained">
-              Add
-            </Button>
-          </DialogActions> */}
+          {modal.title && (
+            <>
+              <DialogTitle sx={{ m: 0, p: 2, fontWeight: 600 }}>
+                {modal.title}
+              </DialogTitle>
+
+              <IconButton
+                aria-label="close"
+                onClick={() => handleCancel(modal)}
+                sx={(theme) => ({
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: theme.palette.grey[500],
+                })}
+              >
+                <CloseIcon />
+              </IconButton>
+            </>
+          )}
+
+          <DialogContent dividers sx={!modal.title ? { p: 0 } : {}}>
+            {modal.component}
+          </DialogContent>
         </Dialog>
-        {children}
-      </ModalContext>
-    </>
+      ))}
+    </ModalContext.Provider>
   );
 };
 
 export default ModalProvider;
 
 export const useModalService = () => {
-  return useContext(ModalContext) as ModalContextType;
+  const context = useContext(ModalContext);
+  return context as ModalContextType;
 };

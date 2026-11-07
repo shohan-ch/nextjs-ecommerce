@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import BaseUpload from "@/componentsBase/Upload/BaseUpload";
+import { environmet } from "@/environments/environment";
 
 type Props = {
   data?: ICategory;
@@ -22,7 +23,7 @@ type Props = {
 
 const CategoryForm = z.object({
   name: z.string("Name is required").trim().nonempty(),
-  status: z.number("Status is required"),
+  status: z.string("Status is required"),
   image: z.file("Image is required").min(1),
 });
 
@@ -45,6 +46,7 @@ const VisuallyHiddenInput = styled("input")({
 
 const CategoryDetails = ({ data }: Props) => {
   const snackbar = useSnackBar();
+  const modalService = useModalService();
   const [createApi] = useCreateCategoryMutation();
   const [updateApi] = useUpdateCategoryMutation();
   const modal = useModalService();
@@ -119,12 +121,39 @@ const CategoryDetails = ({ data }: Props) => {
             name="status"
             type="select"
             items={[
-              { name: "Active", value: 1 },
-              { name: "Inactive", value: 0 },
+              { name: "Active", value: "1" },
+              { name: "Inactive", value: "0" },
             ]}
-            checkedItem={1}
+            checkedItem={"1"}
           />
         </Box>
+
+        {data?.image && (
+          <>
+            <img
+              onClick={() => {
+                modalService.open({
+                  width: "md",
+                  component: (
+                    <>
+                      {" "}
+                      <img
+                        src={`${environmet.baseUrl}/${data.image}`}
+                        alt="img"
+                        width="100%"
+                        height="100%"
+                      />
+                    </>
+                  ),
+                });
+              }}
+              src={`${environmet.baseUrl}/${data.image}`}
+              alt="img"
+              width={70}
+              height={80}
+            />
+          </>
+        )}
 
         <BaseUpload control={control} name="image" />
       </Stack>

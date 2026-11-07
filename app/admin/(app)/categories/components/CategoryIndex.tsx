@@ -105,9 +105,9 @@ const CategoryIndex = () => {
         minWidth: 150,
         renderCell: ({ row: { status } }) => (
           <Chip
-            label={status ? "Active" : "Inactive"}
+            label={status == "1" ? "Active" : "Inactive"}
             sx={{
-              bgcolor: status ? "#44cf6c" : "#f9cb40",
+              bgcolor: status == "1" ? "#44cf6c" : "#f9cb40",
               color: "white",
               width: "105px",
               borderRadius: 2,
@@ -144,7 +144,9 @@ const CategoryIndex = () => {
     if (!search) {
       return data ?? [];
     }
-    return (data ?? []).filter((item) => item.name.toLowerCase().includes(search));
+    return (data ?? []).filter((item) =>
+      item.name.toLowerCase().includes(search),
+    );
   }, [data, deferredSearch]);
 
   const handleSelectChange = useCallback(
