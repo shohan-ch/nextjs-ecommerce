@@ -17,16 +17,27 @@ const CategoryImagePreview = ({ image }: Props) => {
             width: "md",
             component: (
               <>
-                <Box sx={{ maxHeight: "600px" }}>
-                  {" "}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    maxHeight: { xs: "70vh", sm: "600px" },
+                    overflow: "hidden",
+                  }}
+                >
                   <img
                     style={{
+                      display: "block",
+                      maxWidth: "100%",
+                      maxHeight: "70vh",
+                      width: "100%",
+                      height: "auto",
                       objectFit: "contain",
                     }}
                     src={`${environmet.baseUrl}/${image}`}
                     alt="img"
-                    width="100%"
-                    height="100%"
                   />
                 </Box>
               </>
