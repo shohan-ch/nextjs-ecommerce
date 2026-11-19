@@ -16,6 +16,7 @@ import { z } from "zod";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import BaseUpload from "@/componentsBase/Upload/BaseUpload";
 import { environmet } from "@/environments/environment";
+import CategoryImagePreview from "./CategoryImagePreview";
 
 type Props = {
   data?: ICategory;
@@ -130,28 +131,7 @@ const CategoryDetails = ({ data }: Props) => {
 
         {data?.image && (
           <>
-            <img
-              onClick={() => {
-                modalService.open({
-                  width: "md",
-                  component: (
-                    <>
-                      {" "}
-                      <img
-                        src={`${environmet.baseUrl}/${data.image}`}
-                        alt="img"
-                        width="100%"
-                        height="100%"
-                      />
-                    </>
-                  ),
-                });
-              }}
-              src={`${environmet.baseUrl}/${data.image}`}
-              alt="img"
-              width={70}
-              height={80}
-            />
+            <CategoryImagePreview image={data.image} />
           </>
         )}
 
