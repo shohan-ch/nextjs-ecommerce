@@ -30,20 +30,9 @@ const CategoryForm = z.object({
 
 type CategoryFormType = z.infer<typeof CategoryForm>;
 type ValidationError = {
-  property: string;
+  property: keyof CategoryFormType;
   constraints?: Record<string, string>;
 };
-
-const VisuallyHiddenInput = styled("input")({
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 const CategoryDetails = ({ data }: Props) => {
   const snackbar = useSnackBar();
@@ -85,13 +74,13 @@ const CategoryDetails = ({ data }: Props) => {
         const validationErrors = (
           error as { data?: { errors?: ValidationError[] } }
         )?.data?.errors;
-
         if (validationErrors) {
           validationErrors.forEach(({ property, constraints }) => {
-            const message = constraints && Object.values(constraints)[0];
-            if ((property === "name" || property === "status") && message) {
-              setError(property, { message });
-            }
+            Object.values(constraints!).forEach((message) =>
+              setError(property, {
+                message,
+              }),
+            );
           });
         } else {
           console.log(error);
