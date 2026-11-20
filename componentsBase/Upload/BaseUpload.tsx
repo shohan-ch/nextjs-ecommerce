@@ -13,6 +13,7 @@ type Props = {
   control: any;
   name: string;
   isMultiple?: boolean;
+  label?: string;
 };
 
 const VisuallyHiddenInput = styled("input")({
@@ -36,6 +37,7 @@ export default function BaseUpload({
   control,
   name,
   isMultiple = false,
+  label,
 }: Props) {
   const [previews, setPreviews] = React.useState<Preview[]>([]);
 
@@ -91,6 +93,9 @@ export default function BaseUpload({
         // console.log("error", fieldState.invalid);
         return (
           <>
+            <Typography variant="body2" sx={styles.label}>
+              {label}
+            </Typography>
             <Button
               component="label"
               role={undefined}
@@ -155,6 +160,13 @@ export default function BaseUpload({
 }
 
 const styles: Record<string, SxProps<Theme>> = {
+  label: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: "13px",
+    mb: 1.5,
+    display: "block",
+  },
   uploadList: {
     listStyle: "none",
     m: 0,
