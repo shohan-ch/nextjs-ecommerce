@@ -1,6 +1,7 @@
 "use client";
 
 import BaseInputController from "@/componentsBase/form/BaseInputController";
+import BaseUpload from "@/componentsBase/Upload/BaseUpload";
 import { useModalService } from "@/providers/ModalProvider";
 import { useSnackBar } from "@/providers/SnackbarProvider";
 import {
@@ -9,52 +10,40 @@ import {
   type ICategory,
 } from "@/store/api/admin/categoryApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Stack, styled } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import React, { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import BaseUpload from "@/componentsBase/Upload/BaseUpload";
-import { environmet } from "@/environments/environment";
 import CategoryImagePreview from "./CategoryImagePreview";
+import { useConfirmService } from "@/providers/ConfirmProvider";
 
 type Props = {
   data?: ICategory;
 };
 
-const CategoryForm = z.object({
-  name: z.string("Name is required").trim().nonempty(),
-  status: z.string("Status is required"),
-  image: z.file("Image is required").min(1),
-});
+const CategoryFormSchema = (file: string | null) =>
+  z.object({
+    name: z.string("Name is required").trim().nonempty(),
+    status: z.string("Status is required"),
+    image: file ? z.file().optional() : z.file("Image is required").min(1),
+  });
 
-type CategoryFormType = z.infer<typeof CategoryForm>;
+type CategoryFormType = z.infer<ReturnType<typeof CategoryFormSchema>>;
 type ValidationError = {
-  property: string;
+  property: keyof CategoryFormType;
   constraints?: Record<string, string>;
 };
 
-const VisuallyHiddenInput = styled("input")({
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
 const CategoryDetails = ({ data }: Props) => {
   const snackbar = useSnackBar();
-  const modalService = useModalService();
+  const confirmService = useConfirmService();
   const [createApi] = useCreateCategoryMutation();
   const [updateApi] = useUpdateCategoryMutation();
   const modal = useModalService();
   const { control, handleSubmit, setError, setValues } =
     useForm<CategoryFormType>({
       mode: "onChange",
-      resolver: zodResolver(CategoryForm),
+      resolver: zodResolver(CategoryFormSchema(data ? data.image : null)),
     });
 
   useEffect(() => {
@@ -67,41 +56,48 @@ const CategoryDetails = ({ data }: Props) => {
   }, [data, setValues]);
 
   const onSubmit = async (formData: CategoryFormType) => {
-    try {
-      if (data) {
-        await updateApi({ ...formData, id: data.id }).unwrap();
-      } else {
-        console.log("form data ====", formData);
+    confirmService.open({
+      title: "Are you sure?",
+      onOk: async () => {
+        try {
+          if (data) {
+            await updateApi({ ...formData, id: data.id }).unwrap();
+          } else {
+            console.log("form data ====", formData);
 
-        await createApi({ ...formData }).unwrap();
-      }
-      snackbar?.open({
-        type: "success",
-        message: (data ? "Updated" : "Create") + " Successfully",
-      });
-      modal.close();
-    } catch (error) {
-      if (error) {
-        const validationErrors = (
-          error as { data?: { errors?: ValidationError[] } }
-        )?.data?.errors;
-
-        if (validationErrors) {
-          validationErrors.forEach(({ property, constraints }) => {
-            const message = constraints && Object.values(constraints)[0];
-            if ((property === "name" || property === "status") && message) {
-              setError(property, { message });
-            }
-          });
-        } else {
-          console.log(error);
+            await createApi({ ...formData }).unwrap();
+          }
           snackbar?.open({
-            type: "error",
-            message: "Failed to save category!",
+            type: "success",
+            message: (data ? "Updated" : "Create") + " Successfully",
           });
+          modal.close();
+          confirmService.close();
+        } catch (error) {
+          if (error) {
+            const validationErrors = (
+              error as { data?: { errors?: ValidationError[] } }
+            )?.data?.errors;
+            if (validationErrors) {
+              validationErrors.forEach(({ property, constraints }) => {
+                Object.values(constraints!).forEach((message) =>
+                  setError(property, {
+                    message,
+                  }),
+                );
+              });
+            } else {
+              console.log(error);
+              snackbar?.open({
+                type: "error",
+                message: "Failed to save category!",
+              });
+            }
+          }
+          confirmService.close();
         }
-      }
-    }
+      },
+    });
   };
 
   return (
@@ -129,13 +125,13 @@ const CategoryDetails = ({ data }: Props) => {
           />
         </Box>
 
+        <BaseUpload control={control} name="image" label="Image" />
+
         {data?.image && (
           <>
             <CategoryImagePreview image={data.image} />
           </>
         )}
-
-        <BaseUpload control={control} name="image" />
       </Stack>
 
       <Stack

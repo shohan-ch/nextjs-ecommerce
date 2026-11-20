@@ -13,6 +13,7 @@ import React, { createContext, useContext, useState } from "react";
 type ConfirmOpenType = {
   title: string;
   onOk: () => void;
+  width?: "xs" | "sm" | "md" | "lg" | "xl";
 };
 
 type ConfirmContextType = {
@@ -49,7 +50,7 @@ const ConfirmProvider = ({ children }: Props) => {
     <>
       <ConfirmContext value={{ open: handleOpen, close: handleClose }}>
         <Dialog
-          maxWidth="xs"
+          maxWidth={modalState?.width || "xs"}
           fullWidth
           transitionDuration={{ enter: 200, exit: 150 }}
           open={open}
@@ -57,11 +58,23 @@ const ConfirmProvider = ({ children }: Props) => {
           slots={{
             transition: Zoom,
           }}
+          slotProps={{
+            container: {
+              sx: {
+                alignItems: "flex-start",
+              },
+            },
+            paper: {
+              sx: {
+                mt: 10,
+              },
+            },
+          }}
         >
           <DialogTitle
             sx={{
               m: 0,
-              p: 2,
+              p: 3,
               fontWeight: 600,
               display: "flex",
               alignItems: "center",
@@ -77,7 +90,7 @@ const ConfirmProvider = ({ children }: Props) => {
             <span>{modalState?.title}</span>
           </DialogTitle>
 
-          <DialogActions>
+          <DialogActions sx={{ pb: 3, pr: 3 }}>
             <Button size="small" onClick={handleClose} variant="outlined">
               Cancel
             </Button>

@@ -45,7 +45,7 @@ const categoryApi = adminApi.injectEndpoints({
       query: (data) => {
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-          formData.append(key, value);
+          if (value) formData.append(key, value);
         });
         return {
           url: "/categories/" + data.id,
