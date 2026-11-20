@@ -92,24 +92,28 @@ type Props = {};
 
 const categories = [
   {
+    id: 1,
     name: "Sneakers",
     slug: "sneakers",
     image:
       "https://zuqo.shop/cdn/shop/files/DSC00076_6f0c0019-566b-4c88-baf6-6f93a7d86caf.jpg?v=1767545590&width=960",
   },
   {
+    id: 2,
     name: "Half Shoes",
     slug: "half-shoes",
     image:
       "https://zuqo.shop/cdn/shop/files/Olive_Coffee_Sky_Blue_b6693d21-7bd3-475b-a724-61b64eb53fb9.png?v=1788956389&width=1200",
   },
   {
+    id: 3,
     name: "Sandals & Slides",
     slug: "sandals-slides",
     image:
       "https://zuqo.shop/cdn/shop/files/Untitled_design_4_copy.png?v=1788942738&width=1200",
   },
   {
+    id: 4,
     name: "Loafers & Chelsea Boots",
     slug: "loafers-chelsea-boots",
     image:
@@ -180,10 +184,15 @@ const HomeCategory = (props: Props) => {
           className="flex-center"
         >
           {categories.map((category, index) => (
-            <SingleCategory
+            <Link
+              href={`/products?category=${encodeURIComponent(category.name)}-${category.id}`}
               key={category.slug}
-              category={{ ...category, cardBg: colors[index] || colors[0] }}
-            />
+              style={{ textDecoration: "none" }}
+            >
+              <SingleCategory
+                category={{ ...category, cardBg: colors[index] || colors[0] }}
+              />
+            </Link>
           ))}
         </Stack>
       </Box>

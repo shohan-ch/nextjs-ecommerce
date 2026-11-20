@@ -14,6 +14,7 @@ export const userTheme = createTheme({
   palette: {
     primary: {
       main: "#000000",
+      light: "#E5E5E5",
     },
     secondary: {
       light: "#f9fafd",
@@ -26,6 +27,29 @@ export const userTheme = createTheme({
 
     blue: {
       main: "#1976d2",
+    },
+  },
+
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "&.MuiInputBase-sizeSmall": {
+            height: 34,
+            "& .MuiOutlinedInput-input": { paddingTop: 0, paddingBottom: 0 },
+          },
+        },
+      },
+    },
+    // Keep the floating label aligned too
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          "&.MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink)": {
+            transform: "translate(14px, 7px)",
+          },
+        },
+      },
     },
   },
 });

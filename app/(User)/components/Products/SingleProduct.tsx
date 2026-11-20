@@ -1,67 +1,3 @@
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import {
-//   Card,
-//   CardContent,
-//   CardHeader,
-//   CardMedia,
-//   IconButton,
-//   Typography,
-// } from "@mui/material";
-// import Link from "next/link";
-// import React from "react";
-// type Props = {
-//   product: {
-//     id: number;
-//     name: string;
-//     image: string;
-//     price: string;
-//   };
-// };
-
-// const SingleProduct = (props: Props) => {
-//   const { product } = props;
-
-//   return (
-//     <>
-//       <Card>
-//         <Link href={"/products/" + product.id} style={styles.link}>
-//           <CardHeader
-//             action={
-//               <IconButton>
-//                 <FavoriteBorderIcon />
-//               </IconButton>
-//             }
-//           />
-
-//           <CardMedia
-//             component="img"
-//             height={194}
-//             alt="img"
-//             image={product.image}
-//           />
-
-//           <CardContent>
-//             <Typography variant="h6">{product.name}</Typography>
-//             <Typography variant="body2">{product.price}</Typography>
-//           </CardContent>
-//         </Link>
-//       </Card>
-//     </>
-//   );
-// };
-
-// export default SingleProduct;
-
-// type Style = {
-//   link: React.CSSProperties;
-// };
-
-// const styles: Style = {
-//   link: {
-//     textDecoration: "none",
-//     color: "inherit",
-//   },
-// };
 "use client";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {
@@ -80,7 +16,7 @@ type Props = {
     id: number;
     name: string;
     image: string;
-    price: string;
+    price: string | number;
   };
 };
 
@@ -91,7 +27,7 @@ const SingleProduct = (props: Props) => {
     <Card
       sx={{
         width: "100%",
-        maxWidth: { xs: "100%", sm: 280 },
+        // maxWidth: { xs: "100%", sm: 280 },
         mx: "auto",
         display: "flex",
         flexDirection: "column",

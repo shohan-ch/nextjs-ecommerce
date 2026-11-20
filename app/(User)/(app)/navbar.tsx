@@ -6,42 +6,53 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import XIcon from "@mui/icons-material/X";
-import { Box } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useRef } from "react";
 
 import "./navbar.scss";
+import Link from "next/link";
+import { useAppSelector } from "@/store/store";
+import { selectAllCarts } from "@/store/slices/CartSlice";
+import BaseDrawer, { DrawerRef } from "@/componentsBase/Drawer/BaseDrawer";
+import CartIndex from "../components/Cart/CartIndex";
+import CartSummary from "../components/Cart/CartSummary";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 const navItems = [
   {
     title: "Men",
-    url: "/men",
+    url: "/products?gender=Male",
   },
 
   {
     title: "Women",
-    url: "/women",
+    url: "/products?gender=Female",
   },
 ];
 
 const Navbar = (props: Props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const router = useRouter();
+  const drawerRef = useRef<DrawerRef>(null);
+  const carts = useAppSelector(selectAllCarts);
+
   const handleDrawerToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMobileOpen((prevState) => !prevState);
   };
+
+  console.log(carts, "cart nab");
 
   const importantLinks = (
     <>
@@ -72,10 +83,13 @@ const Navbar = (props: Props) => {
         <XIcon />
       </IconButton>
 
-      <IconButton color="inherit">
+      <IconButton
+        color="inherit"
+        onClick={() => drawerRef.current?.toggleDrawer()}
+      >
         <Box className="cart-icon">
           <ShoppingBagOutlinedIcon />
-          <small className="cart-badge">1</small>
+          <small className="cart-badge">{carts.length}</small>
         </Box>
       </IconButton>
 
@@ -110,9 +124,11 @@ const Navbar = (props: Props) => {
         <List>
           {navItems.map((item) => (
             <ListItem key={item.title} disablePadding>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
+              <ListItemText primary={item.title} sx={{ textAlign: "center" }}>
+                <Link key={item.title} href={item.url}>
+                  {item.title}
+                </Link>
+              </ListItemText>
             </ListItem>
           ))}
         </List>
@@ -124,33 +140,73 @@ const Navbar = (props: Props) => {
 
   return (
     <>
+      {/* cart drawer */}
+
+      <BaseDrawer ref={drawerRef} title="Shopping Bag" position="right">
+        <Stack
+          direction={"column"}
+          sx={{
+            height: "90vh",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box className="cartItemsScroll">
+            <CartIndex />
+          </Box>
+          <Box>
+            <CartSummary
+              handleAction={() => {
+                router.push("/checkout");
+                drawerRef.current?.toggleDrawer();
+              }}
+            />
+          </Box>
+        </Stack>
+      </BaseDrawer>
+
       <AppBar component="nav" position="sticky">
         <Toolbar>
           <IconButton
             color="inherit"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, pl: 4, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
 
-          <Box className="flexWrapper">
-            <Typography variant="h6" component="div">
-              ShoeStore
-            </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map((item) => (
-                <Button key={item.title} sx={{ color: "#fff" }}>
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
+          <Container maxWidth="xl">
+            <Stack
+              direction={"row"}
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <img
+                src={"/logos/logoWhite.svg"}
+                width={"120px"}
+                height={"50px"}
+              />
+              {/* <Link href={"/"}> ShoeStore</Link> */}
 
-            <Box sx={{ display: { sm: "flex", xs: "none" }, gap: 2 }}>
-              {importantLinks}
-            </Box>
-          </Box>
+              <Box
+                sx={{ display: { xs: "none", sm: "flex" } }}
+                className="gap-5"
+              >
+                {navItems.map((item) => (
+                  <Link key={item.title} href={item.url}>
+                    {item.title}
+                  </Link>
+                ))}
+              </Box>
+
+              <Box sx={{ display: { sm: "flex", xs: "none" }, gap: 2 }}>
+                {importantLinks}
+              </Box>
+            </Stack>
+          </Container>
         </Toolbar>
       </AppBar>
       {/* Mobile drawer */}

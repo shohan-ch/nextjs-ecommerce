@@ -1,0 +1,20 @@
+import ConfirmProvider from "@/providers/ConfirmProvider";
+import ModalProvider from "@/providers/ModalProvider";
+import { MuiThemeProvider } from "@/providers/ThemeProvider";
+import React from "react";
+
+type Props = {
+  children: React.ReactNode;
+};
+
+const layout = ({ children }: Props) => {
+  return (
+    <MuiThemeProvider theme={"admin"}>
+      <ConfirmProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </ConfirmProvider>
+    </MuiThemeProvider>
+  );
+};
+
+export default layout;

@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./auth.scss";
+
 type Props = {
   children: React.ReactNode;
 };
@@ -7,5 +9,9 @@ type Props = {
 export default (props: Props) => {
   const { children } = props;
 
-  return <>{children}</>;
+  return (
+    <>
+      <>{children}</>
+    </>
+  );
 };
