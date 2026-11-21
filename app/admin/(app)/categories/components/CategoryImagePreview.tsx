@@ -17,16 +17,7 @@ const CategoryImagePreview = ({ image }: Props) => {
             width: "md",
             component: (
               <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    maxHeight: { xs: "70vh", sm: "600px" },
-                    overflow: "hidden",
-                  }}
-                >
+                <Box sx={styles.imageContainer}>
                   <img
                     style={{
                       display: "block",
@@ -45,7 +36,7 @@ const CategoryImagePreview = ({ image }: Props) => {
           });
         }}
         src={`${environmet.baseUrl}/${image}`}
-        style={{ objectFit: "contain" }}
+        style={{ objectFit: "contain", cursor: "pointer" }}
         alt="img"
         width={70}
         height={80}
@@ -55,3 +46,14 @@ const CategoryImagePreview = ({ image }: Props) => {
 };
 
 export default CategoryImagePreview;
+
+const styles = {
+  imageContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    maxHeight: { xs: "70vh", sm: "600px" },
+    overflow: "hidden",
+  },
+};

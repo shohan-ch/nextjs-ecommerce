@@ -85,21 +85,21 @@ const ModalProvider = ({ children }: Props) => {
               <DialogTitle sx={{ m: 0, p: 2, fontWeight: 600 }}>
                 {modal.title}
               </DialogTitle>
-
-              <IconButton
-                aria-label="close"
-                onClick={() => handleCancel(modal)}
-                sx={(theme) => ({
-                  position: "absolute",
-                  right: 8,
-                  top: 8,
-                  color: theme.palette.grey[500],
-                })}
-              >
-                <CloseIcon />
-              </IconButton>
             </>
           )}
+
+          <IconButton
+            aria-label="close"
+            onClick={() => handleCancel(modal)}
+            sx={(theme) => ({
+              position: "absolute",
+              right: modal.title ? 8 : 0,
+              top: modal.title ? 8 : 0,
+              color: theme.palette.grey[500],
+            })}
+          >
+            <CloseIcon />
+          </IconButton>
 
           <DialogContent dividers sx={!modal.title ? { p: 0 } : {}}>
             {modal.component}
