@@ -5,9 +5,11 @@ import React from "react";
 
 type Props = {
   image: string;
+  width?: number;
+  height?: number;
 };
 
-const CategoryImagePreview = ({ image }: Props) => {
+const CategoryImagePreview = ({ image, width = 70, height = 70 }: Props) => {
   const modalService = useModalService();
   return (
     <>
@@ -36,10 +38,15 @@ const CategoryImagePreview = ({ image }: Props) => {
           });
         }}
         src={`${environmet.baseUrl}/${image}`}
-        style={{ objectFit: "contain", cursor: "pointer" }}
+        style={{
+          objectFit: "cover",
+          cursor: "pointer",
+          paddingTop: "2px",
+          paddingBottom: "2px",
+        }}
         alt="img"
-        width={70}
-        height={80}
+        width={width}
+        height={height}
       />
     </>
   );
