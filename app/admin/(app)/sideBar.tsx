@@ -6,7 +6,7 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 import SpaceDashboardOutlinedIcon from "@mui/icons-material/SpaceDashboardOutlined";
 import SupervisorAccountOutlinedIcon from "@mui/icons-material/SupervisorAccountOutlined";
-
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import {
   Box,
   Collapse,
@@ -31,7 +31,6 @@ type Props = {
 };
 
 type MenuItemType = {
-  heading?: string;
   type?: "list" | "menu";
   label: string;
   link?: string;
@@ -39,66 +38,87 @@ type MenuItemType = {
   menuItems?: Record<string, string>[];
   isShow?: boolean;
 };
+type MenuItems = {
+  heading?: string;
+  navList?: MenuItemType[];
+};
 
 const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
   const path = usePathname();
   const [openMenus, setOpenMenus] = React.useState<Record<string, boolean>>({});
   // const headings = []!;
-  const headings = ["Core", "Products & Varations", "Others"];
+  const headings = ["Core", "Products & Varations"];
 
-  const items: MenuItemType[] = [
+  const items: MenuItems[] = [
     {
       heading: "Core",
-      label: "Dashboard",
-      link: "/admin/dashboard",
-      icon: <SpaceDashboardOutlinedIcon />,
-    },
-
-    {
-      heading: "Products & Varations",
-      type: "menu",
-      label: "Products",
-      icon: <Inventory2OutlinedIcon />,
-
-      menuItems: [
+      navList: [
         {
-          label: "Categories",
-          link: "/admin/categories",
+          label: "Dashboard",
+          link: "/admin/dashboard",
+          icon: <SpaceDashboardOutlinedIcon />,
         },
         {
-          label: "Color",
-          link: "/admin/colors",
-        },
-        {
-          label: "Size",
-          link: "/admin/sizes",
+          label: "Banners",
+          link: "/admin/banners",
+          icon: <ImageOutlinedIcon />,
         },
       ],
     },
+
     {
       heading: "Products & Varations",
-      label: "Customers",
-      link: "/admin/customers",
-      icon: <SupervisorAccountOutlinedIcon />,
+      navList: [
+        {
+          type: "menu",
+          label: "Products",
+          icon: <Inventory2OutlinedIcon />,
+
+          menuItems: [
+            {
+              label: "Categories",
+              link: "/admin/categories",
+            },
+            {
+              label: "Color",
+              link: "/admin/colors",
+            },
+            {
+              label: "Size",
+              link: "/admin/sizes",
+            },
+          ],
+        },
+        {
+          type: "list",
+          label: "Customers",
+          link: "/admin/customers",
+          icon: <SupervisorAccountOutlinedIcon />,
+        },
+      ],
     },
+
     {
       heading: "Administrative",
-      type: "menu",
-      label: "Setting",
-      icon: <SettingsSuggestOutlinedIcon />,
-
-      menuItems: [
+      navList: [
         {
-          label: "Categories",
-          link: "/admin/categories",
-        },
-        {
-          label: "Color",
-          link: "/admin/categories",
-        },
-        {
-          label: "Size",
-          link: "/admin/categories",
+          type: "menu",
+          label: "Setting",
+          icon: <SettingsSuggestOutlinedIcon />,
+          menuItems: [
+            {
+              label: "Categories",
+              link: "/admin/categories",
+            },
+            {
+              label: "Color",
+              link: "/admin/categories",
+            },
+            {
+              label: "Size",
+              link: "/admin/categories",
+            },
+          ],
         },
       ],
     },
@@ -164,24 +184,25 @@ const SideBar = ({ open, handleToggle, drawerWidth, isSmallScreen }: Props) => {
           className="hlo<"
         >
           <ListItemIcon sx={styles.icon}>{item.icon}</ListItemIcon>
-          <ListItemText sx={styles.itemText}>{item.label}</ListItemText>
+          <ListItemText sx={styles.itemText}>{item.label} </ListItemText>
         </MenuItem>
       </Link>
     );
   };
 
-  const renderItems = (heading?: string) =>
-    items
-      .filter((item) =>
-        heading === undefined
-          ? true
-          : item.heading
-            ? item.heading === heading
-            : heading === "" || (heading === "Others" && !item.heading),
-      )
-      .map((item) => (
-        <React.Fragment key={item.label}>{menuContents(item)}</React.Fragment>
-      ));
+  const renderItems = (heading?: string) => {
+    const selectedItem = items.find((item: MenuItems) =>
+      heading === undefined
+        ? true
+        : item.heading
+          ? item.heading === heading
+          : heading === "" || (heading === "Others" && !item.heading),
+    );
+
+    return selectedItem?.navList?.map((item: MenuItemType) => (
+      <React.Fragment key={item.label}>{menuContents(item)}</React.Fragment>
+    ));
+  };
 
   // console.log(openMenus, "opt");
 
