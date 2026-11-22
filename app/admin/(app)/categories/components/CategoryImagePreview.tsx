@@ -1,13 +1,16 @@
 import { environmet } from "@/environments/environment";
 import { useModalService } from "@/providers/ModalProvider";
 import { Box } from "@mui/material";
+import { SxProps } from "@mui/material/styles";
 import React from "react";
 
 type Props = {
   image: string;
+  width?: number;
+  height?: number;
 };
 
-const CategoryImagePreview = ({ image }: Props) => {
+const CategoryImagePreview = ({ image, width = 70, height = 70 }: Props) => {
   const modalService = useModalService();
   return (
     <>
@@ -17,24 +20,15 @@ const CategoryImagePreview = ({ image }: Props) => {
             width: "md",
             component: (
               <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    maxHeight: { xs: "70vh", sm: "600px" },
-                    overflow: "hidden",
-                  }}
-                >
+                <Box sx={styles.imageContainer}>
                   <img
                     style={{
                       display: "block",
                       maxWidth: "100%",
                       maxHeight: "70vh",
                       width: "100%",
-                      height: "auto",
-                      objectFit: "contain",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                     src={`${environmet.baseUrl}/${image}`}
                     alt="img"
@@ -45,13 +39,29 @@ const CategoryImagePreview = ({ image }: Props) => {
           });
         }}
         src={`${environmet.baseUrl}/${image}`}
-        style={{ objectFit: "contain" }}
+        style={{
+          objectFit: "contain",
+          cursor: "pointer",
+          padding: "4px 0",
+        }}
         alt="img"
-        width={70}
-        height={80}
+        width={width}
+        height={height}
       />
     </>
   );
 };
 
 export default CategoryImagePreview;
+
+const styles: Record<string, SxProps> = {
+  imageContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    maxHeight: { xs: "70vh", sm: "600px" },
+    overflow: "hidden",
+    border: "none",
+  },
+};

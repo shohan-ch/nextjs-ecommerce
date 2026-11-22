@@ -27,6 +27,8 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { GridColDef } from "@mui/x-data-grid";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import CategoryDetails from "./CategoryDetails";
+import { format } from "date-fns";
+import CategoryImagePreview from "./CategoryImagePreview";
 
 const CategoryIndex = () => {
   const { data, isFetching } = useGetCategoriesQuery();
@@ -94,20 +96,31 @@ const CategoryIndex = () => {
       },
       {
         field: "createdAt",
-        headerName: "CreatedAt",
+        headerName: "Created At",
         flex: 1,
         minWidth: 150,
+        renderCell: ({ value }) =>
+          value ? format(new Date(value), "dd-MM-yyyy") : "",
+      },
+      {
+        field: "image",
+        headerName: "Image",
+        flex: 1,
+        minWidth: 150,
+        renderCell: ({ value }) => (
+          <CategoryImagePreview image={value} width={40} height={40} />
+        ),
       },
       {
         field: "status",
         headerName: "Status",
         flex: 1,
         minWidth: 150,
-        renderCell: ({ row: { status } }) => (
+        renderCell: ({ value }) => (
           <Chip
-            label={status == "1" ? "Active" : "Inactive"}
+            label={value == "1" ? "Active" : "Inactive"}
             sx={{
-              bgcolor: status == "1" ? "#44cf6c" : "#f9cb40",
+              bgcolor: value == "1" ? "#44cf6c" : "#f9cb40",
               color: "white",
               width: "105px",
               borderRadius: 2,
