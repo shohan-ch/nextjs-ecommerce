@@ -101,7 +101,10 @@ const ModalProvider = ({ children }: Props) => {
             <CloseIcon />
           </IconButton>
 
-          <DialogContent dividers sx={!modal.title ? { p: 0 } : {}}>
+          <DialogContent
+            dividers
+            sx={!modal.title ? { p: 0, border: "none" } : {}}
+          >
             {modal.component}
           </DialogContent>
         </Dialog>

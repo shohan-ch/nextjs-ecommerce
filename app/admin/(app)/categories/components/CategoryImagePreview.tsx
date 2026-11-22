@@ -1,6 +1,7 @@
 import { environmet } from "@/environments/environment";
 import { useModalService } from "@/providers/ModalProvider";
 import { Box } from "@mui/material";
+import { SxProps } from "@mui/material/styles";
 import React from "react";
 
 type Props = {
@@ -26,8 +27,8 @@ const CategoryImagePreview = ({ image, width = 70, height = 70 }: Props) => {
                       maxWidth: "100%",
                       maxHeight: "70vh",
                       width: "100%",
-                      height: "auto",
-                      objectFit: "contain",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                     src={`${environmet.baseUrl}/${image}`}
                     alt="img"
@@ -53,7 +54,7 @@ const CategoryImagePreview = ({ image, width = 70, height = 70 }: Props) => {
 
 export default CategoryImagePreview;
 
-const styles = {
+const styles: Record<string, SxProps> = {
   imageContainer: {
     display: "flex",
     alignItems: "center",
@@ -61,5 +62,6 @@ const styles = {
     width: "100%",
     maxHeight: { xs: "70vh", sm: "600px" },
     overflow: "hidden",
+    border: "none",
   },
 };
