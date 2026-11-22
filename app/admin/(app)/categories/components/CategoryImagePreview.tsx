@@ -39,10 +39,9 @@ const CategoryImagePreview = ({ image, width = 70, height = 70 }: Props) => {
         }}
         src={`${environmet.baseUrl}/${image}`}
         style={{
-          objectFit: "cover",
+          objectFit: "contain",
           cursor: "pointer",
-          paddingTop: "2px",
-          paddingBottom: "2px",
+          padding: "4px 0",
         }}
         alt="img"
         width={width}

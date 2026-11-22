@@ -108,7 +108,7 @@ const CategoryIndex = () => {
         flex: 1,
         minWidth: 150,
         renderCell: ({ value }) => (
-          <CategoryImagePreview image={value} width={45} height={45} />
+          <CategoryImagePreview image={value} width={40} height={40} />
         ),
       },
       {
