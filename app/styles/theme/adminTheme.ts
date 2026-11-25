@@ -19,14 +19,16 @@ export const adminTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          "&.MuiInputBase-sizeSmall": {
+          "&.MuiInputBase-sizeSmall:not(.MuiInputBase-multiline)": {
             height: 34,
-            "& .MuiOutlinedInput-input": { paddingTop: 0, paddingBottom: 0 },
+            "& .MuiOutlinedInput-input": {
+              paddingTop: 0,
+              paddingBottom: 0,
+            },
           },
         },
       },
     },
-    // Keep the floating label aligned too
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -37,4 +39,26 @@ export const adminTheme = createTheme({
       },
     },
   },
+  // components: {
+  //   MuiOutlinedInput: {
+  //     styleOverrides: {
+  //       root: {
+  //         "&.MuiInputBase-sizeSmall": {
+  //           height: 34,
+  //           "& .MuiOutlinedInput-input": { paddingTop: 0, paddingBottom: 0 },
+  //         },
+  //       },
+  //     },
+  //   },
+  //   // Keep the floating label aligned too
+  //   MuiInputLabel: {
+  //     styleOverrides: {
+  //       root: {
+  //         "&.MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink)": {
+  //           transform: "translate(14px, 7px)",
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 });

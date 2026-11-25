@@ -5,26 +5,24 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
-  InputLabel,
   MenuItem,
   Radio,
   TextField,
 } from "@mui/material";
-import { retry } from "@reduxjs/toolkit/query";
-import React, { useState } from "react";
-import { Control, Controller, Field, useForm } from "react-hook-form";
-import { text } from "stream/consumers";
+import React from "react";
+import { Controller } from "react-hook-form";
 
 type Props = {
   control: any;
   name: string;
   label: string;
   placeHolder?: string;
-  type?: "text" | "select" | "checkbox" | "radio";
+  type?: "text" | "textArea" | "select" | "checkbox" | "radio";
   inputType?: React.HTMLInputTypeAttribute;
   items?: any[];
   checkedItem?: any;
   helperText?: string;
+  textAreaRows?: number;
 };
 
 const BaseInputController = (props: Props) => {
@@ -33,10 +31,11 @@ const BaseInputController = (props: Props) => {
     name,
     type = "text",
     inputType = "text",
+    textAreaRows = 5,
     label,
     placeHolder,
     items = [],
-    checkedItem = [],
+    checkedItem,
     helperText,
   } = props;
 
@@ -52,7 +51,7 @@ const BaseInputController = (props: Props) => {
           let textShowFirstLoad =
             helperText && !fieldState.isTouched ? helperText : undefined;
 
-          if (type == "text") {
+          if (type == "text" || type == "textArea") {
             return (
               <>
                 {placeHolder && (
@@ -80,6 +79,8 @@ const BaseInputController = (props: Props) => {
                   helperText={fieldState.error?.message || textShowFirstLoad}
                   size="small"
                   fullWidth
+                  multiline={type == "textArea" ? true : false}
+                  rows={type == "textArea" ? textAreaRows : 0}
                 />
               </>
             );
@@ -190,7 +191,7 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "select") {
-            // console.log(field.value, "f value");
+            console.log(field.value, "f value");
             return (
               <>
                 {placeHolder && (
