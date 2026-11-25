@@ -1,0 +1,63 @@
+import { environmet } from "@/environments/environment";
+import { useModalService } from "@/providers/ModalProvider";
+import { Box } from "@mui/material";
+import { SxProps } from "@mui/material/styles";
+import React from "react";
+
+type Props = {
+  image: string;
+  width?: number;
+  height?: number;
+};
+
+const ProductImagePreview = ({ image, width = 70, height = 70 }: Props) => {
+  const modalService = useModalService();
+  return (
+    <img
+      onClick={() => {
+        modalService.open({
+          width: "md",
+          component: (
+            <Box sx={styles.imageContainer}>
+              <img
+                style={{
+                  display: "block",
+                  maxWidth: "100%",
+                  maxHeight: "70vh",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+                src={`${environmet.baseUrl}/${image}`}
+                alt="img"
+              />
+            </Box>
+          ),
+        });
+      }}
+      src={`${environmet.baseUrl}/${image}`}
+      style={{
+        objectFit: "contain",
+        cursor: "pointer",
+        padding: "4px 0",
+      }}
+      alt="img"
+      width={width}
+      height={height}
+    />
+  );
+};
+
+export default ProductImagePreview;
+
+const styles: Record<string, SxProps> = {
+  imageContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    maxHeight: { xs: "70vh", sm: "600px" },
+    overflow: "hidden",
+    border: "none",
+  },
+};
