@@ -11,7 +11,7 @@ import {
   type IProduct,
 } from "@/store/api/admin/productApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack } from "@mui/material";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -99,74 +99,104 @@ const ProductDetails = ({ data }: Props) => {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid size={12}>
-          <BaseInputController
-            placeHolder="Name"
-            label="Name"
-            control={control}
-            name="name"
-          />
-        </Grid>
-        <Grid size={9}>
-          <BaseInputController
-            placeHolder="Product Description..."
-            label="Description"
-            control={control}
-            name="description"
-            type="textArea"
-            textAreaRows={6}
-          />
-        </Grid>
-        <Grid size={3}>
-          <BaseInputController
-            placeHolder="Select Variant"
-            label="Variation"
-            control={control}
-            name="variantTypeId"
-            type="select"
-            items={[
-              { id: 1, name: "Size" },
-              { id: 2, name: "Color" },
-              { id: 3, name: "Size & Color" },
-            ]}
-          />
-        </Grid>
-      </Grid>
-
-      {/* <Stack direction="column" spacing={3} className="mt-3">
-        <BaseInputController
-          placeHolder="Name"
-          label="Name"
-          control={control}
-          name="name"
-        />
-
-        <BaseInputController
-          placeHolder="Description"
-          label="Description"
-          control={control}
-          name="description"
-        />
-
-        <BaseUpload control={control} name="image" label="Image" />
-
-        {data?.image && <ProductImagePreview image={data.image} />}
-      </Stack> */}
-
-      <Stack
-        className="pt-12"
-        direction="row"
-        spacing={2}
-        sx={{ justifyContent: "end" }}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          maxHeight: "75vh",
+          overflow: "hidden",
+        }}
       >
-        <Button variant="outlined" onClick={modal.close}>
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit(onSubmit)} variant="contained">
-          {data ? "Update" : "Add"}
-        </Button>
-      </Stack>
+        {/* Scrollable content */}
+        <Box
+          sx={{
+            flex: 1,
+            minHeight: 0,
+            overflowY: "auto",
+            p: 2,
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid size={12}>
+              <BaseInputController
+                placeHolder="Name"
+                label="Name"
+                control={control}
+                name="name"
+              />
+            </Grid>
+
+            <Grid size={9}>
+              <BaseInputController
+                placeHolder="Product Description..."
+                label="Description"
+                control={control}
+                name="description"
+                type="textArea"
+                textAreaRows={166}
+              />
+            </Grid>
+
+            <Grid size={3}>
+              <BaseInputController
+                placeHolder="Select Variant"
+                label="Variation"
+                control={control}
+                name="variantTypeId"
+                type="select"
+                items={[
+                  { id: 1, name: "Size" },
+                  { id: 2, name: "Color" },
+                  { id: 3, name: "Size & Color" },
+                ]}
+              />
+            </Grid>
+          </Grid>
+
+          {/* <Stack direction="column" spacing={3} className="mt-3">
+            <BaseInputController
+              placeHolder="Name"
+              label="Name"
+              control={control}
+              name="name"
+            />
+
+            <BaseInputController
+              placeHolder="Description"
+              label="Description"
+              control={control}
+              name="description"
+            />
+
+            <BaseUpload control={control} name="image" label="Image" />
+
+            {data?.image && <ProductImagePreview image={data.image} />}
+          </Stack> */}
+        </Box>
+
+        {/* Fixed footer */}
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            p: 2,
+            flexShrink: 0,
+            // borderTop: 1,
+            // borderColor: "divider",
+            // bgcolor: "background.paper",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button variant="outlined" onClick={modal.close}>
+            Cancel
+          </Button>
+
+          <Button onClick={handleSubmit(onSubmit)} variant="contained">
+            {data ? "Update" : "Add"}
+          </Button>
+        </Stack>
+      </Box>
     </>
   );
 };

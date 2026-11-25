@@ -191,7 +191,7 @@ const BaseInputController = (props: Props) => {
           }
 
           if (type === "select") {
-            // console.log(field.value, "f value");
+            console.log(field.value, "f value");
             return (
               <>
                 {placeHolder && (
