@@ -1,3 +1,4 @@
+import { CloseOutlined } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
@@ -5,6 +6,8 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Radio,
   TextField,
@@ -23,6 +26,7 @@ type Props = {
   checkedItem?: any;
   helperText?: string;
   textAreaRows?: number;
+  isOptionClear?: boolean;
 };
 
 const BaseInputController = (props: Props) => {
@@ -37,6 +41,7 @@ const BaseInputController = (props: Props) => {
     items = [],
     checkedItem,
     helperText,
+    isOptionClear = false,
   } = props;
 
   return (
@@ -217,6 +222,37 @@ const BaseInputController = (props: Props) => {
                   helperText={fieldState.error ? fieldState.error.message : ""}
                   fullWidth
                   {...field}
+                  value={field.value ?? ""}
+                  slotProps={
+                    isOptionClear
+                      ? {
+                          select: {
+                            IconComponent: field.value ? () => null : undefined,
+
+                            endAdornment: field.value ? (
+                              <InputAdornment
+                                position="end"
+                                sx={{ marginRight: "-8px" }}
+                              >
+                                <IconButton
+                                  size="small"
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    field.onChange(undefined);
+                                  }}
+                                  edge="end"
+                                  sx={{
+                                    marginRight: "-20px !important",
+                                  }}
+                                >
+                                  <CloseOutlined fontSize="small" />
+                                </IconButton>
+                              </InputAdornment>
+                            ) : undefined,
+                          },
+                        }
+                      : {}
+                  }
                 >
                   {items.map((item, index) => {
                     let itemValue = item.id ?? item.value ?? item;

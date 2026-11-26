@@ -134,7 +134,7 @@ const ProductDetails = ({ data }: Props) => {
                 control={control}
                 name="description"
                 type="textArea"
-                textAreaRows={166}
+                textAreaRows={6}
               />
             </Grid>
 
@@ -150,6 +150,7 @@ const ProductDetails = ({ data }: Props) => {
                   { id: 2, name: "Color" },
                   { id: 3, name: "Size & Color" },
                 ]}
+                isOptionClear
               />
             </Grid>
           </Grid>
