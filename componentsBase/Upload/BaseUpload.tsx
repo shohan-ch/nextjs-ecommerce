@@ -28,7 +28,13 @@ export default function BaseUpload({
         // console.log("error", fieldState.invalid);
         return (
           <>
-            {type === "drop" && <UploadByDrop></UploadByDrop>}
+            {type === "drop" && (
+              <UploadByDrop
+                field={field}
+                isMultiple={isMultiple}
+                label={label}
+              ></UploadByDrop>
+            )}
 
             {type === "button" && (
               <>

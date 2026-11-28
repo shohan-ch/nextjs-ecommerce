@@ -12,7 +12,7 @@ import { Controller, ControllerRenderProps } from "react-hook-form";
 type Props = {
   label: string;
   isMultiple?: boolean;
-  field: any;
+  field: ControllerRenderProps;
 };
 
 const VisuallyHiddenInput = styled("input")({
