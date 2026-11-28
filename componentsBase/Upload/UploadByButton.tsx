@@ -42,7 +42,9 @@ const UploadByButton = ({ field, label, isMultiple = false }: Props) => {
     const files = e.target.files;
     if (files) {
       const selectedFiles = Array.from(files);
-      const uploadFiles = isMultiple ? selectedFiles : selectedFiles[0];
+      const uploadFiles = isMultiple
+        ? [...(Array.isArray(field.value) ? field.value : []), ...selectedFiles]
+        : selectedFiles[0];
       const newPreviews = selectedFiles.map((file) => ({
         id: `${file.name}-${file.lastModified}-${Math.random()}`,
         file,

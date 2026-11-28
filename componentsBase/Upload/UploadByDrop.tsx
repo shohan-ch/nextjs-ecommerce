@@ -2,6 +2,7 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -33,6 +34,22 @@ type Preview = {
   src: string;
 };
 
+const createVideoThumbnail = (file: File, onLoad: (src: string) => void) => {
+  const video = document.createElement("video");
+  const url = URL.createObjectURL(file);
+  video.onloadedmetadata = () => (video.currentTime = Math.min(0.1, video.duration / 2));
+  video.onseeked = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext("2d")?.drawImage(video, 0, 0);
+    onLoad(canvas.toDataURL());
+    URL.revokeObjectURL(url);
+  };
+  video.onerror = () => URL.revokeObjectURL(url);
+  video.src = url;
+};
+
 const UploadByDrop = ({
   field,
   isMultiple = false,
@@ -45,7 +62,9 @@ const UploadByDrop = ({
     const selectedFiles = Array.from(files);
     if (selectedFiles.length === 0) return;
 
-    const uploadFiles = isMultiple ? selectedFiles : selectedFiles[0];
+    const uploadFiles = isMultiple
+      ? [...(Array.isArray(field.value) ? field.value : []), ...selectedFiles]
+      : selectedFiles[0];
     const newPreviews = selectedFiles.map((file) => ({
       id: `${file.name}-${file.lastModified}-${Math.random()}`,
       file,
@@ -58,6 +77,17 @@ const UploadByDrop = ({
     field.onChange(uploadFiles);
 
     newPreviews.forEach((preview) => {
+      if (preview.file.type.startsWith("video/")) {
+        createVideoThumbnail(preview.file, (src) =>
+          setPreviews((current) =>
+            current.map((item) =>
+              item.id === preview.id ? { ...item, src } : item,
+            ),
+          ),
+        );
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = () => {
         setPreviews((current) =>
@@ -148,7 +178,9 @@ const UploadByDrop = ({
           {previews.map((preview) => (
             <Box component="li" key={preview.id} sx={styles.uploadItem}>
               <Box sx={styles.preview}>
-                {preview.src && preview.file.type.startsWith("image/") ? (
+                {preview.src &&
+                (preview.file.type.startsWith("image/") ||
+                  preview.file.type.startsWith("video/")) ? (
                   <Box
                     component="img"
                     src={preview.src}
@@ -157,6 +189,9 @@ const UploadByDrop = ({
                   />
                 ) : (
                   <Typography variant="caption">File</Typography>
+                )}
+                {preview.file.type.startsWith("video/") && (
+                  <PlayArrowRoundedIcon sx={styles.playIcon} />
                 )}
               </Box>
               <Button
@@ -233,6 +268,7 @@ const styles: Record<string, SxProps<Theme>> = {
     flexShrink: 0,
   },
   preview: {
+    position: "relative",
     width: "100%",
     height: "100%",
     display: "grid",
@@ -248,10 +284,23 @@ const styles: Record<string, SxProps<Theme>> = {
     height: "100%",
     objectFit: "cover",
   },
+  playIcon: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 34,
+    height: 34,
+    p: 0.25,
+    borderRadius: "50%",
+    bgcolor: "rgba(0, 0, 0, 0.65)",
+    color: "white",
+  },
   removeButton: {
     position: "absolute",
-    top: -8,
-    right: -8,
+    top: 4,
+    right: 4,
+    zIndex: 1,
     minWidth: 28,
     width: 28,
     height: 28,
