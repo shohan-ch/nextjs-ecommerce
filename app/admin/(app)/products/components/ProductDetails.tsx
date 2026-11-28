@@ -180,6 +180,7 @@ const ProductDetails = ({ data }: Props) => {
                 name="image"
                 label="Images"
                 isMultiple
+                type="drop"
               />
             </Grid>
             <Grid size={6}>
@@ -188,6 +189,7 @@ const ProductDetails = ({ data }: Props) => {
                 name="image"
                 type="drop"
                 label="Videos"
+                isMultiple
               />
             </Grid>
 

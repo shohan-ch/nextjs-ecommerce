@@ -206,11 +206,25 @@ const styles: Record<string, SxProps<Theme>> = {
     m: 0,
     mt: 1.5,
     p: 0,
+    pb: 1,
     display: "flex",
     flexDirection: "row",
     gap: 1,
     overflowX: "auto",
     overflowY: "hidden",
+    scrollbarWidth: "thin", // Firefox
+    scrollbarColor: "#bdbdbd transparent",
+
+    "&::-webkit-scrollbar": {
+      height: "4px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#bdbdbd",
+      borderRadius: "4px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "transparent",
+    },
   },
   uploadItem: {
     position: "relative",
