@@ -11,8 +11,16 @@ import {
   type IProduct,
 } from "@/store/api/admin/productApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Grid, Stack } from "@mui/material";
-import React, { useEffect } from "react";
+import {
+  Box,
+  Button,
+  FormLabel,
+  Grid,
+  MenuItem,
+  Stack,
+  TextField,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ProductImagePreview from "./ProductImagePreview";
@@ -24,7 +32,6 @@ type Props = {
 const ProductFormSchema = (image?: string) =>
   z.object({
     name: z.string("Name is required").trim().nonempty(),
-    variantTypeId: z.number().optional(),
     description: z.string("Description is required").trim().nonempty(),
     // image: image ? z.file().optional() : z.file("Image is required").min(1),
   });
@@ -36,6 +43,7 @@ type ValidationError = {
 };
 
 const ProductDetails = ({ data }: Props) => {
+  const [variaytionId, setVariationId] = useState<number | null>(null);
   const snackbar = useSnackBar();
   const confirmService = useConfirmService();
   const [createApi] = useCreateProductMutation();
@@ -97,6 +105,12 @@ const ProductDetails = ({ data }: Props) => {
     });
   };
 
+  const variations = [
+    { id: 1, name: "Size" },
+    { id: 2, name: "Color" },
+    { id: 3, name: "Size & Color" },
+  ];
+
   return (
     <>
       <Box
@@ -118,7 +132,7 @@ const ProductDetails = ({ data }: Props) => {
           }}
         >
           <Grid container spacing={2}>
-            <Grid size={12}>
+            <Grid size={9}>
               <BaseInputController
                 placeHolder="Name"
                 label="Name"
@@ -127,7 +141,29 @@ const ProductDetails = ({ data }: Props) => {
               />
             </Grid>
 
-            <Grid size={9}>
+            <Grid size={3}>
+              <label htmlFor="variationId" style={styles.label}>
+                Variation
+              </label>
+              <TextField
+                id="variationId"
+                select
+                placeholder="Select Variant"
+                label="Select variation"
+                fullWidth
+                size="small"
+                value={variaytionId ?? ""}
+                onChange={(e) => setVariationId(Number(e.target.value))}
+              >
+                {variations.map((item) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid size={12}>
               <BaseInputController
                 placeHolder="Product Description..."
                 label="Description"
@@ -138,19 +174,39 @@ const ProductDetails = ({ data }: Props) => {
               />
             </Grid>
 
-            <Grid size={3}>
-              <BaseInputController
-                placeHolder="Select Variant"
-                label="Variation"
+            <Grid size={6}>
+              <BaseUpload
                 control={control}
-                name="variantTypeId"
-                type="select"
-                items={[
-                  { id: 1, name: "Size" },
-                  { id: 2, name: "Color" },
-                  { id: 3, name: "Size & Color" },
-                ]}
-                isOptionClear
+                name="image"
+                label="Images"
+                isMultiple
+              />
+            </Grid>
+            <Grid size={6}>
+              <BaseUpload
+                control={control}
+                name="image"
+                type="drop"
+                label="Videos"
+              />
+            </Grid>
+
+            <Grid size={2}>
+              <BaseInputController
+                placeHolder="Price"
+                label="Price"
+                control={control}
+                name="name"
+                inputType="text"
+              />
+            </Grid>
+            <Grid size={2}>
+              <BaseInputController
+                placeHolder="Quantity"
+                label="Quantity"
+                control={control}
+                name="name"
+                inputType="text"
               />
             </Grid>
           </Grid>
@@ -183,9 +239,9 @@ const ProductDetails = ({ data }: Props) => {
           sx={{
             p: 2,
             flexShrink: 0,
-            // borderTop: 1,
-            // borderColor: "divider",
-            // bgcolor: "background.paper",
+            borderTop: 1,
+            borderColor: "divider",
+            bgcolor: "background.paper",
             justifyContent: "flex-end",
           }}
         >
@@ -203,3 +259,17 @@ const ProductDetails = ({ data }: Props) => {
 };
 
 export default React.memo(ProductDetails);
+
+type Styles = {
+  label: React.CSSProperties;
+};
+
+const styles: Styles = {
+  label: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: "13px",
+    marginBottom: "12px",
+    display: "block",
+  },
+};
